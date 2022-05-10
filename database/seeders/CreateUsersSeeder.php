@@ -17,19 +17,23 @@ class CreateUsersSeeder extends Seeder
     {
         $users = [
             [
-               'name'=>'User',
-               'email'=>'user@tm.com',
-               'hak_akses'=>'user',
-               'password'=> bcrypt('123456'),
+                'nama' => 'User',
+                'email' => 'user@tm.com',
+                'hak_akses' => 'user',
+                'unit_kerja_id' => '1',
+                'jabatan_id' => '1',
+                'password' => bcrypt('123456'),
             ],
             [
-               'name'=>'Admin',
-               'email'=>'admin@tm.com',
-               'hak_akses'=> 'admin',
-               'password'=> bcrypt('123456'),
+                'nama' => 'Admin',
+                'email' => 'admin@tm.com',
+                'hak_akses' => 'admin',
+                'unit_kerja_id' => '2',
+                'jabatan_id' => '1',
+                'password' => bcrypt('123456'),
             ],
         ];
-    
+
         foreach ($users as $key => $user) {
             User::create($user);
         }

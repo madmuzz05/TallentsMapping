@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -27,7 +29,26 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+
+    function redirectTo()
+    {
+        $role = Auth::user()->hak_akes;
+
+        switch ($role) {
+            case 'admin':
+                return '/admin/index';
+                break;
+
+            case 'user':
+                return '/index';
+                break;
+
+            default:
+                return '/home';
+                break;
+        }
+    }
 
     /**
      * Create a new controller instance.
@@ -40,25 +61,23 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {   
+    {
         $input = $request->all();
-     
+
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
         ]);
-     
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
-        {
+
+        if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             if (auth()->user()->hak_akses == 'admin') {
-                return redirect()->route('index.admin');
-            }else{
+                return redirect()->route('admin.index');
+            } else {
                 return redirect()->route('index');
             }
-        }else{
-            return redirect()->route('login')
-                ->with('error','Email-Address And Password Are Wrong.');
+        } else {
+            return Redirect::to('/login')
+                ->with('error', 'Email-Address And Password Are Wrong.');
         }
-          
     }
 }
