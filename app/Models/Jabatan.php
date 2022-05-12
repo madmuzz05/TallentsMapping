@@ -22,4 +22,14 @@ class Jabatan extends Model
     protected $fillable = [
         'kategori_jabatan',
     ];
+
+    function user()
+    {
+        return $this->hasMany(User::class, 'jabatan_id');
+    }
+
+    function simulasi()
+    {
+        return $this->hasManyThrough(Simulasi::class, User::class, 'jabatan_id', 'user_id', 'id_jabatan', 'id_user');
+    }
 }

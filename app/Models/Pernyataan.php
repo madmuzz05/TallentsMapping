@@ -7,30 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class UnitKerja extends Model
+class Pernyataan extends Model
 {
-
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'unit_kerja';
+    protected $table = 'pernyataan';
 
-    protected $primaryKey = 'id_unit_kerja';
+    protected $primaryKey = 'id_pernyataan';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama_unit_kerja',
+        'pernyataan',
+        'tema_bakat_id',
     ];
-
-    public function user()
+    public function tema_bakat()
     {
-        return $this->hasMany(User::class, 'unit_kerja_id');
-    }
-
-    function simulasit()
-    {
-        return $this->hasManyThrough(Simulasi::class, User::class, 'unit_kerja_id', 'user_id', 'id_unit_kerja', 'id_user');
+        return $this->belongsTo(TemaBakat::class, 'tema_bakat_id');
     }
 }

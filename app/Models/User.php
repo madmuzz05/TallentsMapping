@@ -9,22 +9,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'id_user';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'hak_akses',
-    ];
+
+    protected $guarded = ['id_user'];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,5 +49,15 @@ class User extends Authenticatable
         return new Attribute(
             get: fn ($value) =>  ["user", "admin"][$value],
         );
+    }
+
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
+
+    public function unit_kerja()
+    {
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
     }
 }
