@@ -22,14 +22,15 @@ class Simulasi extends Model
     protected $fillable = [
         'id_simulasi',
         'user_id',
-        'unit_kerja_id',
-        'jabatan_id',
         'pernyataan_id',
-        'tema_bakat_id',
         'nilai',
     ];
     public function user()
     {
         return $this->belongsTo(User::class, 'unit_kerja_id');
+    }
+    public function pernyataan()
+    {
+        return $this->belongsTo(Pernyataan::class, 'pernyataan_id');
     }
 }

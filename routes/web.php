@@ -34,9 +34,6 @@ Route::middleware(['auth', 'user-access:user'])->group(function () {
 });
 
 Route::middleware(['auth', 'user-access:admin'])->group(function () {
-    Route::prefix('test')->group(function () {
-        Route::get('/test', [HomeController::class, 'test'])->name('test.index');
-    });
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
     });

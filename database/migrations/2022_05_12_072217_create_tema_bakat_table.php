@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('tema_bakat', function (Blueprint $table) {
             $table->id('id_tema_bakat');
             $table->string('nama_tema', 75);
+            $table->text('deskripsi');
             $table->timestamps();
         });
     }

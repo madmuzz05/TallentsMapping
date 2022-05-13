@@ -27,4 +27,8 @@ class TemaBakat extends Model
     {
         return $this->hasMany(Pernyataan::class, 'tema_bakat_id');
     }
+    function simulasis()
+    {
+        return $this->hasManyThrough(Simulasi::class, Pernyataan::class, 'tema_bakat_id', 'pernyataan_id', 'id_tema_bakat', 'id_pernyataan');
+    }
 }

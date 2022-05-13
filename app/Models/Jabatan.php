@@ -28,7 +28,7 @@ class Jabatan extends Model
         return $this->hasMany(User::class, 'jabatan_id');
     }
 
-    function simulasi()
+    function simulasis()
     {
         return $this->hasManyThrough(Simulasi::class, User::class, 'jabatan_id', 'user_id', 'id_jabatan', 'id_user');
     }

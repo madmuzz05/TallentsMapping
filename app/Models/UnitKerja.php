@@ -29,7 +29,7 @@ class UnitKerja extends Model
         return $this->hasMany(User::class, 'unit_kerja_id');
     }
 
-    function simulasit()
+    function simulasis()
     {
         return $this->hasManyThrough(Simulasi::class, User::class, 'unit_kerja_id', 'user_id', 'id_unit_kerja', 'id_user');
     }

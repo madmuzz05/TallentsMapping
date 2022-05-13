@@ -41,11 +41,6 @@ class HomeController extends Controller
     {
         $id = Auth::user()->id_user;
         $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        // $d = UnitKerja::with('simulasit')->get();
-        // dd($d);
-        // foreach ($d as $key) {
-        //     echo $key->simulasit->nama;
-        // }
         return view('admin.index', compact('getUser'));
     }
     /**
