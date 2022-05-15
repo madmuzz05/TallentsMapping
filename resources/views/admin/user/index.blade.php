@@ -39,6 +39,7 @@
                                         <th>Unit Kerja</th>
                                         <th>Jabatan</th>
                                         <th>User Akses</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -50,6 +51,7 @@
                                         <th>Unit Kerja</th>
                                         <th>Jabatan</th>
                                         <th>User Akses</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -75,6 +77,7 @@ $(function() {
             { data: 'unit_kerja', name: 'unit_kerja.nama_unit_kerja' },
             { data: 'jabatan', name: 'jabatan.kategori_jabatan' },
             { data: 'hak_akses', name: 'hak_akses' },
+            {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
     });
 });

@@ -32,6 +32,15 @@ class UserController extends Controller
                 ->addColumn('unit_kerja', function (User $user) {
                     return $user->unit_kerja->nama_unit_kerja;
                 })
+                ->addColumn('action', function($row){
+       
+                    $btn = '<a href="javascript:void(0)" class="edit btn btn-info btn-sm">View</a>';
+                    $btn = $btn.'<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">Edit</a>';
+                    $btn = $btn.'<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">Delete</a>';
+  
+                     return $btn;
+             })
+             ->rawColumns(['action'])
                 ->make(true);
     }
 
