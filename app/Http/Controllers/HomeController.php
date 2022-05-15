@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
+use App\Models\User;
+use App\Models\Simulasi;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\Foreach_;
+
 
 class HomeController extends Controller
 {
@@ -33,7 +40,9 @@ class HomeController extends Controller
      */
     public function indexAdmin()
     {
-        return view('admin.index');
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('admin.index', compact('getUser'));
     }
     /**
      * Show the application dashboard.
