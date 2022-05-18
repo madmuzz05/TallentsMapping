@@ -1,34 +1,40 @@
 @extends('layouts.admin.app')
   
 @section('content')
-<!-- Container-fluid starts-->
-<div class="container-fluid">
-  <div class="page-header">
-    <div class="row">
-      <div class="col-lg-6">
-        <h3>User</h3>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">Master Data</li>
-            <li class="breadcrumb-item active">User</li>
-        </ol>
-      </div>
-      <div class="col-lg-6">
-      </div>
-    </div>
-  </div>
-</div>        
+<!-- Container-fluid starts-->     
       <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Alternative pagination</h5>
-                        <span>
-                            The default page control presented by DataTables (forward and backward buttons with up to 7 page numbers in-between) is fine for most situations, but there are cases where you may wish to customise the options
-                            presented to the end user. This is done through DataTables' extensible pagination mechanism, the pagingType option.
-                        </span>
+                    <div class="card-header m-b-0 p-b-0">
+                            <div class="row row-cols-sm-12 m-b-0">
+                                <div class="m-b-0 col-sm-6">
+                                    <div class="page-header">
+                                            <h3>User</h3>
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item">Master Data</li>
+                                                <li class="breadcrumb-item active">User</li>
+                                            </ol>
+                                      </div>
+                                </div>
+                                <div class="m-b-0 col-sm-6 text-end">
+                                    <a href="javascript:void(0)" class="btn btn-success">Create Data</a>
+                                </div>
+                            </div>
                     </div>
                     <div class="card-body">
+                        <form id="search_form" class="row row-cols-sm-3 theme-form mt-3 form-bottom">
+                            <div class="mb-2 d-flex">
+                                <input class="form-control" type="text" name="nama" placeholder="Search Nama" autocomplete="off" />
+                            </div>
+                            <div class="mb-2 d-flex">
+                                <input class="form-control" type="text" name="email" placeholder="Search Email" autocomplete="off" />
+                            </div>
+                            <div class="mb-2 d-flex">
+                                <button type="submit" class="btn btn-primary me-2">Search</button>
+                            </form>
+                                <button id="reset_form" class="btn btn-secondary">Reset</button>
+                            </div>
                         <div class="table-responsive">
                             <table class="table table-bordered text-center" id="user_table">
                                 <thead>
@@ -66,19 +72,37 @@
 @push('js')
 <script>
 $(function() {
-    $('#user_table').DataTable({
+    var table = $('#user_table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('user.getUser') }}",
+        ajax: {
+            url: "{{ route('user.getUser') }}",
+            data: function (d) {
+                d.nama = $('input[name=nama]').val();
+                d.email = $('input[name=email]').val();
+            }
+        },
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center'},
-            { data: 'nama', name: 'nama' },
-            { data: 'email', name: 'email' },
-            { data: 'unit_kerja', name: 'unit_kerja.nama_unit_kerja' },
-            { data: 'jabatan', name: 'jabatan.kategori_jabatan' },
-            { data: 'hak_akses', name: 'hak_akses' },
+            // {data: 'DT_RowIndex', name: 'DT_RowIndex', className: 'text-center'},
+            { data: 'id_user', name: 'users.id_user' },
+            { data: 'nama', name: 'users.nama' },
+            { data: 'email', name: 'users.email' },
+            { data: 'unit_kerja.nama_unit_kerja', name: 'unit_kerja.nama_unit_kerja' },
+            { data: 'jabatan.kategori_jabatan', name: 'jabatan.kategori_jabatan' },
+            { data: 'hak_akses', name: 'users.hak_akses' },
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ]
+    });
+
+    $('#search_form').on('submit', function(e) {
+        table.draw()
+        e.preventDefault();
+    });
+    $('#reset_form').on('click', function(e) {
+        document.getElementById("search_form").reset();
+        table.draw()
+        e.preventDefault();
+
     });
 });
 </script>

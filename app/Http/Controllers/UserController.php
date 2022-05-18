@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -21,27 +22,29 @@ class UserController extends Controller
         return view('admin.user.index', compact('getUser'));
     }
 
-    function getUser()
+    function getUser(Request $request)
     {
-            $data = User::with('jabatan', 'unit_kerja')->get();
-            return  DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('jabatan', function (User $user) {
-                    return $user->jabatan->kategori_jabatan;
-                })
-                ->addColumn('unit_kerja', function (User $user) {
-                    return $user->unit_kerja->nama_unit_kerja;
-                })
-                ->addColumn('action', function($row){
-       
-                    $btn = '<a href="javascript:void(0)" class="edit btn btn-info btn-sm">View</a>';
-                    $btn = $btn.'<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">Edit</a>';
-                    $btn = $btn.'<a href="javascript:void(0)" class="edit btn btn-danger btn-sm">Delete</a>';
-  
-                     return $btn;
-             })
-             ->rawColumns(['action'])
-                ->make(true);
+        $data = User::with('jabatan', 'unit_kerja')->select('users.*');
+        return  DataTables::of($data)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('nama')) {
+                    $query->where('users.nama', 'like', "%{$request->get('nama')}%");
+                }
+
+                if ($request->has('email')) {
+                    $query->where('users.email', 'like', "%{$request->get('email')}%");
+                }
+            })
+            ->addColumn('action', function ($row) {
+
+                $btn = '<a href="javascript:void(0)" class=" me-2 btn btn-outline-light btn-sm"><i class="fa-regular fa-circle-info"></i> View</a>';
+                $btn = $btn . '<a href="javascript:void(0)" class="me-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                $btn = $btn . '<a href="javascript:void(0)" class="me-2 btn btn-outline-danger btn-sm"><i class="fa-regular fa-trash-can"></i> Delete</a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action', 'Jabatan', 'unit_kerja'])
+            ->make(true);
     }
 
     /**
