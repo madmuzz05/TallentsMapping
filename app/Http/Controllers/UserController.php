@@ -24,7 +24,7 @@ class UserController extends Controller
 
     function getUser(Request $request)
     {
-        $data = User::with('jabatan', 'unit_kerja')->select('users.*');
+        $data = User::with('jabatan', 'unit_kerja')->select('users.*', 'users.id_user as id_user');
         return  DataTables::of($data)
             ->filter(function ($query) use ($request) {
                 if ($request->has('nama')) {
@@ -37,8 +37,8 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($row) {
 
-                $btn = '<a href="javascript:void(0)" class=" me-2 btn btn-outline-light btn-sm"><i class="fa-regular fa-circle-info"></i> View</a>';
-                $btn = $btn . '<a href="javascript:void(0)" class="me-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                $btn = '<a href="detail/'.$row->id_user.'" class=" me-2 btn btn-outline-light btn-sm"><i class="fa-regular fa-circle-info"></i> Detail</a>';
+                $btn = $btn . '<a href="javascript:void(0)" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                 $btn = $btn . '<a href="javascript:void(0)" class="me-2 btn btn-outline-danger btn-sm"><i class="fa-regular fa-trash-can"></i> Delete</a>';
 
                 return $btn;
@@ -76,7 +76,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('admin.user.detail', compact('getUser'));
     }
 
     /**

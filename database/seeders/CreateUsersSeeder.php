@@ -19,6 +19,8 @@ class CreateUsersSeeder extends Seeder
             [
                 'nama' => 'User',
                 'email' => 'user@tm.com',
+                'alamat' => 'lorep Ipsum',
+                'telepon' => '08221398132',
                 'hak_akses' => 'user',
                 'unit_kerja_id' => '1',
                 'jabatan_id' => '1',
@@ -27,6 +29,8 @@ class CreateUsersSeeder extends Seeder
             [
                 'nama' => 'Admin',
                 'email' => 'admin@tm.com',
+                'alamat' => 'lorep Ipsum',
+                'telepon' => '08442353981',
                 'hak_akses' => 'admin',
                 'unit_kerja_id' => '2',
                 'jabatan_id' => '1',

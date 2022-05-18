@@ -1,26 +1,28 @@
 @extends('layouts.admin.app')
   
 @section('content')
-<!-- Container-fluid starts-->     
+<!-- Container-fluid starts-->  
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row">
+        <div class="col-lg-6">
+        <h3>User</h3>
+                                            <ol class="breadcrumb">
+                                                <li class="breadcrumb-item">Master Data</li>
+                                                <li class="breadcrumb-item active">User</li>
+                                            </ol>
+        </div>
+      </div>
+    </div>
+</div>	   
       <div class="container-fluid">
           <div class="row">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header m-b-0 p-b-0">
-                            <div class="row row-cols-sm-12 m-b-0">
-                                <div class="m-b-0 col-sm-6">
-                                    <div class="page-header">
-                                            <h3>User</h3>
-                                            <ol class="breadcrumb">
-                                                <li class="breadcrumb-item">Master Data</li>
-                                                <li class="breadcrumb-item active">User</li>
-                                            </ol>
-                                      </div>
+                                <div class="m-b-0 col-sm-12 text-end">
+                                    <a href="{{ route('user.add') }}" class="btn btn-success">Create Data</a>
                                 </div>
-                                <div class="m-b-0 col-sm-6 text-end">
-                                    <a href="javascript:void(0)" class="btn btn-success">Create Data</a>
-                                </div>
-                            </div>
                     </div>
                     <div class="card-body">
                         <form id="search_form" class="row row-cols-sm-3 theme-form mt-3 form-bottom">
@@ -65,8 +67,9 @@
                     </div>
                 </div>
             </div>
-          </div>
-      </div>
+        </div>
+    </div>
+
             <!-- Container-fluid Ends-->
 @endsection
 @push('js')

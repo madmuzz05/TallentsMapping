@@ -40,5 +40,12 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/index', [UserController::class, 'index'])->name('user.index');
         Route::get('/getUser', [UserController::class, 'getUser'])->name('user.getUser');
+        Route::get('/add', [UserController::class, 'create'])->name('user.add');
+        Route::post('/store', [UserController::class, 'store'])->name('user.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/update', [UserController::class, 'update'])->name('user.update');
+        Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::get('/detail/{id}', [UserController::class, 'show'])->name('user.detail');
+
     });
 });
