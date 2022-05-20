@@ -37,7 +37,8 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($row) {
 
-                $btn = '<a href="javascript:void(0)" data-toggle="modal" data-target="myModal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail_btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                $btn = '<a href="#myModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                $btn = $btn . '<input type="hidden" id="id_user" value="' . $row->id_user . '">';
                 $btn = $btn . '<a href="javascript:void(0)" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                 $btn = $btn . '<a href="javascript:void(0)" class="me-2 mb-2 btn btn-outline-danger btn-sm"><i class="fa-regular fa-trash-can"></i> Delete</a>';
 
@@ -84,7 +85,6 @@ class UserController extends Controller
             return response()->json(['data' => $data]);
         }
         // dd($data);
-        return view('admin.user.detail', compact('getUser', 'id'));
     }
 
     /**

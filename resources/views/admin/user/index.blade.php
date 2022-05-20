@@ -26,6 +26,7 @@
                 </div>
                 <div class="card-body">
                     <form id="search_form" class="row row-cols-sm-3 theme-form mt-3 form-bottom">
+                        {{-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> --}}
                         <div class="mb-2 d-flex">
                             <input class="form-control" type="text" name="nama" placeholder="Search Nama"
                                 autocomplete="off" />
@@ -71,11 +72,96 @@
     </div>
 </div>
 </div>
-
 <!-- Container-fluid Ends-->
+<!-- modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Detail User</h4>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 mt-3 avatars text-center">
+                        <div class="avatar">
+                            <img class="img-70 mb-2 rounded-circle" src="{{asset('assets/images/user/16.png')}}"
+                                alt="#">
+                            <h4 class="mb-0" id="nama"></h4>
+                            <p id="jabatan"></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 mt-2">
+                        <form class="theme-form">
+                            <div class="mb-3 row">
+                                <div class="col-sm-3">
+                                    <label for="inputEmail3">No Pegawai</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p id="no_pegawai"></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3" for="inputPassword3">Unit Kerja</label>
+                                <div class="col-sm-9">
+                                    <p id="unit_kerja"></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3" for="inputPassword3">Email</label>
+                                <div class="col-sm-9">
+                                    <p id="email"></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3" for="inputPassword3">No Telepon</label>
+                                <div class="col-sm-9">
+                                    <p id="telepon"></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-sm-3" for="inputPassword3">Alamat</label>
+                                <div class="col-sm-9">
+                                    <p id="alamat"></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal -->
 @endsection
 @push('js')
 <script>
+    $(document).on("click", ".detail-btn", function () {
+        var id_modal = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            url: '/user/detail/' + id_modal,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res.data);
+                $.each(res.data, function (key, item) {
+                    document.getElementById('nama').innerHTML = item.nama;
+                    document.getElementById('alamat').innerHTML = ":  " + item.alamat;
+                    document.getElementById('email').innerHTML = ":  " + item.email;
+                    document.getElementById('jabatan').innerHTML = item.jabatan.kategori_jabatan
+                    document.getElementById('unit_kerja').innerHTML = ":  " + item.unit_kerja.nama_unit_kerja
+                    document.getElementById('no_pegawai').innerHTML = ":  " + item.no_pegawai
+                    document.getElementById('telepon').innerHTML = ":  " + item.telepon
+                })
+            }
+        })
+    });
+
+
     $(function () {
         var table = $('#user_table').DataTable({
             processing: true,

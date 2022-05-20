@@ -78,24 +78,7 @@
 <script>
     $(document).ready(function () {
         var id_user = document.getElementById('id_user').value
-        $.ajax({
-            type: "GET",
-            url: '/user/detail/' + id_user,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, item) {
-                    document.getElementById('nama').innerHTML =item.nama;
-                    document.getElementById('alamat').innerHTML = item.alamat;
-                    document.getElementById('email').innerHTML = item.email;
-                    document.getElementById('jabatan').innerHTML = item.jabatan.kategori_jabatan
-                    document.getElementById('unit_kerja').innerHTML = item.unit_kerja.nama_unit_kerja
-                    document.getElementById('no_pegawai').innerHTML = item.no_pegawai
-                    document.getElementById('telepon').innerHTML = item.telepon
-
-                })
-            }
-        })
+       
     })
 
 </script>
