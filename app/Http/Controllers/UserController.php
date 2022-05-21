@@ -55,7 +55,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('admin.user.add', compact('getUser'));
     }
 
     /**
