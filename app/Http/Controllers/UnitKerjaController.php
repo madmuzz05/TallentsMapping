@@ -16,6 +16,13 @@ class UnitKerjaController extends Controller
     {
         //
     }
+    function getUnitKerja(Request $request)
+    {
+        $data = UnitKerja::all();
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.

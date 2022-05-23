@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
+use Validator;
+use Response;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -26,6 +29,7 @@ class UserController extends Controller
     {
         $data = User::with('jabatan', 'unit_kerja')->select('users.*', 'users.id_user as id_user');
         return  DataTables::of($data)
+        ->addIndexColumn()
             ->filter(function ($query) use ($request) {
                 if ($request->has('nama')) {
                     $query->where('users.nama', 'like', "%{$request->get('nama')}%");
@@ -37,9 +41,9 @@ class UserController extends Controller
             })
             ->addColumn('action', function ($row) {
 
-                $btn = '<a href="detail/'.$row->id_user.'" class=" me-2 btn btn-outline-light btn-sm"><i class="fa-regular fa-circle-info"></i> Detail</a>';
-                $btn = $btn . '<a href="javascript:void(0)" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
-                $btn = $btn . '<a href="javascript:void(0)" class="me-2 btn btn-outline-danger btn-sm"><i class="fa-regular fa-trash-can"></i> Delete</a>';
+                $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                $btn = $btn . '<a href="edit/'.$row->id_user.'" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
 
                 return $btn;
             })
@@ -54,7 +58,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('admin.user.add', compact('getUser'));
     }
 
     /**
@@ -65,7 +71,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'no_pegawai' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
+            'email' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ]);
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->errors()->all()
+            )); 
+        }
+            User::create($request->all());
+            return response()->json([
+                'status' => 200
+            ]);
+        
     }
 
     /**
@@ -74,11 +98,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.user.detail', compact('getUser'));
+        $id_admin = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id_admin)->get();
+        $data = User::with('jabatan', 'unit_kerja')
+            ->select('users.*')->where('id_user', $id)->get();
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
+        // dd($data);
     }
 
     /**
@@ -89,7 +118,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $id_admin = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id_admin)->get();
+        $data = User::with('jabatan', 'unit_kerja')
+            ->select('users.*')->where('id_user', $id)->get();
+        return view('admin.user.edit', compact('getUser', 'data'));
     }
 
     /**
@@ -99,9 +132,56 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        
+            if (request('password')) {
+                User::where('id_user', request('id_user'))
+                ->update([
+                    'nama' => request('nama'),
+                    'no_pegawai' => request('no_pegawai'),
+                    'jabatan_id' => request('jabatan_id'),
+                    'unit_kerja_id' => request('unit_kerja_id'),
+                    'hak_akses' => request('hak_akses'),
+                    'alamat' => request('alamat'),
+                    'telepon' => request('telepon'),
+                    'email' => request('email'),
+                    'password' => Hash::make(request('password')),
+                ]);
+                
+                return response()->json([
+                    'status' => 200
+                ]);
+            } elseif (empty(request('password'))) {
+                $validator = Validator::make($request->all(), [
+                    'nama' => 'required',
+                    'no_pegawai' => 'required',
+                    'alamat' => 'required',
+                    'telepon' => 'required',
+                    'email' => 'required',
+                ]);
+        
+                if ($validator->fails()) {
+                    return Response::json(array(
+                        'success' => false,
+                        'errors' => $validator->errors()->all()
+                    )); 
+                }
+                    User::where('id_user', request('id_user'))
+                    ->update([
+                        'nama' => request('nama'),
+                        'no_pegawai' => request('no_pegawai'),
+                        'jabatan_id' => request('jabatan_id'),
+                        'unit_kerja_id' => request('unit_kerja_id'),
+                        'hak_akses' => request('hak_akses'),
+                        'alamat' => request('alamat'),
+                        'telepon' => request('telepon'),
+                        'email' => request('email'),
+                    ]);
+                    return response()->json([
+                        'status' => 200
+                    ]);
+            }
     }
 
     /**
@@ -112,6 +192,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::destroy($id);
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

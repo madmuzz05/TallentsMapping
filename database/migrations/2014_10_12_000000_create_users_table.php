@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('alamat', 75);
             $table->string('telepon', 75);
             $table->string('no_pegawai', 75);
+            $table->string('foto', 255)->nullable();
             $table->string('email', 150)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);

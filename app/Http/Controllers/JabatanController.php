@@ -17,6 +17,14 @@ class JabatanController extends Controller
         //
     }
 
+    function getJabatan(Request $request)
+    {
+        $data = Jabatan::all();
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *

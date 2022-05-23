@@ -3,7 +3,9 @@ setTimeout(function(){
         (function($) {
             "use strict";
             // Single Search Select
-            $(".js-example-basic-single").select2();
+            $('.js-example-basic-single').select2({
+                placeholder: 'Select an option'
+            });
             $(".js-example-disabled-results").select2();
 
             // Multi Select
