@@ -26,14 +26,23 @@
                 </div>
                 <div class="card-body">
                     <form id="search_form" class="row row-cols-sm-3 theme-form mt-3 form-bottom">
-                        {{-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> --}}
-                        <div class="mb-2 d-flex">
+                        <!-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> -->
+                        <div class="mb-2 m-r-5 row d-flex">
+                            <label class="col-form-label col-lg-12">Nama</label>
                             <input class="form-control" type="text" name="nama" placeholder="Search Nama"
                                 autocomplete="off" />
                         </div>
-                        <div class="mb-2 d-flex">
-                            <input class="form-control" type="text" name="email" placeholder="Search Email"
+                        <div class="mb-2 row d-flex">
+                            <label class="col-form-label col-lg-12">Email address</label>
+                            <input class="form-control col-lg-12" type="text" name="email" placeholder="Search Email"
                                 autocomplete="off" />
+                        </div>
+                        <div class="mb-2 row d-flex">
+                            <label class="col-form-label col-lg-12">Unit Kerja</label>
+                            <select class="js-example-basic-single col-sm-12 unit_kerja" name="unit_kerja" id="unit_kerja">
+                                <option value="">
+                                </option>
+                            </select>
                         </div>
                         <div class="mb-2 d-flex">
                             <button type="submit" class="btn btn-primary me-2">Search</button>
@@ -257,6 +266,8 @@
             }
         })
     });
+
+
     $(document).on("click", "#konfirmasi-del", function () {
         var id_user_del = document.getElementById('id_user_del').value
         $.ajax({
@@ -274,6 +285,22 @@
             }
         })
     });
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "{{route('unit_kerja.getUnitKerja')}}",
+            dataType: 'json',
+            success: function (res) {
+                console.log(res.data);
+                var option = ''
+                $.each(res.data, function (key, item) {
+                    option += ' <option value="' + item.id_unit_kerja + '">' + item.nama_unit_kerja + '</option>'
+                })
+                $(".unit_kerja").append(option)
+            }
+        })
+    })
 
 </script>
 @endpush

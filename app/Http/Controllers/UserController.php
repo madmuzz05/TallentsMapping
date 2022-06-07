@@ -38,6 +38,9 @@ class UserController extends Controller
                 if ($request->has('email')) {
                     $query->where('users.email', 'like', "%{$request->get('email')}%");
                 }
+                if (!empty($request->get('unit_kerja'))) {
+                    $query->where('users.unit_kerja_id', $request->get('unit_kerja'));
+                }
             })
             ->addColumn('action', function ($row) {
 

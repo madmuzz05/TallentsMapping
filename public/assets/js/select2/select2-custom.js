@@ -4,7 +4,8 @@ setTimeout(function(){
             "use strict";
             // Single Search Select
             $('.js-example-basic-single').select2({
-                placeholder: 'Select an option'
+                placeholder: 'Select an option',
+                allowClear: true
             });
             $(".js-example-disabled-results").select2();
 
