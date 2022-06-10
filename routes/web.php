@@ -54,6 +54,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::put('/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy');
         Route::get('/detail/{id}', [UserController::class, 'show'])->name('user.detail');
-
+        Route::post('/import', [UserController::class, 'import'])->name('user.import');
+        Route::get('/export', [UserController::class, 'export'])->name('user.export');
     });
 });

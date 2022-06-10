@@ -1,12 +1,12 @@
 @extends('layouts.admin.app')
-
+@section('title', "Data User")
 @section('content')
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="page-header">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Tambah User</h3>
+                <h3>Edit User</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Master Data</li>
                     <li class="breadcrumb-item"><a href="{{route('user.index')}}">User</a> </li>

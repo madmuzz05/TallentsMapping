@@ -12,8 +12,8 @@
         <meta name="author" content="pixelstrap" />
         <link rel="icon" href="assets/images/favicon.png" type="image/x-icon" />
         <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon" />
-        <title>login
- | Viho - Premium Admin Template
+        <title>Login
+ | Tallents Mapping
 </title>
         <!-- Google font-->
         <link rel="preconnect" href="https://fonts.gstatic.com/" />

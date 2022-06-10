@@ -12,7 +12,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <title>General | Viho - Premium Admin Template
+    <title>@yield('title') | Talents Mapping
 </title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.gstatic.com/">
@@ -47,9 +47,11 @@
   <body>
     <!-- Loader starts-->
     <div class="loader-wrapper">
-      <div class="theme-loader"></div>
-    </div>
-    <!-- Loader ends-->
+            <div class="theme-loader">
+                <div class="loader-p"></div>
+            </div>
+        </div>
+        <!-- Loader ends-->
     <!-- page-wrapper Start-->
     <div class="page-wrapper compact-sidebar" id="pageWrapper">
       <!-- Page Header Start-->
