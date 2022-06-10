@@ -122,8 +122,9 @@
                         <a class="nav-link menu-title {{  request()->is('user*') ? 'active' : '' }}" href="javascript:void(0)"><i data-feather="box"></i><span>Master Data</span></a>
                         <ul class="nav-submenu menu-content" style="display: none;">
                             <li><a href="{{route('user.index')}}" class="{{ request()->routeIs('user.index') ? 'active' : ''}}">User</a></li>
+                            <li><a href="{{route('unit_kerja.index')}}" class="{{ request()->routeIs('unit_kerja.index') ? 'active' : ''}}">Unit Kerja</a></li>
+                            <li><a href="{{route('jabatan.index')}}" class="{{ request()->routeIs('jabatan.index') ? 'active' : ''}}">Jabatan</a></li>
                             <li><a href="../ui-kits/typography.html" class="">Pernyataan</a></li>
-                            <li><a href="../ui-kits/avatars.html" class="">Jabatan</a></li>
                             <li><a href="../ui-kits/avatars.html" class="">Tema Bakat</a></li>
                         </ul>
                     </li>

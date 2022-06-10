@@ -41,9 +41,23 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     });
     Route::prefix('jabatan')->group(function () {
         Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('jabatan.getJabatan');
+        Route::get('/index', [jabatanController::class, 'index'])->name('jabatan.index');
+        Route::post('/store', [jabatanController::class, 'store'])->name('jabatan.store');
+        Route::put('/update/{id}', [jabatanController::class, 'update'])->name('jabatan.update');
+        Route::delete('/destroy/{id}', [jabatanController::class, 'destroy'])->name('jabatan.destroy');
+        Route::get('/detail/{id}', [jabatanController::class, 'show'])->name('jabatan.detail');
+        Route::post('/import', [jabatanController::class, 'import'])->name('jabatan.import');
+        Route::get('/export', [jabatanController::class, 'export'])->name('jabatan.export');
     });
     Route::prefix('unit_kerja')->group(function () {
         Route::get('/getUnitKerja', [UnitKerjaController::class, 'getUnitKerja'])->name('unit_kerja.getUnitKerja');
+        Route::get('/index', [UnitKerjaController::class, 'index'])->name('unit_kerja.index');
+        Route::post('/store', [UnitKerjaController::class, 'store'])->name('unit_kerja.store');
+        Route::put('/update/{id}', [UnitKerjaController::class, 'update'])->name('unit_kerja.update');
+        Route::delete('/destroy/{id}', [UnitKerjaController::class, 'destroy'])->name('unit_kerja.destroy');
+        Route::get('/detail/{id}', [UnitKerjaController::class, 'show'])->name('unit_kerja.detail');
+        Route::post('/import', [UnitKerjaController::class, 'import'])->name('unit_kerja.import');
+        Route::get('/export', [UnitKerjaController::class, 'export'])->name('unit_kerja.export');
     });
     Route::prefix('user')->group(function () {
         Route::get('/index', [UserController::class, 'index'])->name('user.index');

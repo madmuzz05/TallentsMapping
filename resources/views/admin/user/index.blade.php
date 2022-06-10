@@ -213,6 +213,7 @@
     var table = $('#user_table').DataTable({
         processing: true,
         serverSide: true,
+        responsive: true,
         ajax: {
             url: "{{ route('user.getUser') }}",
             data: function (d) {

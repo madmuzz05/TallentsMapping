@@ -113,8 +113,6 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $id_admin = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id_admin)->get();
         $data = User::with('jabatan', 'unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
         if ($request->ajax()) {
@@ -135,7 +133,6 @@ class UserController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id_admin)->get();
         $data = User::with('jabatan', 'unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
-        $data1 = User::with('jabatan', 'unit_kerja')->select('users.*')->get();
         return view('admin.user.edit', compact('getUser', 'data'));
     }
 
