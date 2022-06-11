@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitKerjaController;
+use App\Http\Controllers\TemaBakatController;
+use App\Http\Controllers\PernyataanController;
 use Illuminate\Support\Facades\Redirect;
 
 /*
@@ -58,6 +60,26 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
         Route::get('/detail/{id}', [UnitKerjaController::class, 'show'])->name('unit_kerja.detail');
         Route::post('/import', [UnitKerjaController::class, 'import'])->name('unit_kerja.import');
         Route::get('/export', [UnitKerjaController::class, 'export'])->name('unit_kerja.export');
+    });
+    Route::prefix('pernyataan')->group(function () {
+        Route::get('/getPernyataan', [PernyataanController::class, 'getPernyataan'])->name('pernyataan.getPernyataan');
+        Route::get('/index', [PernyataanController::class, 'index'])->name('pernyataan.index');
+        Route::post('/store', [PernyataanController::class, 'store'])->name('pernyataan.store');
+        Route::put('/update/{id}', [PernyataanController::class, 'update'])->name('pernyataan.update');
+        Route::delete('/destroy/{id}', [PernyataanController::class, 'destroy'])->name('pernyataan.destroy');
+        Route::get('/detail/{id}', [PernyataanController::class, 'show'])->name('pernyataan.detail');
+        Route::post('/import', [PernyataanController::class, 'import'])->name('pernyataan.import');
+        Route::get('/export', [PernyataanController::class, 'export'])->name('pernyataan.export');
+    });
+    Route::prefix('tema_bakat')->group(function () {
+        Route::get('/getTemaBakat', [TemaBakatController::class, 'getTemaBakat'])->name('tema_bakat.getTemaBakat');
+        Route::get('/index', [TemaBakatController::class, 'index'])->name('tema_bakat.index');
+        Route::post('/store', [TemaBakatController::class, 'store'])->name('tema_bakat.store');
+        Route::put('/update/{id}', [TemaBakatController::class, 'update'])->name('tema_bakat.update');
+        Route::delete('/destroy/{id}', [TemaBakatController::class, 'destroy'])->name('tema_bakat.destroy');
+        Route::get('/detail/{id}', [TemaBakatController::class, 'show'])->name('tema_bakat.detail');
+        Route::post('/import', [TemaBakatController::class, 'import'])->name('tema_bakat.import');
+        Route::get('/export', [TemaBakatController::class, 'export'])->name('tema_bakat.export');
     });
     Route::prefix('user')->group(function () {
         Route::get('/index', [UserController::class, 'index'])->name('user.index');

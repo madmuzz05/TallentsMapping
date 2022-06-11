@@ -39,30 +39,35 @@ class UserController extends Controller
             ->leftjoin('unit_kerja', 'unit_kerja.id_unit_kerja', '=', 'users.unit_kerja_id')
             ->leftjoin('jabatan', 'jabatan.id_jabatan', '=', 'users.jabatan_id');
         // $data = User::with('jabatan', 'unit_kerja')->select('users.*', 'users.id_user as id_user');
-        return  DataTables::of($data)
-            ->addIndexColumn()
-            ->filter(function ($query) use ($request) {
-                if ($request->has('nama')) {
-                    $query->where('users.nama', 'like', "%{$request->get('nama')}%");
-                }
+        if ($request->ajax()) {
+            return  DataTables::of($data)
+                ->addIndexColumn()
+                ->filter(function ($query) use ($request) {
+                    if ($request->has('nama')) {
+                        $query->where('users.nama', 'like', "%{$request->get('nama')}%");
+                    }
 
-                if ($request->has('email')) {
-                    $query->where('users.email', 'like', "%{$request->get('email')}%");
-                }
-                if (!empty($request->get('unit_kerja'))) {
-                    $query->where('users.unit_kerja_id', $request->get('unit_kerja'));
-                }
-            })
-            ->addColumn('action', function ($row) {
+                    if ($request->has('email')) {
+                        $query->where('users.email', 'like', "%{$request->get('email')}%");
+                    }
+                    if (!empty($request->get('unit_kerja'))) {
+                        $query->where('users.unit_kerja_id', $request->get('unit_kerja'));
+                    }
+                })
+                ->addColumn('action', function ($row) {
 
-                $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
-                $btn = $btn . '<a href="edit/' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
-                $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
+                    $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                    $btn = $btn . '<a href="edit/' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                    $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
 
-                return $btn;
-            })
-            ->rawColumns(['action', 'Jabatan', 'unit_kerja'])
-            ->make(true);
+                    return $btn;
+                })
+                ->rawColumns(['action', 'Jabatan', 'unit_kerja'])
+                ->make(true);
+        }
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**

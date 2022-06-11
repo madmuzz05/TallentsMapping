@@ -21,6 +21,7 @@ class TemaBakat extends Model
      */
     protected $fillable = [
         'nama_tema',
+        'deskripsi'
     ];
 
     public function pernyataan()

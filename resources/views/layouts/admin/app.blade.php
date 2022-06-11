@@ -78,7 +78,7 @@
       <ul class="nav-menus">
         <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
         <li>
-            <div class="mode"><i class="fa fa-moon-o"></i></div>
+            <div class="mode"><i class="fa-regular fa-moon"></i></div>
         </li>
         <li class="onhover-dropdown p-0">
           <a href="{{ url('/logout')}}" class="btn btn-primary-light" type="button"><i data-feather="log-out"></i>Log out</a>
@@ -124,8 +124,8 @@
                             <li><a href="{{route('user.index')}}" class="{{ request()->routeIs('user.index') ? 'active' : ''}}">User</a></li>
                             <li><a href="{{route('unit_kerja.index')}}" class="{{ request()->routeIs('unit_kerja.index') ? 'active' : ''}}">Unit Kerja</a></li>
                             <li><a href="{{route('jabatan.index')}}" class="{{ request()->routeIs('jabatan.index') ? 'active' : ''}}">Jabatan</a></li>
-                            <li><a href="../ui-kits/typography.html" class="">Pernyataan</a></li>
-                            <li><a href="../ui-kits/avatars.html" class="">Tema Bakat</a></li>
+                            <li><a href="{{route('pernyataan.index')}}" class="{{ request()->routeIs('jpernyataan.index') ? 'active' : ''}}">Pernyataan</a></li>
+                            <li><a href="{{route('tema_bakat.index')}}" class="{{ request()->routeIs('tema_bakat.index') ? 'active' : ''}}">Tema Bakat</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">

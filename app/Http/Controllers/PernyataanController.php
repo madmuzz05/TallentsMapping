@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PernyataanExport;
+use App\Imports\PernyataanImport;
 use App\Models\Pernyataan;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class PernyataanController extends Controller
 {
@@ -14,7 +21,32 @@ class PernyataanController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('admin.pernyataan.index', compact('getUser'));
+    }
+
+    function getPernyataan(Request $request)
+    {
+        $data = Pernyataan::select([
+            'pernyataan.*',
+            DB::raw('nama_tema as tema_bakat')
+        ])
+            ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
+        if ($request->ajax()) {
+            return  DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_pernyataan . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                    $btn = $btn . '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_pernyataan . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                    $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_pernyataan . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
+
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return response()->json(['data' => $data]);
     }
 
     /**
@@ -35,7 +67,15 @@ class PernyataanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            Pernyataan::create([
+                'pernyataan' => request('pernyataan'),
+                'tema_bakat_id' => request('tema_bakat_id')
+            ]);
+            return response()->json([
+                'status' => 200
+            ]);
+        }
     }
 
     /**
@@ -44,9 +84,13 @@ class PernyataanController extends Controller
      * @param  \App\Models\Pernyataan  $pernyataan
      * @return \Illuminate\Http\Response
      */
-    public function show(Pernyataan $pernyataan)
+    public function show(Request $request, $id)
     {
-        //
+        $data = Pernyataan::with('tema_bakat')
+            ->select('pernyataan.*')->where('id_pernyataan', $id)->get();
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
     }
 
     /**
@@ -67,9 +111,34 @@ class PernyataanController extends Controller
      * @param  \App\Models\Pernyataan  $pernyataan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pernyataan $pernyataan)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Pernyataan::where('id_pernyataan', $id)->update([
+            'pernyataan' => request('pernyataan'),
+            'tema_bakat_id' => request('tema_bakat_id')
+        ]);
+        if ($request->ajax()) {
+            return response()->json(['status' => 200]);
+        }
+    }
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        $nama_file = rand() . '_' . $file->getClientOriginalName();
+
+        $file->move('imports', $nama_file);
+        Excel::import(new PernyataanImport, public_path('/imports/' . $nama_file));
+        return back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new PernyataanExport, 'data_pernyataan.xlsx');
     }
 
     /**
@@ -78,8 +147,11 @@ class PernyataanController extends Controller
      * @param  \App\Models\Pernyataan  $pernyataan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pernyataan $pernyataan)
+    public function destroy($id)
     {
-        //
+        Pernyataan::destroy($id);
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

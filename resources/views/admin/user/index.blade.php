@@ -285,10 +285,8 @@
                     document.getElementById('nama').innerHTML = item.nama;
                     document.getElementById('alamat').innerHTML = ":  " + item.alamat;
                     document.getElementById('email').innerHTML = ":  " + item.email;
-                    document.getElementById('jabatan').innerHTML = item.jabatan
-                        .kategori_jabatan
-                    document.getElementById('unitKerja').innerHTML = ":  " + item
-                        .unit_kerja.nama_unit_kerja
+                    document.getElementById('jabatan').innerHTML = item.jabatan.kategori_jabatan
+                    document.getElementById('unitKerja').innerHTML = ":  " + item.unit_kerja.nama_unit_kerja
                     document.getElementById('no_pegawai').innerHTML = ":  " + item
                         .no_pegawai
                     document.getElementById('telepon').innerHTML = ":  " + item.telepon
