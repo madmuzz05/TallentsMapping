@@ -43,6 +43,15 @@ class TemaBakatController extends Controller
         }
         return response()->json(['data' => $data]);
     }
+    function getTemaBakatSelect2(Request $request)
+    {
+        $data = TemaBakat::all();
+        if (isset($request->q)) {
+            $data = TemaBakat::where('nama_tema', 'like', "%".$request->q."%")->get();
+        }
+        return $data;
+    }
+
 
     /**
      * Show the form for creating a new resource.

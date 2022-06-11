@@ -34,7 +34,6 @@ class JabatanController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_jabatan . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_jabatan . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
-
                     return $btn;
                 })
                 ->rawColumns(['action'])

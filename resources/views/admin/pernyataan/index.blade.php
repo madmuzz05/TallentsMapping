@@ -105,7 +105,6 @@
     </div>
 </div>
 <!-- end modal -->
-
 <!-- Create modal -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -158,15 +157,14 @@
                     <label class="col-sm-3 col-form-label">Pernyataan</label>
                     <div class="col-sm-9">
                         <textarea class="form-control pernyataan" id="pernyataan_edit" rows="3" name="pernyataan_edit"
-                            value="" required></textarea>
+                            required></textarea>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Tema Bakat</label>
                     <div class="col-sm-9">
-                        <select class="js-example-basic-single col-sm-12 tema_bakat_edit" name="tema_bakat_edit"
+                        <select class="col-sm-12 id_bakat_edit" name="tema_bakat_edit"
                             id="tema_bakat_edit">
-                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -192,8 +190,8 @@
                     <div class="mb-3 row">
                         <label class="col-sm-3 col-form-label">Pernyataan</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control pernyataan" id="pernyataan_edit" rows="3"
-                                name="pernyataan_edit" value="" required></textarea>
+                            <textarea class="form-control pernyataan" id="pernyataan_detail" rows="3"
+                                name="pernyataan_detail" readonly></textarea>
                         </div>
                     </div>
                     <label class="col-sm-3 col-form-label">Tema Bakat</label>
@@ -246,24 +244,30 @@
 
     $(document).on("click", ".edit-btn", function () {
         var id_modal_edit = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            url: '/pernyataan/detail/' + id_modal_edit,
-            dataType: 'json',
-            success: function (res) {
-                // console.log(res.data);
-                var option_edit = ''
-                $.each(res.data, function (key, item) {
-                    document.getElementById('id_pernyataan_edit').value = item
-                        .id_pernyataan;
-                    document.getElementsByClassName('pernyataan')[1].value = item
-                        .pernyataan;
-                    option_edit += ' <option value="' + item.tema_bakat.id_tema_bakat + '">' + item.tema_bakat.nama_tema + '</option>'
-                })
-                $(".tema_bakat_edit").append(option_edit)
-            }
-        })
+        var data = table.row($(this).closest('tr')).data();
+        $('.id_bakat_edit').append('<option selected value="' + data.tema_bakat_id + '">' + data.tema_bakat +
+            '</option>').trigger('change')
+
+        // console.log(data);
+        // $.ajax({
+        //     type: "GET",
+        //     url: '/pernyataan/detail/' + id_modal_edit,
+        //     dataType: 'json',
+        //     success: function (res) {
+        //         // console.log(res.data);
+        //         var option_edit = ''
+        //         $.each(res.data, function (key, item) {
+        //             document.getElementById('id_pernyataan_edit').value = item
+        //                 .id_pernyataan;
+        //             document.getElementsByClassName('pernyataan')[1].value = item.pernyataan;
+        //             console.log(item.tema_bakat_id);
+        //             console.log(item.tema_bakat.nama_tema);
+        //         })
+
+        //     }
+        // })
     });
+
 
     $(document).on("click", ".delete-btn", function () {
         var id_modal_delete = $(this).data('id');
@@ -289,8 +293,8 @@
             url: "{{ route('pernyataan.store') }}",
             data: {
                 _token: $("#csrf").val(),
-                pernyataan: $("#pernyataan").val(),
-                tema_bakat_id: $("#tema_bakat").val()
+                pernyataan: $("#pernyataan_create").val(),
+                tema_bakat_id: $("#tema_bakat_create").val()
             },
             cache: false,
             success: function (res) {
@@ -309,8 +313,8 @@
             url: '/pernyataan/update/' + id_pernyataan_edit,
             data: {
                 _token: $("#csrf").val(),
-                pernyataan: $("#pernyataan").val(),
-                tema_bakat_id: $("#tema_bakat").val()
+                pernyataan: $("#pernyataan_edit").val(),
+                tema_bakat_id: $("#tema_bakat_edit").val()
             },
             cache: false,
             success: function (res) {
@@ -332,8 +336,8 @@
             success: function (res) {
                 console.log(res.data);
                 $.each(res.data, function (key, item) {
-                    document.getElementById('pernyataan_detail').value = item.pernyataan;
-                    document.getElementById('deskripsi_detail').value = item
+                    document.getElementById('pernyataan_detail').value = item.pernyataan
+                    document.getElementById('tema_bakat_detail').value = item
                         .tema_bakat.nama_tema;
                 })
             }
@@ -359,21 +363,29 @@
     });
 
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "{{route('tema_bakat.getTemaBakat')}}",
-            dataType: 'json',
-            success: function (res) {
-                // console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_tema_bakat + '">' + item
-                        .nama_tema + '</option>'
-                })
-                $(".tema_bakat").append(option)
-                $(".tema_bakat_edit").append(option)
+        $('.id_bakat_edit').select2({
+            placeholder: 'Select Data',
+            allowClear: true,
+            minimumInputLength: 0,
+            dropdownParent: $('#editModal'),
+            ajax: {
+                dataType: "json",
+                method: 'POST',
+                url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                processResults: function (data) {
+                    return {
+                        results: data.map(function (item) {
+                            item.id = item.id_tema_bakat;
+                            item.text = item.nama_tema;
+                            return item;
+                        })
+                    };
+                },
+            },
+            escapeMarkup: function (m) {
+                return m;
             }
-        })
+        }).on('select2:select', function (e) {});
     });
 
 </script>

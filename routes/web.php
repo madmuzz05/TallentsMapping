@@ -73,6 +73,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     });
     Route::prefix('tema_bakat')->group(function () {
         Route::get('/getTemaBakat', [TemaBakatController::class, 'getTemaBakat'])->name('tema_bakat.getTemaBakat');
+        Route::post('/getTemaBakatSelect2', [TemaBakatController::class, 'getTemaBakatSelect2'])->name('tema_bakat.getTemaBakatSelect2');
         Route::get('/index', [TemaBakatController::class, 'index'])->name('tema_bakat.index');
         Route::post('/store', [TemaBakatController::class, 'store'])->name('tema_bakat.store');
         Route::put('/update/{id}', [TemaBakatController::class, 'update'])->name('tema_bakat.update');

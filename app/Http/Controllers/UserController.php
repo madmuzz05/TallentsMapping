@@ -59,7 +59,6 @@ class UserController extends Controller
                     $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
                     $btn = $btn . '<a href="edit/' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
-
                     return $btn;
                 })
                 ->rawColumns(['action', 'Jabatan', 'unit_kerja'])
