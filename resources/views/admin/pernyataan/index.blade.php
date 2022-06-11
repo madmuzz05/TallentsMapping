@@ -30,6 +30,29 @@
                     </div>
                 </div>
                 <div class="card-body">
+                <div class="mb-2 row">
+                            <div class="m-b-0 col-sm-12">
+                                <form id="search_form" class="row row-cols-3 theme-form mt-3 form-bottom">
+                                    <!-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> -->
+                                    <div class="mb-2 m-r-5 row d-flex">
+                                        <label class="col-form-label col-lg-12">Pernyataan</label>
+                                        <input class="form-control" type="text" name="pernyataan" placeholder="Search Pernyataan"
+                                            autocomplete="off" />
+                                    </div>
+                                    <div class="mb-2 row d-flex">
+                                        <label class="col-form-label col-lg-12">Tema bakat</label>
+                                        <select class="col-sm-12 id_bakat_edit" name="nama_tema">
+                                        </select>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <div class="m-b-0 col-sm-12 text-end">
+                                <button type="submit" class="btn btn-primary me-2">Search</button>
+                            </form>
+                                <button id="reset_form" class="btn btn-secondary">Reset</button>
+                            </div>
+                        </div>
                     <div class="table-responsive mt-3 mb-5 mr-3 ml-3">
                         <table class="table table-bordered text-center " id="pernyataan_table">
                             <thead>
@@ -216,8 +239,12 @@
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('pernyataan.getPernyataan') }}"
-        },
+            url: "{{ route('pernyataan.getPernyataan') }}",
+            data: function (d) {
+                d.pernyataan = $('input[name=pernyataan]').val();
+                d.nama_tema = $('.id_bakat_edit').val();
+                return d;
+        }},
         columns: [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -241,6 +268,17 @@
             }
         ]
     })
+    $('#search_form').on('submit', function (e) {
+        table.draw()
+        e.preventDefault();
+    });
+    $('#reset_form').on('click', function (e) {
+        document.getElementById("search_form").reset();
+        $('.id_bakat_edit').val(null).trigger('change')
+        table.draw()
+        e.preventDefault();
+
+    });
 
     $(document).on("click", ".edit-btn", function () {
         var id_modal_edit = $(this).data('id');
@@ -328,20 +366,10 @@
     });
 
     $(document).on("click", ".detail-btn", function () {
-        var id_modal = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            url: '/pernyataan/detail/' + id_modal,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, item) {
-                    document.getElementById('pernyataan_detail').value = item.pernyataan
-                    document.getElementById('tema_bakat_detail').value = item
-                        .tema_bakat.nama_tema;
-                })
-            }
-        })
+        var data = table.row($(this).closest('tr')).data();
+        console.log(data);
+        $('.tema_bakat').val(data.tema_bakat)
+        $('.pernyataan').val(data.pernyataan)
     });
 
     $(document).on("click", "#konfirmasi-del", function () {
@@ -349,9 +377,6 @@
         $.ajax({
             type: "DELETE",
             url: '/pernyataan/destroy/' + id_pernyataan_del,
-            data: {
-                _token: $("#csrf").val()
-            },
             cache: false,
             success: function (res) {
                 if (res.status == 200) {
@@ -367,7 +392,6 @@
             placeholder: 'Select Data',
             allowClear: true,
             minimumInputLength: 0,
-            dropdownParent: $('#editModal'),
             ajax: {
                 dataType: "json",
                 method: 'POST',

@@ -30,12 +30,21 @@ class PernyataanController extends Controller
     {
         $data = Pernyataan::select([
             'pernyataan.*',
-            DB::raw('nama_tema as tema_bakat')
+            DB::raw('nama_tema as tema_bakat'),
+            DB::raw('id_tema_bakat as id_tema')
         ])
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
+                ->filter(function ($query) use ($request) {
+                    if ($request->has('pernyataan')) {
+                        $query->where('pernyataan.pernyataan', 'like', "%{$request->get('pernyataan')}%");
+                    }
+                    if (!empty($request->get('nama_tema'))) {
+                        $query->where('pernyataan.tema_bakat_id', $request->get('nama_tema'));
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_pernyataan . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
                     $btn = $btn . '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_pernyataan . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
