@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="mb-2 row d-flex">
                                         <label class="col-form-label col-lg-12">Tema bakat</label>
-                                        <select class="col-sm-12 id_bakat_edit" name="nama_tema">
+                                        <select class="col-sm-12 tema_bakat_select2" name="nama_tema">
                                         </select>
                                     </div>
                             </div>
@@ -148,7 +148,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Tema Bakat</label>
                     <div class="col-sm-9">
-                        <select class="js-example-basic-single col-sm-12 tema_bakat" name="tema_bakat_create"
+                        <select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create"
                             id="tema_bakat_create">
                             <option value=""></option>
                         </select>
@@ -179,14 +179,14 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Pernyataan</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control pernyataan" id="pernyataan_edit" rows="3" name="pernyataan_edit"
+                        <textarea class="form-control pernyataan_edit" id="pernyataan_edit" rows="3" name="pernyataan_edit"
                             required></textarea>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Tema Bakat</label>
                     <div class="col-sm-9">
-                        <select class="col-sm-12 id_bakat_edit" name="tema_bakat_edit"
+                        <select class="col-sm-12 tema_bakat_select2 add_option" name="tema_bakat_edit"
                             id="tema_bakat_edit">
                         </select>
                     </div>
@@ -235,6 +235,7 @@
 @endsection
 @push('js')
 <script>
+    $(document).ready(function () {
     var table = $('#pernyataan_table').DataTable({
         processing: true,
         serverSide: true,
@@ -242,7 +243,7 @@
             url: "{{ route('pernyataan.getPernyataan') }}",
             data: function (d) {
                 d.pernyataan = $('input[name=pernyataan]').val();
-                d.nama_tema = $('.id_bakat_edit').val();
+                d.nama_tema = $('.tema_bakat_select2').val();
                 return d;
         }},
         columns: [{
@@ -274,36 +275,18 @@
     });
     $('#reset_form').on('click', function (e) {
         document.getElementById("search_form").reset();
-        $('.id_bakat_edit').val(null).trigger('change')
+        $('.tema_bakat_select2').val(null).trigger('change')
         table.draw()
         e.preventDefault();
 
     });
-
+    var id_modal_edit ="";
     $(document).on("click", ".edit-btn", function () {
-        var id_modal_edit = $(this).data('id');
         var data = table.row($(this).closest('tr')).data();
-        $('.id_bakat_edit').append('<option selected value="' + data.tema_bakat_id + '">' + data.tema_bakat +
+        id_modal_edit = data.id_pernyataan;
+        $('.pernyataan_edit').val(data.pernyataan)
+        $('.add_option').append('<option selected value="' + data.tema_bakat_id + '">' + data.tema_bakat +
             '</option>').trigger('change')
-
-        // console.log(data);
-        // $.ajax({
-        //     type: "GET",
-        //     url: '/pernyataan/detail/' + id_modal_edit,
-        //     dataType: 'json',
-        //     success: function (res) {
-        //         // console.log(res.data);
-        //         var option_edit = ''
-        //         $.each(res.data, function (key, item) {
-        //             document.getElementById('id_pernyataan_edit').value = item
-        //                 .id_pernyataan;
-        //             document.getElementsByClassName('pernyataan')[1].value = item.pernyataan;
-        //             console.log(item.tema_bakat_id);
-        //             console.log(item.tema_bakat.nama_tema);
-        //         })
-
-        //     }
-        // })
     });
 
 
@@ -345,12 +328,11 @@
     });
 
     $(document).on("click", "#edit-data", function () {
-        var id_pernyataan_edit = document.getElementById('id_pernyataan_edit').value
+        var data = table.row($(this).closest('tr')).data();
         $.ajax({
             type: "PUT",
-            url: '/pernyataan/update/' + id_pernyataan_edit,
+            url: '/pernyataan/update/' + id_modal_edit,
             data: {
-                _token: $("#csrf").val(),
                 pernyataan: $("#pernyataan_edit").val(),
                 tema_bakat_id: $("#tema_bakat_edit").val()
             },
@@ -367,9 +349,9 @@
 
     $(document).on("click", ".detail-btn", function () {
         var data = table.row($(this).closest('tr')).data();
-        console.log(data);
-        $('.tema_bakat').val(data.tema_bakat)
-        $('.pernyataan').val(data.pernyataan)
+        // console.log(dat/a);
+        $('#tema_bakat_detail').val(data.tema_bakat)
+        $('#pernyataan_detail').val(data.pernyataan)
     });
 
     $(document).on("click", "#konfirmasi-del", function () {
@@ -386,31 +368,6 @@
             }
         })
     });
-
-    $(document).ready(function () {
-        $('.id_bakat_edit').select2({
-            placeholder: 'Select Data',
-            allowClear: true,
-            minimumInputLength: 0,
-            ajax: {
-                dataType: "json",
-                method: 'POST',
-                url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
-                processResults: function (data) {
-                    return {
-                        results: data.map(function (item) {
-                            item.id = item.id_tema_bakat;
-                            item.text = item.nama_tema;
-                            return item;
-                        })
-                    };
-                },
-            },
-            escapeMarkup: function (m) {
-                return m;
-            }
-        }).on('select2:select', function (e) {});
-    });
-
+})
 </script>
 @endpush

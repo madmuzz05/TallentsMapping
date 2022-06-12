@@ -29,20 +29,22 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
-
+    
     return Redirect::to('/login');
 })->name('logout');
 
-Route::middleware(['auth', 'user-access:user'])->group(function () {
+Route::get('/getUserLogin', [UserController::class, 'getUserLogin'])->name('user.getUserLogin');
+Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');
 });
 
-Route::middleware(['auth', 'user-access:admin'])->group(function () {
+Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
     });
     Route::prefix('jabatan')->group(function () {
         Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('jabatan.getJabatan');
+        Route::post('/getJabatanSelect2', [JabatanController::class, 'getJabatanSelect2'])->name('jabatan.getJabatanSelect2');
         Route::get('/index', [jabatanController::class, 'index'])->name('jabatan.index');
         Route::post('/store', [jabatanController::class, 'store'])->name('jabatan.store');
         Route::put('/update/{id}', [jabatanController::class, 'update'])->name('jabatan.update');
@@ -53,6 +55,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     });
     Route::prefix('unit_kerja')->group(function () {
         Route::get('/getUnitKerja', [UnitKerjaController::class, 'getUnitKerja'])->name('unit_kerja.getUnitKerja');
+        Route::post('/getUnitKerjaSelect2', [UnitKerjaController::class, 'getUnitKerjaSelect2'])->name('unit_kerja.getUnitKerjaSelect2');
         Route::get('/index', [UnitKerjaController::class, 'index'])->name('unit_kerja.index');
         Route::post('/store', [UnitKerjaController::class, 'store'])->name('unit_kerja.store');
         Route::put('/update/{id}', [UnitKerjaController::class, 'update'])->name('unit_kerja.update');

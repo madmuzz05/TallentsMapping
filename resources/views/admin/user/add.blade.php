@@ -46,7 +46,7 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Jabatan</label>
                                     <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12 jabatan" name="jabatan"
+                                        <select class="jabatan_select2 col-sm-12 jabatan" name="jabatan"
                                             id="jabatan">
                                             <option value=""></option>
                                         </select>
@@ -55,9 +55,8 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Unit Kerja</label>
                                     <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12 unit_kerja" name="unit_kerja"
+                                        <select class="unit_kerja_select2 col-sm-12 unit_kerja" name="unit_kerja"
                                             id="unit_kerja">
-                                            <option value=""></option>
                                         </select>
                                     </div>
                                 </div>
@@ -67,8 +66,8 @@
                                         <select class="js-example-basic-single col-sm-12" id="hak_akses"
                                             name="hak_akses">
                                             <option value=""></option>
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
+                                            <option value="User">User</option>
+                                            <option value="Admin">Admin</option>
                                         </select>
                                     </div>
                                 </div>
@@ -177,36 +176,6 @@
                 }
             })
 
-        })
-
-        $.ajax({
-            type: "GET",
-            url: "{{route('jabatan.getJabatan')}}",
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_jabatan + '">' + item
-                        .kategori_jabatan + '</option>'
-                })
-                $(".jabatan").append(option)
-            }
-        })
-
-        $.ajax({
-            type: "GET",
-            url: "{{route('unit_kerja.getUnitKerja')}}",
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_unit_kerja + '">' + item
-                        .nama_unit_kerja + '</option>'
-                })
-                $(".unit_kerja").append(option)
-            }
         })
     });
 

@@ -21,9 +21,8 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.unit_kerja.index', compact('getUser'));
+       
+        return view('admin.unit_kerja.index');
     }
     function getUnitKerja(Request $request)
     {
@@ -41,6 +40,14 @@ class UnitKerjaController extends Controller
                 ->make(true);
         }
         return response()->json(['data' => $data]);
+    }
+    function getUnitKerjaSelect2(Request $request)
+    {
+        $data = UnitKerja::all();
+        if (isset($request->q)) {
+            $data = UnitKerja::where('nama_unit_kerja', 'like', "%".$request->q."%")->get();
+        }
+        return $data;
     }
 
     /**

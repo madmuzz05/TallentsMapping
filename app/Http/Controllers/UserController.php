@@ -24,9 +24,16 @@ class UserController extends Controller
      */
     public function index()
     {
+        return view('admin.user.index');
+    }
+
+    function getUserLogin()
+    {
         $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.user.index', compact('getUser'));
+        $data = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     function getUser(Request $request)

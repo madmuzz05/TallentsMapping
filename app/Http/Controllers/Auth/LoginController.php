@@ -36,16 +36,16 @@ class LoginController extends Controller
         $role = Auth::user()->hak_akes;
 
         switch ($role) {
-            case 'admin':
+            case 'Admin':
                 return '/admin/index';
                 break;
 
-            case 'user':
+            case 'User':
                 return '/index';
                 break;
 
             default:
-                return '/home';
+                return '/login';
                 break;
         }
     }
@@ -70,7 +70,7 @@ class LoginController extends Controller
         ]);
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
-            if (auth()->user()->hak_akses == 'admin') {
+            if (auth()->user()->hak_akses == 'Admin') {
                 return redirect()->route('admin.index');
             } else {
                 return redirect()->route('index');

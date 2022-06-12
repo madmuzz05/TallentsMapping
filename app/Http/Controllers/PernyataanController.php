@@ -21,9 +21,7 @@ class PernyataanController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.pernyataan.index', compact('getUser'));
+        return view('admin.pernyataan.index');
     }
 
     function getPernyataan(Request $request)

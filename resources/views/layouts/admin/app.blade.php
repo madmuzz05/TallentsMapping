@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from laravel.pixelstrap.com/viho/widgets/general-widget by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Apr 2022 03:43:37 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,8 +14,8 @@
     <meta name="keywords"
         content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="../assets/images/favicon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{asset('assets/images/logo/ico.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('assets/images/logo/ico.png')}}" type="image/x-icon">
     <title>@yield('title') | Talents Mapping
     </title>
     <!-- Google font-->
@@ -72,9 +71,9 @@
             <div class="main-header-right row m-0">
                 <div class="main-header-left">
                     <div class="logo-wrapper"><a href="{{route('admin.index')}}"><img class="img-fluid"
-                                src="{{asset('assets/images/logo/logo.png')}}" alt=""></a></div>
+                                src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
                     <div class="dark-logo-wrapper"><a href="{{route('admin.index')}}"><img class="img-fluid"
-                                src="{{asset('assets/images/logo/dark-logo.png')}}" alt=""></a></div>
+                                src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
                     <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center"
                             id="sidebar-toggle"> </i></div>
                 </div>
@@ -115,12 +114,9 @@
                     <a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a><img
                         class="img-90 rounded-circle" src="{{asset('assets/images/dashboard/1.png')}}" alt="" />
                     <div class="badge-bottom"><span class="badge badge-primary">New</span></div>
-                    @foreach ($getUser as $item)
-                    <h6 class="mt-3 f-14 f-w-600">{{ $item->nama }}</h6>
-                    <p class="mb-0 font-roboto">
-                        {{ $item->jabatan->kategori_jabatan }} {{ $item->unit_kerja->nama_unit_kerja }}
+                    <h6 class="mt-3 f-14 f-w-600 nama_user"></h6>
+                    <p class="mb-0 font-roboto unit_jabatan">
                     </p>
-                    @endforeach
                 </div>
                 <nav>
                     <div class="main-navbar">
@@ -262,19 +258,99 @@
     <!-- Theme js-->
     <script src="{{asset('assets/js/script.js')}}"></script>
     <script>
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-      });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $(document).ready(function () {
-        })
+            $('.tema_bakat_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_tema_bakat;
+                                item.text = item.nama_tema;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.jabatan_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('jabatan.getJabatanSelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_jabatan;
+                                item.text = item.kategori_jabatan;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.unit_kerja_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('unit_kerja.getUnitKerjaSelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_unit_kerja;
+                                item.text = item.nama_unit_kerja;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $.ajax({
+                type: "GET",
+                url: "{{route('user.getUserLogin')}}",
+                dataType: 'json',
+                success: function (res) {
+                  $.each(res.data, function (key, item) {
+                      $('.nama_user').text(item.nama)
+                      $('.unit_jabatan').text(item.jabatan.kategori_jabatan+" "+item.unit_kerja.nama_unit_kerja)
+                        
+                    })
+                }
+            })
+        });
 
     </script>
     <!-- Plugin used-->
     @stack('js')
 </body>
-
-<!-- Mirrored from laravel.pixelstrap.com/viho/widgets/general-widget by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Apr 2022 03:43:41 GMT -->
 
 </html>

@@ -22,77 +22,78 @@
                 <div class="card-header m-b-0 p-b-0">
                     <div class="row">
                         <div class="m-b-0 col-sm-12 text-end">
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#importModal" class="btn btn-warning mb-2">Import Data</button>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#importModal"
+                                class="btn btn-warning mb-2">Import Data</button>
                             <a href="{{ route('user.export') }}" class="btn btn-info mb-2">Export Data</a>
                             <a href="{{ route('user.add') }}" class="btn btn-success mb-2">Create Data</a>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                        <div class="mb-2 row">
-                            <div class="m-b-0 col-sm-12">
-                                <form id="search_form" class="row row-cols-3 theme-form mt-3 form-bottom">
-                                    <!-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> -->
-                                    <div class="mb-2 m-r-5 row d-flex">
-                                        <label class="col-form-label col-lg-12">Nama</label>
-                                        <input class="form-control" type="text" name="nama" placeholder="Search Nama"
-                                            autocomplete="off" />
-                                    </div>
-                                    <div class="mb-2 row d-flex">
-                                        <label class="col-form-label col-lg-12">Email address</label>
-                                        <input class="form-control col-lg-12" type="text" name="email" placeholder="Search Email"
-                                            autocomplete="off" />
-                                    </div>
-                                    <div class="mb-2 row d-flex">
-                                        <label class="col-form-label col-lg-12">Unit Kerja</label>
-                                        <select class="js-example-basic-single col-sm-12 unit_kerja" name="unit_kerja"
-                                            id="unit_kerja">
-                                            <option value="">
-                                            </option>
-                                        </select>
-                                    </div>
-                            </div>
+                    <div class="mb-2 row">
+                        <div class="m-b-0 col-sm-12">
+                            <form id="search_form" class="row row-cols-3 theme-form mt-3 form-bottom">
+                                <!-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> -->
+                                <div class="mb-2 m-r-5 row d-flex">
+                                    <label class="col-form-label col-lg-12">Nama</label>
+                                    <input class="form-control" type="text" name="nama" placeholder="Search Nama"
+                                        autocomplete="off" />
+                                </div>
+                                <div class="mb-2 row d-flex">
+                                    <label class="col-form-label col-lg-12">Email address</label>
+                                    <input class="form-control col-lg-12" type="text" name="email"
+                                        placeholder="Search Email" autocomplete="off" />
+                                </div>
+                                <div class="mb-2 row d-flex">
+                                    <label class="col-form-label col-lg-12">Unit Kerja</label>
+                                    <select class="unit_kerja_select2 clear_select2 col-sm-12 unit_kerja" name="unit_kerja"
+                                        id="unit_kerja">
+                                        <option value="">
+                                        </option>
+                                    </select>
+                                </div>
                         </div>
-                        <div class="mb-2 row">
-                            <div class="m-b-0 col-sm-12 text-end">
-                                <button type="submit" class="btn btn-primary me-2">Search</button>
+                    </div>
+                    <div class="mb-2 row">
+                        <div class="m-b-0 col-sm-12 text-end">
+                            <button type="submit" class="btn btn-primary me-2">Search</button>
                             </form>
-                                <button id="reset_form" class="btn btn-secondary">Reset</button>
-                            </div>
+                            <button id="reset_form" class="btn btn-secondary">Reset</button>
                         </div>
-                <div class="table-responsive mt-3 mb-5">
-                    <table class="table table-bordered text-center" id="user_table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>No Pegawai</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Unit Kerja</th>
-                                <th>Jabatan</th>
-                                <th>User Akses</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                        <tfoot>
-                            <tr>
-                                <th>No</th>
-                                <th>No Pegawai</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Unit Kerja</th>
-                                <th>Jabatan</th>
-                                <th>User Akses</th>
-                                <th>Action</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    </div>
+                    <div class="table-responsive mt-3 mb-5">
+                        <table class="table table-bordered text-center" id="user_table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>No Pegawai</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Unit Kerja</th>
+                                    <th>Jabatan</th>
+                                    <th>User Akses</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No</th>
+                                    <th>No Pegawai</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Unit Kerja</th>
+                                    <th>Jabatan</th>
+                                    <th>User Akses</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <!-- Container-fluid Ends-->
 <!-- detail modal -->
@@ -197,9 +198,9 @@
                             <input class="form-control" type="file" name="file" />
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">Upload</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Upload</button>
                 </form>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
@@ -268,7 +269,7 @@
     });
     $('#reset_form').on('click', function (e) {
         document.getElementById("search_form").reset();
-        $('.js-example-basic-single').val('').trigger('change')
+        $('.clear_select2').val(null).trigger('change')
         table.draw()
         e.preventDefault();
 
@@ -285,8 +286,10 @@
                     document.getElementById('nama').innerHTML = item.nama;
                     document.getElementById('alamat').innerHTML = ":  " + item.alamat;
                     document.getElementById('email').innerHTML = ":  " + item.email;
-                    document.getElementById('jabatan').innerHTML = item.jabatan.kategori_jabatan
-                    document.getElementById('unitKerja').innerHTML = ":  " + item.unit_kerja.nama_unit_kerja
+                    document.getElementById('jabatan').innerHTML = item.jabatan
+                        .kategori_jabatan
+                    document.getElementById('unitKerja').innerHTML = ":  " + item.unit_kerja
+                        .nama_unit_kerja
                     document.getElementById('no_pegawai').innerHTML = ":  " + item
                         .no_pegawai
                     document.getElementById('telepon').innerHTML = ":  " + item.telepon
@@ -330,23 +333,6 @@
             }
         })
     });
-
-    $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "{{route('unit_kerja.getUnitKerja')}}",
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_unit_kerja + '">' + item
-                        .nama_unit_kerja + '</option>'
-                })
-                $('.unit_kerja').append(option)
-            }
-        })
-    })
 
 </script>
 @endpush

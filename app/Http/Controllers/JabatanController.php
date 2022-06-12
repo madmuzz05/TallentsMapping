@@ -20,9 +20,8 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.jabatan.index', compact('getUser'));
+        
+        return view('admin.jabatan.index');
     }
 
     function getJabatan(Request $request)
@@ -40,6 +39,15 @@ class JabatanController extends Controller
                 ->make(true);
         }
         return response()->json(['data' => $data]);
+    }
+
+    function getJabatanSelect2(Request $request)
+    {
+        $data = Jabatan::all();
+        if (isset($request->q)) {
+            $data = Jabatan::where('kategori_jabatan', 'like', "%".$request->q."%")->get();
+        }
+        return $data;
     }
 
     /**

@@ -20,9 +20,8 @@ class TemaBakatController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.tema_bakat.index', compact('getUser'));
+       
+        return view('admin.tema_bakat.index');
     }
 
     function getTemaBakat(Request $request)
