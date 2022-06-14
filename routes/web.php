@@ -9,6 +9,7 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\TemaBakatController;
 use App\Http\Controllers\PernyataanController;
+use App\Http\Controllers\SimulasiController;
 use Illuminate\Support\Facades\Redirect;
 
 /*
@@ -36,9 +37,15 @@ Route::get('logout', function () {
 Route::get('/getUserLogin', [UserController::class, 'getUserLogin'])->name('user.getUserLogin');
 Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');
+    Route::prefix('simulasi')->group(function () {
+        Route::get('/index', [SimulasiController::class, 'index'])->name('simulasi.index');
+    });
 });
 
 Route::middleware(['auth', 'user-access:Admin'])->group(function () {
+    Route::prefix('assesmen')->group(function () {
+        Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
+    });
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
     });

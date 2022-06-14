@@ -31,7 +31,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        return view('index');
+        return view('user.index');
     }
 
     /**
@@ -45,13 +45,5 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
         return view('admin.index', compact('getUser'));
     }
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function test()
-    {
-        return view('admin.index2');
-    }
+
 }

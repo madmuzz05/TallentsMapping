@@ -97,7 +97,7 @@
                             <div class="mode"><i class="fa-regular fa-moon"></i></div>
                         </li>
                         <li class="onhover-dropdown p-0">
-                            <a href="{{ url('/logout')}}" class="btn btn-primary-light" type="button"><i
+                            <a href="{{ url('/logout')}}" class="btn btn-primary-light"><i
                                     data-feather="log-out"></i>Log out</a>
                         </li>
                     </ul>
@@ -188,7 +188,7 @@
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>  
     <script type="text/javascript" src="{{asset('js\user\chart.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
         integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="

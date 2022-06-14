@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Simulasi;
+use App\Models\Hasil;
 use Illuminate\Http\Request;
 
-class SimulasiController extends Controller
+class HasilControler extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class SimulasiController extends Controller
      */
     public function index()
     {
-        return view('user.asesmen.index');
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class SimulasiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Simulasi  $simulasi
+     * @param  \App\Models\Hasil  $hasil
      * @return \Illuminate\Http\Response
      */
-    public function show(Simulasi $simulasi)
+    public function show(Hasil $hasil)
     {
         //
     }
@@ -52,10 +52,10 @@ class SimulasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Simulasi  $simulasi
+     * @param  \App\Models\Hasil  $hasil
      * @return \Illuminate\Http\Response
      */
-    public function edit(Simulasi $simulasi)
+    public function edit(Hasil $hasil)
     {
         //
     }
@@ -64,10 +64,10 @@ class SimulasiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Simulasi  $simulasi
+     * @param  \App\Models\Hasil  $hasil
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Simulasi $simulasi)
+    public function update(Request $request, Hasil $hasil)
     {
         //
     }
@@ -75,10 +75,10 @@ class SimulasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Simulasi  $simulasi
+     * @param  \App\Models\Hasil  $hasil
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Simulasi $simulasi)
+    public function destroy(Hasil $hasil)
     {
         //
     }

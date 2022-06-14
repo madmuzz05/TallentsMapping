@@ -30939,6 +30939,12 @@ span.twitter-typeahead .tt-suggestion {
     padding-left: 0;
     padding-right: 0 !important; } }
 
+.point_ul{
+    list-style-type: disc !important;
+    padding-left:1em !important;
+    margin-left:1em;
+}
+
 /**=====================
     60. RTL CSS Ends
 ==========================**/

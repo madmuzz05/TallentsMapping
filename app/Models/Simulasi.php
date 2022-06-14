@@ -27,7 +27,7 @@ class Simulasi extends Model
     ];
     public function user()
     {
-        return $this->belongsTo(User::class, 'unit_kerja_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function pernyataan()
     {
