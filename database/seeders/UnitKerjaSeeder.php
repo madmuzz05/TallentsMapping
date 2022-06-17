@@ -17,13 +17,16 @@ class UnitKerjaSeeder extends Seeder
     {
         $unit_kerjas = [
             [
-                'nama_unit_kerja' => 'Dep. Pengembangan & Organisasi',
+                'job_family_id' => 7,
+                'departemen' => 'Dep. Pengembangan & Organisasi',
             ],
             [
-                'nama_unit_kerja' => 'Dep. Keuangan',
+                'job_family_id' => 5,
+                'departemen' => 'Dep. Keuangan',
             ],
             [
-                'nama_unit_kerja' => 'Dep Perencanaan & Penerimaan Barang/Jasa',
+                'job_family_id' => 8,
+                'departemen' => 'Dep Perencanaan & Penerimaan Barang/Jasa',
             ],
         ];
 

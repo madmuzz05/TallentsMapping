@@ -9,6 +9,8 @@
         @foreach ($data as $item)
         <tr>
             <td>{{$loop->iteration}}</td>
+            <td>{{$item->kode}}</td>
+            <td>{{$item->job_family}}</td>
             <td>{{$item->nama_unit_kerja}}</td>
         </tr>
         @endforeach

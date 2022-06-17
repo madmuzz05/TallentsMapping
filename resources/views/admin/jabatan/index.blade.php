@@ -103,7 +103,6 @@
     </div>
 </div>
 <!-- end modal -->
-
 <!-- Create modal -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">

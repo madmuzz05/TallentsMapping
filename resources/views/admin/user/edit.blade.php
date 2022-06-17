@@ -45,22 +45,10 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-3 col-form-label">Jabatan</label>
+                                    <label class="col-sm-3 col-form-label">Departemen</label>
                                     <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12 jabatan" name="jabatan"
-                                            id="jabatan">
-                                            <option value="{{$d->jabatan_id}}">{{$d->jabatan->kategori_jabatan}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label class="col-sm-3 col-form-label">Unit Kerja</label>
-                                    <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12 unit_kerja" name="unit_kerja"
+                                        <select class="unit_kerja_select2 col-sm-12 unit_kerja add_option" name="unit_kerja"
                                             id="unit_kerja">
-                                            <option value="{{$d->unit_kerja_id}}">{{$d->unit_kerja->nama_unit_kerja}}
-                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -99,6 +87,7 @@
                                 <div class="mb-3 row">
                                 <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                                     <input type="hidden" name="id_user" id="id_user" value="{{$d->id_user}}">
+                                    <input type="hidden" name="id_unit_kerja" id="id_unit_kerja" value="{{$d->unit_kerja_id}}">
                                     <label class="col-sm-3 col-form-label">Password (Optional)</label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="password" id="password" name="password"
@@ -132,7 +121,6 @@
             var d_nama = document.getElementById('nama').value;
             var d_no_pegawai = document.getElementById('no_pegawai').value;
             var d_hak_akses = document.getElementById('hak_akses').value;
-            var d_jabatan = document.getElementById('jabatan').value;
             var d_unit_kerja = document.getElementById('unit_kerja').value;
             var d_alamat = document.getElementById('alamat').value;
             var d_telepon = document.getElementById('telepon').value;
@@ -147,7 +135,6 @@
                     id_user: d_id_user,
                     nama: d_nama,
                     no_pegawai: d_no_pegawai,
-                    jabatan_id: d_jabatan,
                     unit_kerja_id: d_unit_kerja,
                     hak_akses: d_hak_akses,
                     alamat: d_alamat,
@@ -178,16 +165,13 @@
 
         $.ajax({
             type: "GET",
-            url: "{{route('jabatan.getJabatan')}}",
+            url: '/unit_kerja/detail/' + document.getElementById('id_unit_kerja').value,
             dataType: 'json',
             success: function (res) {
                 console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_jabatan + '">' + item
-                        .kategori_jabatan + '</option>'
+                $.each(res.data, function (key, data) {
+                    $('.add_option').append('<option selected value="' + data.id_unit_kerja + '">' + data.departemen +'</option>').trigger('change')
                 })
-                $(".jabatan").append(option)
             }
         })
 
@@ -200,7 +184,7 @@
                 var option = ''
                 $.each(res.data, function (key, item) {
                     option += ' <option value="' + item.id_unit_kerja + '">' + item
-                        .nama_unit_kerja + '</option>'
+                        .departemen + '</option>'
                 })
                 $(".unit_kerja").append(option)
             }

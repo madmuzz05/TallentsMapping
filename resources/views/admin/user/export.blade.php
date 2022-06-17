@@ -8,8 +8,7 @@
             <th><b>Telepon</b></th>
             <th><b>Email</b></th>
             <th><b>Hak Akses</b></th>
-            <th><b>Unit Kerja</b></th>
-            <th><b>Jabatan</b></th>
+            <th><b>Departemen</b></th>
         </tr>
     </thead>
     <tbody>
@@ -17,13 +16,12 @@
         <tr>
             <td>{{$loop->iteration}}</td>
             <td>{{$item->no_pegawai}}</td>
-            <td>{{$item->no_nama}}</td>
+            <td>{{$item->nama}}</td>
             <td>{{$item->alamat}}</td>
             <td>{{$item->telepon}}</td>
             <td>{{$item->email}}</td>
             <td>{{$item->hak_akses}}</td>
-            <td>{{$item->unit_kerja->nama_unit_kerja}}</td>
-            <td>{{$item->jabatan->kategori_jabatan}}</td>
+            <td>{{$item->unit_kerja->departemen}}</td>
         </tr>
         @endforeach
     </tbody>

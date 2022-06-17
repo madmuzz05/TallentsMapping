@@ -21,8 +21,15 @@ class UnitKerja extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama_unit_kerja',
+        'kode',
+        'job_family_id',
+        'departemen',
     ];
+
+    public function job_family()
+    {
+        return $this->belongsTo(JobFamily::class, 'job_family_id');
+    }
 
     public function user()
     {

@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('unit_kerja', function (Blueprint $table) {
-            $table->id('id_unit_kerja');
-            $table->bigInteger('job_family_id');
-            $table->string('departemen');
+        Schema::create('job_family', function (Blueprint $table) {
+            $table->id('id_job_family');
+            $table->string('kode', 10)->unique();
+            $table->string('job_family');
+            $table->string('nilai_core_faktor')->nullable();
+            $table->string('nilai_sec_faktor')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unit_kerja');
+        Schema::dropIfExists('job_family');
     }
 };

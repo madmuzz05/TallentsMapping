@@ -44,16 +44,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-3 col-form-label">Jabatan</label>
-                                    <div class="col-sm-9">
-                                        <select class="jabatan_select2 col-sm-12 jabatan" name="jabatan"
-                                            id="jabatan">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label class="col-sm-3 col-form-label">Unit Kerja</label>
+                                    <label class="col-sm-3 col-form-label">Departemen</label>
                                     <div class="col-sm-9">
                                         <select class="unit_kerja_select2 col-sm-12 unit_kerja" name="unit_kerja"
                                             id="unit_kerja">

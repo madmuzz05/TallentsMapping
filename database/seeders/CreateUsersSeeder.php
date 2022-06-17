@@ -24,7 +24,6 @@ class CreateUsersSeeder extends Seeder
                 'no_pegawai' => 'P8812',
                 'hak_akses' => 'User',
                 'unit_kerja_id' => '1',
-                'jabatan_id' => '1',
                 'password' => bcrypt('123456'),
             ],
             [
@@ -35,7 +34,6 @@ class CreateUsersSeeder extends Seeder
                 'no_pegawai' => 'P8832',
                 'hak_akses' => 'Admin',
                 'unit_kerja_id' => '2',
-                'jabatan_id' => '1',
                 'password' => bcrypt('123456'),
             ],
         ];

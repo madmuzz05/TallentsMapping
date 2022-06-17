@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ParameterPernilaian;
+use App\Models\JobFamily;
 use Illuminate\Http\Request;
 
-class ParameterPenilaianControler extends Controller
+class JobFamilyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,22 @@ class ParameterPenilaianControler extends Controller
     public function index()
     {
         //
+    }
+    
+    public function getJobFamily()
+    {
+        $data = JobFamily::all();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+    public function getJobFamilySelect2()
+    {
+        $data = JobFamily::all();
+        if (isset($request->q)) {
+            $data = JobFamily::where('job_family', 'like', "%".$request->q."%")->get();
+        }
+        return $data;
     }
 
     /**
@@ -41,21 +57,25 @@ class ParameterPenilaianControler extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ParameterPernilaian  $parameterPernilaian
+     * @param  \App\Models\JobFamily  $jobFamily
      * @return \Illuminate\Http\Response
      */
-    public function show(ParameterPernilaian $parameterPernilaian)
+    public function show($id)
     {
-        //
+        $data = JobFamily::where('id_job_family', $id)->get();
+        // dd($data);
+        return response()->json([
+            "data" => $data
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ParameterPernilaian  $parameterPernilaian
+     * @param  \App\Models\JobFamily  $jobFamily
      * @return \Illuminate\Http\Response
      */
-    public function edit(ParameterPernilaian $parameterPernilaian)
+    public function edit(JobFamily $jobFamily)
     {
         //
     }
@@ -64,10 +84,10 @@ class ParameterPenilaianControler extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ParameterPernilaian  $parameterPernilaian
+     * @param  \App\Models\JobFamily  $jobFamily
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ParameterPernilaian $parameterPernilaian)
+    public function update(Request $request, JobFamily $jobFamily)
     {
         //
     }
@@ -75,10 +95,10 @@ class ParameterPenilaianControler extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ParameterPernilaian  $parameterPernilaian
+     * @param  \App\Models\JobFamily  $jobFamily
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ParameterPernilaian $parameterPernilaian)
+    public function destroy(JobFamily $jobFamily)
     {
         //
     }

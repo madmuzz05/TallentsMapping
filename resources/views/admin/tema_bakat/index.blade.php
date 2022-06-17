@@ -126,8 +126,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Deskripsi</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control deskripsi" id="deskripsi_create" rows="3" name="deskripsi_create" value=""
-                            required></textarea>
+                        <textarea class="form-control deskripsi" id="deskripsi_create" rows="3" name="deskripsi_create"
+                            value="" required></textarea>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Deskripsi</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control deskripsi" id="deskripsi_edit" rows="3" name="deskipsi_edit" required></textarea>
+                        <textarea class="form-control deskripsi" id="deskripsi_edit" rows="3" name="deskipsi_edit"
+                            required></textarea>
                     </div>
                 </div>
             </div>
@@ -193,7 +194,8 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Deskripsi</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control deskripsi" id="deskripsi_detail" rows="3" name="deskipsi_detail" readonly></textarea>
+                        <textarea class="form-control deskripsi" id="deskripsi_detail" rows="3" name="deskipsi_detail"
+                            readonly></textarea>
                     </div>
                 </div>
             </div>
@@ -238,118 +240,88 @@
         ]
     })
 
+    var id_tema_bakat_edit = ""
     $(document).on("click", ".edit-btn", function () {
-        var id_modal_edit = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            url: '/tema_bakat/detail/' + id_modal_edit,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, item) {
-                    document.getElementById('id_tema_bakat_edit').value = item
-                        .id_tema_bakat;
-                    document.getElementsByClassName('nama_tema')[1].value = item
-                        .nama_tema;
-                    document.getElementsByClassName('deskripsi')[1].value = item
-                        .deskripsi;
-                })
-            }
-        })
+        var item = table.row($(this).closest('tr')).data();
+        id_tema_bakat_edit = item.id_tema_bakat;
+        document.getElementsByClassName('nama_tema')[1].value = item
+            .nama_tema;
+        document.getElementsByClassName('deskripsi')[1].value = item
+            .deskripsi;
+
     });
 
+    var id_tema_bakat_del = ""
     $(document).on("click", ".delete-btn", function () {
-        var id_modal_delete = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            url: '/tema_bakat/detail/' + id_modal_delete,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, item) {
-                    document.getElementById('bodi_hapus').innerHTML =
-                        'Apakah anda yakin akan Menghapus ' + item.nama_tema + ' ?';
-                    document.getElementsByClassName('id_tema_bakat_del')[0].value = item
-                        .id_tema_bakat;
-                })
-            }
-        })
+        var item = table.row($(this).closest('tr')).data();
+        document.getElementById('bodi_hapus').innerHTML =
+            'Apakah anda yakin akan Menghapus ' + item.nama_tema + ' ?';
+        id_tema_bakat_del = item
+            .id_tema_bakat;
     });
 
     $(document).on("click", "#create-data", function () {
-    $.ajax({
-        type: "POST",
-        url: "{{ route('tema_bakat.store') }}",
-        data: {
-            _token: $("#csrf").val(),
-            nama_tema: $("#nama_tema").val(),
-            deskripsi: $("#deskripsi_create").val()
-        },
-        cache: false,
-        success: function (res) {
-            if (res.status == 200) {
-                $("#createModal").modal('hide');
-                table.draw()
+        $.ajax({
+            type: "POST",
+            url: "{{ route('tema_bakat.store') }}",
+            data: {
+                _token: $("#csrf").val(),
+                nama_tema: $("#nama_tema").val(),
+                deskripsi: $("#deskripsi_create").val()
+            },
+            cache: false,
+            success: function (res) {
+                if (res.status == 200) {
+                    $("#createModal").modal('hide');
+                    table.draw()
+                }
             }
-        }
-    })
-});
+        })
+    });
 
-$(document).on("click", "#edit-data", function () {
-    var id_tema_bakat_edit = document.getElementById('id_tema_bakat_edit').value
-    $.ajax({
-        type: "PUT",
-        url: '/tema_bakat/update/' + id_tema_bakat_edit,
-        data: {
-            _token: $("#csrf").val(),
-            nama_tema: $("#nama_tema_edit").val(),
-            deskripsi: $("#deskripsi_edit").val()
-        },
-        cache: false,
-        success: function (res) {
-            console.log(res.status);
-            if (res.status == 200) {
-                $("#editModal").modal('hide');
-                table.draw()
+    $(document).on("click", "#edit-data", function () {
+        $.ajax({
+            type: "PUT",
+            url: '/tema_bakat/update/' + id_tema_bakat_edit,
+            data: {
+                _token: $("#csrf").val(),
+                nama_tema: $("#nama_tema_edit").val(),
+                deskripsi: $("#deskripsi_edit").val()
+            },
+            cache: false,
+            success: function (res) {
+                console.log(res.status);
+                if (res.status == 200) {
+                    $("#editModal").modal('hide');
+                    table.draw()
+                }
             }
-        }
-    })
-});
+        })
+    });
 
-$(document).on("click", ".detail-btn", function () {
-    var id_modal = $(this).data('id');
-    $.ajax({
-        type: "GET",
-        url: '/tema_bakat/detail/' + id_modal,
-        dataType: 'json',
-        success: function (res) {
-            console.log(res.data);
-            $.each(res.data, function (key, item) {
-                document.getElementById('nama_tema_detail').value = item.nama_tema;
-                document.getElementById('deskripsi_detail').value = item
-                    .deskripsi;
-            })
-        }
-    })
-});
+    $(document).on("click", ".detail-btn", function () {
+        var item = table.row($(this).closest('tr')).data();
+        document.getElementById('nama_tema_detail').value = item.nama_tema;
+        document.getElementById('deskripsi_detail').value = item
+            .deskripsi;
+    });
 
-$(document).on("click", "#konfirmasi-del", function () {
-    var id_tema_bakat_del = document.getElementById('id_tema_bakat_del').value
-    $.ajax({
-        type: "DELETE",
-        url: '/tema_bakat/destroy/' + id_tema_bakat_del,
-        data: {
-            _token: $("#csrf").val()
-        },
-        cache: false,
-        success: function (res) {
-            if (res.status == 200) {
-                $("#deleteModal").modal('hide');
-                table.draw()
+    $(document).on("click", "#konfirmasi-del", function () {
+        $.ajax({
+            type: "DELETE",
+            url: '/tema_bakat/destroy/' + id_tema_bakat_del,
+            data: {
+                _token: $("#csrf").val()
+            },
+            cache: false,
+            success: function (res) {
+                if (res.status == 200) {
+                    $("#deleteModal").modal('hide');
+                    table.draw()
+                }
             }
-        }
-    })
-});
+        })
+    });
 
 </script>
 @endpush

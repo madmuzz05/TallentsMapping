@@ -8,6 +8,7 @@ use App\Models\UnitKerja;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,15 +22,29 @@ class UnitKerjaController extends Controller
      */
     public function index()
     {
-       
         return view('admin.unit_kerja.index');
     }
     function getUnitKerja(Request $request)
     {
-        $data = UnitKerja::all();
+        $data = UnitKerja::select(
+            'unit_kerja.*',
+            DB::raw('kode as kode'), 
+            DB::raw('job_family as job_family') )
+            ->leftjoin('job_family', 'job_family.id_job_family', '=', 'unit_kerja.job_family_id');
+        // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
+                ->filter(function ($query) use ($request)
+                {
+                    if (!empty($request->get('job_family'))) {
+                        $query->where('unit_kerja.job_family_id', 'like', "%{$request->get('job_family')}%");
+                    }
+                    if (!empty($request->get('departemen'))) {
+                        $query->where('unit_kerja.id_unit_kerja', 'like', "%{$request->get('departemen')}%");
+                    }
+                }
+                )
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_unit_kerja . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_unit_kerja . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
@@ -45,7 +60,7 @@ class UnitKerjaController extends Controller
     {
         $data = UnitKerja::all();
         if (isset($request->q)) {
-            $data = UnitKerja::where('nama_unit_kerja', 'like', "%".$request->q."%")->get();
+            $data = UnitKerja::where('departemen', 'like', "%".$request->q."%")->get();
         }
         return $data;
     }
@@ -69,7 +84,10 @@ class UnitKerjaController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            UnitKerja::create(['nama_unit_kerja' => request('nama_unit_kerja')]);
+            UnitKerja::create([
+                'job_family_id' => request('job_family_id'),
+                'departemen' => request('departemen')
+            ]);
             return response()->json([
                 'status' => 200
             ]);
@@ -84,7 +102,11 @@ class UnitKerjaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = UnitKerja::where('id_unit_kerja', $id)->get();
+        $data = UnitKerja::select(
+            '*',
+            DB::raw('kode as kode'), 
+            DB::raw('job_family as job_family') )
+            ->leftjoin('job_family', 'job_family.id_job_family', '=', 'unit_kerja.job_family_id')->where('id_unit_kerja', $id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
         }
@@ -111,7 +133,9 @@ class UnitKerjaController extends Controller
     public function update(Request $request, $id)
     {
         UnitKerja::where('id_unit_kerja', $id)
-            ->update(['nama_unit_kerja' => request('nama_unit_kerja')]);
+            ->update([ 
+                'job_family_id' => request('job_family_id'),
+                'departemen' => request('departemen')]);
         if ($request->ajax()) {
             return response()->json(['status' => 200]);
         }

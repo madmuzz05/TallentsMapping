@@ -16,6 +16,8 @@ class UnitKerjaImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new UnitKerja([
+            'kode' => $row['kode'],
+            'job_family' => $row['job_family'],
             'nama_unit_kerja' => $row['unit_kerja'],
         ]);
     }

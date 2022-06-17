@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class ParameterPenilaian extends Model
+class Parameter_Penilaian extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,12 +21,8 @@ class ParameterPenilaian extends Model
     {
         return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
     }
-    public function jabatan()
+    public function job_family()
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
-    }
-    public function tema_bakat()
-    {
-        return $this->belongsTo(TemaBakat::class, 'tema_bakat_id');
+        return $this->belongsTo(JobFamily::class, 'job_family_id');
     }
 }

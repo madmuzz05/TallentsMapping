@@ -10,6 +10,8 @@ use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\TemaBakatController;
 use App\Http\Controllers\PernyataanController;
 use App\Http\Controllers\SimulasiController;
+use App\Http\Controllers\JobFamilyController;
+use App\Http\Controllers\ParameterPenilaianController;
 use Illuminate\Support\Facades\Redirect;
 
 /*
@@ -35,6 +37,7 @@ Route::get('logout', function () {
 })->name('logout');
 
 Route::get('/getUserLogin', [UserController::class, 'getUserLogin'])->name('user.getUserLogin');
+
 Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');
     Route::prefix('simulasi')->group(function () {
@@ -43,8 +46,15 @@ Route::middleware(['auth', 'user-access:User'])->group(function () {
 });
 
 Route::middleware(['auth', 'user-access:Admin'])->group(function () {
-    Route::prefix('assesmen')->group(function () {
-        Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
+    Route::prefix('parameter')->group(function () {
+        Route::get('/index', [ParameterPenilaianController::class, 'index'])->name('parameter.index');
+        Route::get('/getParameter', [ParameterPenilaianController::class, 'getParameter'])->name('parameter.getParameter');
+        Route::get('/export', [ParameterPenilaianController::class, 'export'])->name('parameter.export');
+    });
+    Route::prefix('job_family')->group(function () {
+        Route::get('/getJobFamily', [JobFamilyController::class, 'getJobFamily'])->name('job_family.getJobFamily');
+        Route::post('/getJobFamilySelect2', [JobFamilyController::class, 'getJobFamilySelect2'])->name('job_family.getJobFamilySelect2');
+        Route::GET('/detail/{id}', [JobFamilyController::class, 'show'])->name('job_family.detail');
     });
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');

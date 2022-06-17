@@ -77,18 +77,6 @@
                     <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center"
                             id="sidebar-toggle"> </i></div>
                 </div>
-                {{-- <div class="left-menu-header col">
-      <ul>
-        <li>
-          <form class="form-inline search-form">
-            <div class="search-bg"><i class="fa fa-search"></i>
-              <input class="form-control-plaintext" placeholder="Search here.....">
-            </div>
-          </form>
-          <span class="d-sm-none mobile-search search-bg"><i class="fa fa-search"></i></span>
-        </li>
-      </ul>
-    </div> --}}
                 <div class="nav-right col pull-right right-menu p-0">
                     <ul class="nav-menus">
                         <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i
@@ -147,11 +135,11 @@
                                         <li><a href="{{route('unit_kerja.index')}}"
                                                 class="{{ request()->routeIs('unit_kerja.index') ? 'active' : ''}}">Unit
                                                 Kerja</a></li>
-                                        <li><a href="{{route('jabatan.index')}}"
+                                        <!-- <li><a href="{{route('jabatan.index')}}"
                                                 class="{{ request()->routeIs('jabatan.index') ? 'active' : ''}}">Jabatan</a>
-                                        </li>
+                                        </li> -->
                                         <li><a href="{{route('pernyataan.index')}}"
-                                                class="{{ request()->routeIs('jpernyataan.index') ? 'active' : ''}}">Pernyataan</a>
+                                                class="{{ request()->routeIs('pernyataan.index') ? 'active' : ''}}">Pernyataan</a>
                                         </li>
                                         <li><a href="{{route('tema_bakat.index')}}"
                                                 class="{{ request()->routeIs('tema_bakat.index') ? 'active' : ''}}">Tema
@@ -159,40 +147,11 @@
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a class="nav-link menu-title " href="javascript:void(0)"><i
-                                            data-feather="folder-plus"></i><span>Simulasi</span></a>
+                                    <a class="nav-link menu-title {{  request()->is('parameter*') ? 'active' : '' }} " href="javascript:void(0)"><i
+                                            data-feather="book-open"></i><span>Assesmen</span></a>
                                     <ul class="nav-submenu menu-content" style="display: none;">
-                                        <li><a href="../bonus-ui/scrollable.html" class="">Scrollable</a></li>
-                                        <li><a href="../bonus-ui/tree.html" class="">Tree view</a></li>
-                                        <li><a href="../bonus-ui/bootstrap-notify.html" class="">Bootstrap Notify</a>
-                                        </li>
-                                        <li><a href="../bonus-ui/rating.html" class="">Rating</a></li>
-                                        <li><a href="../bonus-ui/dropzone.html" class="">dropzone</a></li>
-                                        <li><a href="../bonus-ui/tour.html" class="">Tour</a></li>
-                                        <li><a href="../bonus-ui/sweet-alert2.html" class="">SweetAlert2</a></li>
-                                        <li><a href="../bonus-ui/modal-animated.html" class="">Animated Modal</a></li>
-                                        <li><a href="../bonus-ui/owl-carousel.html" class="">Owl Carousel</a></li>
-                                        <li><a href="../bonus-ui/ribbons.html" class="">Ribbons</a></li>
-                                        <li><a href="../bonus-ui/pagination.html" class="">Pagination</a></li>
-                                        <li><a href="../bonus-ui/steps.html" class="">Steps</a></li>
-                                        <li><a href="../bonus-ui/breadcrumb.html" class="">Breadcrumb</a></li>
-                                        <li><a href="../bonus-ui/range-slider.html" class="">Range Slider</a></li>
-                                        <li><a href="../bonus-ui/image-cropper.html" class="">Image cropper</a></li>
-                                        <li><a href="../bonus-ui/sticky.html" class="">Sticky </a></li>
-                                        <li><a href="../bonus-ui/basic-card.html" class="">Basic Card</a></li>
-                                        <li><a href="../bonus-ui/creative-card.html" class="">Creative Card</a></li>
-                                        <li><a href="../bonus-ui/tabbed-card.html" class="">Tabbed Card</a></li>
-                                        <li><a href="../bonus-ui/dragable-card.html" class="">Draggable Card</a></li>
-                                        <li>
-                                            <a class="submenu-title " href="javascript:void(0)">
-                                                Timeline<span class="sub-arrow"><i
-                                                        class="fa fa-chevron-right"></i></span>
-                                            </a>
-                                            <ul class="nav-sub-childmenu submenu-content" style="display: none;">
-                                                <li><a href="../bonus-ui/timeline-v-1.html" class="">Timeline 1</a></li>
-                                                <li><a href="../bonus-ui/timeline-v-2.html" class="">Timeline 2</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a href="{{route('parameter.index')}}"
+                                                class="{{ request()->routeIs('parameter.index') ? 'active' : ''}}">Parameter Penilaian</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -251,7 +210,7 @@
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script>
-    <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>  
+    <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>
     <script type="text/javascript" src="{{asset('js\admin\chart.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
         integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
@@ -325,7 +284,30 @@
                         return {
                             results: data.map(function (item) {
                                 item.id = item.id_unit_kerja;
-                                item.text = item.nama_unit_kerja;
+                                item.text = item.departemen;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.job_family_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('job_family.getJobFamilySelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_job_family;
+                                item.text = item.job_family;
                                 return item;
                             })
                         };
@@ -341,10 +323,11 @@
                 url: "{{route('user.getUserLogin')}}",
                 dataType: 'json',
                 success: function (res) {
-                  $.each(res.data, function (key, item) {
-                      $('.nama_user').text(item.nama)
-                      $('.unit_jabatan').text(item.jabatan.kategori_jabatan+" "+item.unit_kerja.nama_unit_kerja)
-                        
+                    $.each(res.data, function (key, item) {
+                        $('.nama_user').text(item.nama)
+                        $('.unit_jabatan').text(item
+                            .unit_kerja.departemen)
+
                     })
                 }
             })

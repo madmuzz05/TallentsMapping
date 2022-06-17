@@ -30,7 +30,7 @@ class UserController extends Controller
     function getUserLogin()
     {
         $id = Auth::user()->id_user;
-        $data = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        $data = User::with('unit_kerja')->where('id_user', $id)->get();
         return response()->json([
             'data' => $data
         ]);
@@ -40,11 +40,9 @@ class UserController extends Controller
     {
         $data = User::select([
             'users.*',
-            DB::raw('nama_unit_kerja as nama_unit'),
-            DB::raw('kategori_jabatan as jabatan'),
+            DB::raw('departemen as nama_unit'),
         ])
-            ->leftjoin('unit_kerja', 'unit_kerja.id_unit_kerja', '=', 'users.unit_kerja_id')
-            ->leftjoin('jabatan', 'jabatan.id_jabatan', '=', 'users.jabatan_id');
+            ->leftjoin('unit_kerja', 'unit_kerja.id_unit_kerja', '=', 'users.unit_kerja_id');
         // $data = User::with('jabatan', 'unit_kerja')->select('users.*', 'users.id_user as id_user');
         if ($request->ajax()) {
             return  DataTables::of($data)
@@ -68,7 +66,7 @@ class UserController extends Controller
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['action', 'Jabatan', 'unit_kerja'])
+                ->rawColumns(['action','unit_kerja'])
                 ->make(true);
         }
         return response()->json([
@@ -84,7 +82,7 @@ class UserController extends Controller
     public function create()
     {
         $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        $getUser = User::with('unit_kerja')->where('id_user', $id)->get();
         return view('admin.user.add', compact('getUser'));
     }
 
@@ -124,7 +122,7 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = User::with('jabatan', 'unit_kerja')
+        $data = User::with('unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
@@ -141,8 +139,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $id_admin = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id_admin)->get();
-        $data = User::with('jabatan', 'unit_kerja')
+        $getUser = User::with('unit_kerja')->where('id_user', $id_admin)->get();
+        $data = User::with('unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
         return view('admin.user.edit', compact('getUser', 'data'));
     }
@@ -162,7 +160,6 @@ class UserController extends Controller
                 ->update([
                     'nama' => request('nama'),
                     'no_pegawai' => request('no_pegawai'),
-                    'jabatan_id' => request('jabatan_id'),
                     'unit_kerja_id' => request('unit_kerja_id'),
                     'hak_akses' => request('hak_akses'),
                     'alamat' => request('alamat'),
@@ -193,7 +190,6 @@ class UserController extends Controller
                 ->update([
                     'nama' => request('nama'),
                     'no_pegawai' => request('no_pegawai'),
-                    'jabatan_id' => request('jabatan_id'),
                     'unit_kerja_id' => request('unit_kerja_id'),
                     'hak_akses' => request('hak_akses'),
                     'alamat' => request('alamat'),

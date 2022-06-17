@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('hak_akses', 25);
             $table->bigInteger('unit_kerja_id');
-            $table->bigInteger('jabatan_id');
             $table->rememberToken();
             $table->timestamps();
         });

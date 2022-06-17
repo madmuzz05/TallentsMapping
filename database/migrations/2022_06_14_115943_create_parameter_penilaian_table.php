@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('parameter_penilaian', function (Blueprint $table) {
             $table->id('id_parameter_penilaian');
-            $table->integer('unit_kerja_id');
-            $table->integer('jabatan_id');
-            $table->integer('tema_bakat_id');
+            $table->bigInteger('job_family_id')->unique();
+            $table->bigInteger('tema_bakat_id')->unique();
             $table->string('kategori_factor', 75);
             $table->string('nilai', 75);
             $table->timestamps();
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameter_jabatan');
+        Schema::dropIfExists('parameter_penilaian');
     }
 };

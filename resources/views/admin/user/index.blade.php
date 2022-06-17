@@ -45,9 +45,9 @@
                                         placeholder="Search Email" autocomplete="off" />
                                 </div>
                                 <div class="mb-2 row d-flex">
-                                    <label class="col-form-label col-lg-12">Unit Kerja</label>
-                                    <select class="unit_kerja_select2 clear_select2 col-sm-12 unit_kerja" name="unit_kerja"
-                                        id="unit_kerja">
+                                    <label class="col-form-label col-lg-12">Departemen</label>
+                                    <select class="unit_kerja_select2 clear_select2 col-sm-12 unit_kerja"
+                                        name="unit_kerja" id="unit_kerja">
                                         <option value="">
                                         </option>
                                     </select>
@@ -69,8 +69,7 @@
                                     <th>No Pegawai</th>
                                     <th>Nama</th>
                                     <th>Email</th>
-                                    <th>Unit Kerja</th>
-                                    <th>Jabatan</th>
+                                    <th>Departemen</th>
                                     <th>User Akses</th>
                                     <th>Action</th>
                                 </tr>
@@ -82,8 +81,7 @@
                                     <th>No Pegawai</th>
                                     <th>Nama</th>
                                     <th>Email</th>
-                                    <th>Unit Kerja</th>
-                                    <th>Jabatan</th>
+                                    <th>Departemen</th>
                                     <th>User Akses</th>
                                     <th>Action</th>
                                 </tr>
@@ -125,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label class="col-sm-3" for="inputPassword3">Unit Kerja</label>
+                                <label class="col-sm-3" for="inputPassword3">Departemen</label>
                                 <div class="col-sm-9">
                                     <p id="unitKerja"></p>
                                 </div>
@@ -247,10 +245,6 @@
                 name: 'nama_unit'
             },
             {
-                data: 'jabatan',
-                name: 'jabatan'
-            },
-            {
                 data: 'hak_akses',
                 name: 'users.hak_akses'
             },
@@ -289,7 +283,7 @@
                     document.getElementById('jabatan').innerHTML = item.jabatan
                         .kategori_jabatan
                     document.getElementById('unitKerja').innerHTML = ":  " + item.unit_kerja
-                        .nama_unit_kerja
+                        .departemen
                     document.getElementById('no_pegawai').innerHTML = ":  " + item
                         .no_pegawai
                     document.getElementById('telepon').innerHTML = ":  " + item.telepon
@@ -299,20 +293,11 @@
     });
 
     $(document).on("click", ".delete-btn", function () {
-        var id_modal_delete = $(this).data('id');
-        $.ajax({
-            type: "GET",
-            url: '/user/detail/' + id_modal_delete,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, item) {
-                    document.getElementById('bodi_hapus').innerHTML =
-                        'Apakah anda yakin akan Menghapus ' + item.nama + ' ?';
-                    document.getElementsByClassName('id_user_del')[0].value = item.id_user;
-                })
-            }
-        })
+        var item = table.row($(this).closest('tr')).data();
+
+        document.getElementById('bodi_hapus').innerHTML =
+            'Apakah anda yakin akan Menghapus ' + item.nama + ' ?';
+        document.getElementsByClassName('id_user_del')[0].value = item.id_user;
     });
 
 

@@ -1,15 +1,15 @@
 @extends('layouts.admin.app')
-@section('title', "Data Pernyataan")
+@section('title', "Paramater Penilaian")
 @section('content')
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="page-header">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Pernyataan</h3>
+                <h3>Parameter Penilaian Assesmen</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Master Data</li>
-                    <li class="breadcrumb-item active">Pernyataan</li>
+                    <li class="breadcrumb-item active">Parameter Penilaian Assesmen</li>
                 </ol>
             </div>
         </div>
@@ -23,43 +23,21 @@
                     <div class="m-b-0 col-sm-12 text-end">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#importModal"
                             class="btn btn-warning mb-2">Import Data</button>
-                        <a href="{{ route('pernyataan.export') }}" class="btn btn-info mb-2">Export Data</a>
+                        <a href="{{ route('parameter.export') }}" class="btn btn-info mb-2">Export Data</a>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
                             class="btn btn-success mb-2">Create Data</button>
 
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="mb-2 row">
-                        <div class="m-b-0 col-sm-12">
-                            <form id="search_form" class="row row-cols-3 theme-form mt-3 form-bottom">
-                                <!-- <a href="#myModal" data-bs-toggle="modal" class="btn btn-primary">Large modal</a> -->
-                                <div class="mb-2 m-r-5 row d-flex">
-                                    <label class="col-form-label col-lg-12">Pernyataan</label>
-                                    <input class="form-control" type="text" name="pernyataan"
-                                        placeholder="Search Pernyataan" autocomplete="off" />
-                                </div>
-                                <div class="mb-2 row d-flex">
-                                    <label class="col-form-label col-lg-12">Tema bakat</label>
-                                    <select class="col-sm-12 tema_bakat_select2" name="nama_tema">
-                                    </select>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="mb-2 row">
-                        <div class="m-b-0 col-sm-12 text-end">
-                            <button type="submit" class="btn btn-primary me-2">Search</button>
-                            </form>
-                            <button id="reset_form" class="btn btn-secondary">Reset</button>
-                        </div>
-                    </div>
                     <div class="table-responsive mt-3 mb-5 mr-3 ml-3">
-                        <table class="table table-bordered text-center " id="pernyataan_table">
+                        <table class="table table-bordered text-center " id="parameter_table">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Pernyataan</th>
-                                    <th>Tema Bakat</th>
+                                    <th>Job Family</th>
+                                    <th>Nilai Core Faktor</th>
+                                    <th>Nilai secondary Faktor</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -67,8 +45,9 @@
                             <tfoot>
                                 <tr>
                                     <th>No</th>
-                                    <th>Pernyataan</th>
-                                    <th>Tema Bakat</th>
+                                    <th>Job Family</th>
+                                    <th>Nilai Core Faktor</th>
+                                    <th>Nilai secondary Faktor</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -90,39 +69,12 @@
             </div>
             <div class="modal-body">
                 <p id="bodi_hapus"></p>
-                <input type="hidden" class="id_pernyataan_del" id="id_pernyataan_del" name="id_pernyataan_del" value="">
+                <input type="hidden" class="id_parameter_del" id="id_parameter_del" name="id_parameter_del" value="">
                 <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="konfirmasi-del" type="button">Ya</button>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tidak</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal -->
-<!-- Import modal -->
-<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Import Data Pernyataan</h5>
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('pernyataan.import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3 row">
-                        <label class="col-sm-2 col-form-label">Upload File</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="file" name="file" />
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="submit">Upload</button>
-                </form>
-                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -236,16 +188,16 @@
 @push('js')
 <script>
     $(document).ready(function () {
-        var table = $('#pernyataan_table').DataTable({
+        var table = $('#parameter_table').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('pernyataan.getPernyataan') }}",
-                data: function (d) {
-                    d.pernyataan = $('input[name=pernyataan]').val();
-                    d.nama_tema = $('.tema_bakat_select2').val();
-                    return d;
-                }
+                url: "{{ route('parameter.getParameter') }}"
+                // data: function (d) {
+                //     d.pernyataan = $('input[name=pernyataan]').val();
+                //     d.nama_tema = $('.tema_bakat_select2').val();
+                //     return d;
+                // }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -255,12 +207,16 @@
                     searchable: false
                 },
                 {
-                    data: 'pernyataan',
-                    name: 'pernyataan.pernyataan'
+                    data: 'job_family',
+                    name: 'job_family'
                 },
                 {
-                    data: 'tema_bakat',
-                    name: 'tema_bakat'
+                    data: 'core_faktor',
+                    name: 'core_faktor'
+                },
+                {
+                    data: 'sec_faktor',
+                    name: 'sec_faktor'
                 },
                 {
                     data: 'action',
@@ -270,17 +226,6 @@
                 }
             ]
         })
-        $('#search_form').on('submit', function (e) {
-            table.draw()
-            e.preventDefault();
-        });
-        $('#reset_form').on('click', function (e) {
-            document.getElementById("search_form").reset();
-            $('.tema_bakat_select2').val(null).trigger('change')
-            table.draw()
-            e.preventDefault();
-
-        });
         var id_modal_edit = "";
         $(document).on("click", ".edit-btn", function () {
             var data = table.row($(this).closest('tr')).data();
@@ -291,12 +236,12 @@
                 '</option>').trigger('change')
         });
 
-        var id_pernyataan_del = ""
+        var id_parameter_del = ""
         $(document).on("click", ".delete-btn", function () {
             var item = table.row($(this).closest('tr')).data();
             document.getElementById('bodi_hapus').innerHTML =
                 'Apakah anda yakin akan menghapus data ?';
-            id_pernyataan_del = item.id_pernyataan;
+            id_parameter_del = item.id_parameter_penilaian;
         });
 
         $(document).on("click", "#create-data", function () {
