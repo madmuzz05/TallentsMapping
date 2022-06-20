@@ -25,11 +25,8 @@ class ParameterPenilaianController extends Controller
 
     function getParameter(Request $request)
     {
-        $data = JobFamily::select(
-            'job_family.*'
-        )
-            ->rightjoin('parameter_penilaian', 'parameter_penilaian.job_family_id', '=', 'job_family.id_job_family')
-            ->groupBy('parameter_penilaian.job_family_id');
+        $sql = 'SELECT  job_family.id_job_family AS id_job_family, job_family.job_family AS job_family, job_family.nilai_core_faktor AS nilai_core_faktor, job_family.nilai_sec_faktor AS nilai_sec_faktor FROM job_family right JOIN parameter_penilaian ON  parameter_penilaian.job_family_id = job_family.id_job_family GROUP BY parameter_penilaian.job_family_id';
+        $data = DB::Select($sql);
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
