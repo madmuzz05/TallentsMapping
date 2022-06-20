@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('id_parameter_penilaian');
             $table->bigInteger('job_family_id')->unique();
             $table->bigInteger('tema_bakat_id')->unique();
-            $table->string('kategori_factor', 75);
+            $table->string('kategori_faktor', 75);
             $table->string('nilai', 75);
             $table->timestamps();
         });

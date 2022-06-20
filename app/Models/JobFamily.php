@@ -16,8 +16,8 @@ class JobFamily extends Model
 
     protected $guarded = ['id_job_family'];
 
-    public function unit_kerja(){
+    public function unit_kerja()
+    {
         return $this->hasMany(UnitKerja::class, 'job_family_id');
     }
-
 }

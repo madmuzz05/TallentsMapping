@@ -16,7 +16,7 @@ class JobFamilyController extends Controller
     {
         //
     }
-    
+
     public function getJobFamily()
     {
         $data = JobFamily::all();
@@ -24,11 +24,11 @@ class JobFamilyController extends Controller
             'data' => $data
         ]);
     }
-    public function getJobFamilySelect2()
+    public function getJobFamilySelect2(Request $request)
     {
         $data = JobFamily::all();
         if (isset($request->q)) {
-            $data = JobFamily::where('job_family', 'like', "%".$request->q."%")->get();
+            $data = JobFamily::where('job_family', 'like', "%" . $request->q . "%")->get();
         }
         return $data;
     }

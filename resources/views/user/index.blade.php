@@ -19,7 +19,7 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xl-6 xl-100 box-col-12">
+        <div class="col-xl-12 xl-100 box-col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">

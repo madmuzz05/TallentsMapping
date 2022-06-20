@@ -32,7 +32,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
-    
+
     return Redirect::to('/login');
 })->name('logout');
 
@@ -50,6 +50,11 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
         Route::get('/index', [ParameterPenilaianController::class, 'index'])->name('parameter.index');
         Route::get('/getParameter', [ParameterPenilaianController::class, 'getParameter'])->name('parameter.getParameter');
         Route::get('/export', [ParameterPenilaianController::class, 'export'])->name('parameter.export');
+        Route::post('/store', [ParameterPenilaianController::class, 'store'])->name('parameter.store');
+        Route::get('/show/{id}', [ParameterPenilaianController::class, 'show'])->name('parameter.show');
+        Route::get('/edit/{id}', [ParameterPenilaianController::class, 'edit'])->name('parameter.edit');
+        Route::get('/update/{id}', [ParameterPenilaianController::class, 'update'])->name('parameter.update');
+        Route::delete('/destroy', [ParameterPenilaianController::class, 'destroy'])->name('parameter.destroy');
     });
     Route::prefix('job_family')->group(function () {
         Route::get('/getJobFamily', [JobFamilyController::class, 'getJobFamily'])->name('job_family.getJobFamily');

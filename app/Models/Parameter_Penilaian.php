@@ -14,12 +14,12 @@ class Parameter_Penilaian extends Model
     protected $table = 'parameter_penilaian';
 
     protected $primaryKey = 'id_parameter_penilaian';
-    
+
     protected $guarded = ['id_parameter_penilaian'];
 
-    public function unit_kerja()
+    public function tema_bakat()
     {
-        return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
+        return $this->belongsTo(TemaBakat::class, 'tema_bakat_id');
     }
     public function job_family()
     {

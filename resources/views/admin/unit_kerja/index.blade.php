@@ -282,6 +282,8 @@
             cache: false,
             success: function (res) {
                 if (res.status == 200) {
+                    $("#job_family").val(null).trigger('change')
+                    $("#departemen").val('')
                     $("#createModal").modal('hide');
                     table.draw()
                 }
@@ -300,6 +302,8 @@
             cache: false,
             success: function (res) {
                 if (res.status == 200) {
+                    $("#job_family").val(null).trigger('change')
+                    $("#departemen").val('')
                     $("#editModal").modal('hide');
                     table.draw()
                 }

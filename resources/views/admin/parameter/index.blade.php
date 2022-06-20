@@ -8,7 +8,7 @@
             <div class="col-lg-6">
                 <h3>Parameter Penilaian Assesmen</h3>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Master Data</li>
+                    <li class="breadcrumb-item">Assesmen</li>
                     <li class="breadcrumb-item active">Parameter Penilaian Assesmen</li>
                 </ol>
             </div>
@@ -85,30 +85,80 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Data Pernyataan</h5>
+                <h5 class="modal-title">Create Parameter Penilaian Assesmen</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Pernyataan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control pernyataan" id="pernyataan_create" rows="3"
-                            name="pernyataan_create" value="" required></textarea>
+                <form method="post" id="create_form">
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Job Family</label>
+                        <div class="col-sm-9">
+                            <select class="job_family_select2 col-sm-12 job_family" name="job_family_create"
+                                id="job_family_create" required>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Tema Bakat</label>
-                    <div class="col-sm-9">
-                        <select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create"
-                            id="tema_bakat_create">
-                            <option value=""></option>
-                        </select>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Presentase Core Faktor</label>
+                        <div class="col-sm-9">
+                            <div class="input-group"><input class="form-control digits core_faktor" type="number"
+                                    name="core_faktor_create" id="core_faktor_create"
+                                    placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
+                                    min="0" max="100" required /><span class="input-group-text"><i
+                                        data-feather="percent"></i></span></div>
+                        </div>
                     </div>
-                </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Presentase Secondary Faktor</label>
+                        <div class="col-sm-9">
+                            <div class="input-group"><input class="form-control digits sec_faktor" type="number"
+                                    name="sec_faktor_create" id="sec_faktor_create"
+                                    placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
+                                    min="0" max="100" required /><span class="input-group-text"><i
+                                        data-feather="percent"></i></span></div>
+                        </div>
+                    </div>
+                    <div class="row mr-5 ml-5">
+                        <div class="col-lg-12 table-responsive-lg text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Tema Bakat</td>
+                                        <td>Faktor Penilaian</td>
+                                        <td>Nilai GAP</td>
+                                        <td><button type="button" class="btn btn-sm btn-info" id="add">Add
+                                                Field</button></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="body">
+                                    <tr>
+                                        <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
+                                                name="tema_bakat_create[]" id="tema_bakat_create"
+                                                required></select></td>
+                                        <td><select
+                                                class="js-example-basic-single col-sm-12 kategori_faktor"
+                                                name="kategori_faktor_create[]" id="kategori_faktor_create"
+                                                required>
+                                                <option value=""></option>
+                                                <option value="Core Faktor">Core Faktor</option>
+                                                <option value="Secondary Faktor">Secondary Faktor</option>
+                                            </select></td>
+                                        <td><input class="form-control digits nilai" type="number"
+                                                name="nilai_create[]" id="nilai_create"
+                                                placeholder="Input nilai dalam bentuk angka" min="1" max="5"
+                                                required /></td>
+                                        <td><button type="button"
+                                                class="btn btn-sm btn-danger remove">Delete Field</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="create-data" type="button">Simpan</button>
+                <button class="btn btn-primary" id="create-data" type="submit">Simpan</button>
+                </form>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -121,31 +171,60 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Data Pernyataan</h5>
+                <h5 class="modal-title">Edit Parameter Penilaian Assesmen</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input type="hidden" class="id_pernyataan_edit" id="id_pernyataan_edit" name="id_pernyataan_edit"
-                    value="">
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Pernyataan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control pernyataan_edit" id="pernyataan_edit" rows="3"
-                            name="pernyataan_edit" required></textarea>
+                <form method="post" id="create_form">
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Job Family</label>
+                        <div class="col-sm-9">
+                            <select class="job_family_select2 col-sm-12 job_family add_option" name="job_family_edit"
+                                id="job_family_edit" required>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Tema Bakat</label>
-                    <div class="col-sm-9">
-                        <select class="col-sm-12 tema_bakat_select2 add_option" name="tema_bakat_edit"
-                            id="tema_bakat_edit">
-                        </select>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Presentase Core Faktor</label>
+                        <div class="col-sm-9">
+                            <div class="input-group"><input class="form-control digits core_faktor" type="number"
+                                    name="core_faktor_edit" id="core_faktor_edit"
+                                    placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
+                                    min="0" max="100" required /><span class="input-group-text"><i
+                                        data-feather="percent"></i></span></div>
+                        </div>
                     </div>
-                </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Presentase Secondary Faktor</label>
+                        <div class="col-sm-9">
+                            <div class="input-group"><input class="form-control digits sec_faktor" type="number"
+                                    name="sec_faktor_edit" id="sec_faktor_edit"
+                                    placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
+                                    min="0" max="100" required /><span class="input-group-text"><i
+                                        data-feather="percent"></i></span></div>
+                        </div>
+                    </div>
+                    <div class="row mr-5 ml-5">
+                        <div class="col-lg-12 table-responsive-lg text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Tema Bakat</td>
+                                        <td>Faktor Penilaian</td>
+                                        <td>Nilai GAP</td>
+                                        <td><button type="button" class="btn btn-sm btn-info" id="add">Add
+                                                Field</button></td>
+                                    </tr>
+                                </thead>
+                                <tbody class="body_edit">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="edit-data" type="button">Simpan</button>
+                <button class="btn btn-primary" id="create-data" type="submit">Simpan</button>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -211,12 +290,12 @@
                     name: 'job_family'
                 },
                 {
-                    data: 'core_faktor',
-                    name: 'core_faktor'
+                    data: 'nilai_core_faktor',
+                    name: 'nilai_core_faktor'
                 },
                 {
-                    data: 'sec_faktor',
-                    name: 'sec_faktor'
+                    data: 'nilai_sec_faktor',
+                    name: 'nilai_sec_faktor'
                 },
                 {
                     data: 'action',
@@ -226,14 +305,146 @@
                 }
             ]
         })
+
+
+        var html = '';
+
+        function create_field() {
+            html = '<tr>'
+            html +=
+                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
+            html +=
+                '<td><select class="js-example-basic-single col-sm-12 kategori_faktor" name="kategori_faktor_create[]" id="kategori_faktor_create" required>'
+            html += '<option value=""></option>'
+            html += '<option value="Core Faktor">Core Faktor</option>'
+            html += '<option value="Secondary Faktor">Secondary Faktor</option>'
+            html += '</select></td>'
+            html +=
+                '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
+            html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
+            html += '</tr>'
+            $('#body').append(html);
+
+            $('.tema_bakat_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_tema_bakat;
+                                item.text = item.nama_tema;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.js-example-basic-single').select2({
+                placeholder: 'Select an option',
+                allowClear: true,
+            });
+        }
+        $(document).on('click', '#add', function () {
+            create_field()
+        });
+
+        $(document).on('click', '.remove', function () {
+            $(this).closest("tr").remove();
+        });
+
         var id_modal_edit = "";
         $(document).on("click", ".edit-btn", function () {
             var data = table.row($(this).closest('tr')).data();
-            id_modal_edit = data.id_pernyataan;
-            $('.pernyataan_edit').val(data.pernyataan)
-            $('.add_option').append('<option selected value="' + data.tema_bakat_id + '">' + data
-                .tema_bakat +
-                '</option>').trigger('change')
+            id_modal_edit = data.id_job_family;
+            $.ajax({
+                type: "GET",
+                url: '/parameter/show/' + id_modal_edit,
+                cache: false,
+                success: function (res) {
+                    // console.log(res.data);
+                    var html_edit = ''
+                    $.each(res.data, function (key, item) {
+                        console.log(item.job_family.job_family);
+                        $('.add_option').append('<option selected value="' + item
+                            .job_family.id_job_family + '">' + item.job_family
+                            .job_family +
+                            '</option>').trigger('change')
+                        document.getElementsByClassName('core_faktor')[1].value =
+                            item.job_family.nilai_core_faktor
+                        document.getElementsByClassName('sec_faktor')[1].value =
+                            item.job_family.nilai_sec_faktor
+
+                        html_edit = '<tr>'
+                        html_edit +=
+                            '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat tema_option" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
+
+                        html_edit +=
+                            '<td><select class="js-example-basic-single col-sm-12 kategori_faktor kategori_option" name="kategori_faktor_create[]" id="kategori_faktor_create" required>'
+                        html_edit += '<option value=""></option>'
+                        html_edit +=
+                            '<option value="Core Faktor">Core Faktor</option>'
+                        html_edit +=
+                            '<option value="Secondary Faktor">Secondary Faktor</option>'
+                        html_edit += '</select></td>'
+                        html_edit +=
+                            '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
+                        html_edit +=
+                            '<td><button type="button" class="btn btn-sm btn-danger remove_data">Delete data</button></td>'
+                        html_edit += '</tr>'
+
+                        $('.body_edit').append(html_edit);
+
+                        $('.tema_bakat_select2').select2({
+                            placeholder: 'Select Data',
+                            allowClear: true,
+                            minimumInputLength: 0,
+                            ajax: {
+                                dataType: "json",
+                                method: 'POST',
+                                url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                                processResults: function (data) {
+                                    return {
+                                        results: data.map(function (
+                                            item) {
+                                            item.id = item
+                                                .id_tema_bakat;
+                                            item.text = item
+                                                .nama_tema;
+                                            return item;
+                                        })
+                                    };
+                                },
+                            },
+                            escapeMarkup: function (m) {
+                                return m;
+                            }
+                        }).on('select2:select', function (e) {});
+
+                        $('.js-example-basic-single').select2({
+                            placeholder: 'Select an option',
+                            allowClear: true,
+                        });
+                        $('.tema_option').append('<option selected value="' + item
+                            .tema_bakat.id_tema_bakat + '">' + item.tema_bakat
+                            .nama_tema +
+                            '</option>').trigger('change')
+                        $('.kategori_option').append('<option selected value="' +
+                            item
+                            .kategori_faktor + '">' + item.kategori_faktor +
+                            '</option>').trigger('change')
+                    })
+                }
+            })
+
         });
 
         var id_parameter_del = ""
@@ -244,20 +455,22 @@
             id_parameter_del = item.id_parameter_penilaian;
         });
 
-        $(document).on("click", "#create-data", function () {
+        $('#create_form').on("submit", function (e) {
+            e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "{{ route('pernyataan.store') }}",
-                data: {
-                    _token: $("#csrf").val(),
-                    pernyataan: $("#pernyataan_create").val(),
-                    tema_bakat_id: $("#tema_bakat_create").val()
+                url: "{{ route('parameter.store') }}",
+                data: $(this).serialize(),
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#create-data').attr('disabled', 'disabled');
                 },
                 cache: false,
                 success: function (res) {
                     if (res.status == 200) {
-                        $("#createModal").modal('hide');
+                        $('#create-data').attr('disabled', false);
                         table.draw()
+                        $("#createModal").modal('hide');
                     }
                 }
             })
