@@ -361,98 +361,13 @@
             $(this).closest("tr").remove();
         });
 
-        var id_modal_edit = "";
-        $(document).on("click", ".edit-btn", function () {
-            var data = table.row($(this).closest('tr')).data();
-            id_modal_edit = data.id_job_family;
-            $.ajax({
-                type: "GET",
-                url: '/parameter/show/' + id_modal_edit,
-                cache: false,
-                success: function (res) {
-                    // console.log(res.data);
-                    var html_edit = ''
-                    $.each(res.data, function (key, item) {
-                        console.log(item.job_family.job_family);
-                        $('.add_option').append('<option selected value="' + item
-                            .job_family.id_job_family + '">' + item.job_family
-                            .job_family +
-                            '</option>').trigger('change')
-                        document.getElementsByClassName('core_faktor')[1].value =
-                            item.job_family.nilai_core_faktor
-                        document.getElementsByClassName('sec_faktor')[1].value =
-                            item.job_family.nilai_sec_faktor
-
-                        html_edit = '<tr>'
-                        html_edit +=
-                            '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat tema_option" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
-
-                        html_edit +=
-                            '<td><select class="js-example-basic-single col-sm-12 kategori_faktor kategori_option" name="kategori_faktor_create[]" id="kategori_faktor_create" required>'
-                        html_edit += '<option value=""></option>'
-                        html_edit +=
-                            '<option value="Core Faktor">Core Faktor</option>'
-                        html_edit +=
-                            '<option value="Secondary Faktor">Secondary Faktor</option>'
-                        html_edit += '</select></td>'
-                        html_edit +=
-                            '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
-                        html_edit +=
-                            '<td><button type="button" class="btn btn-sm btn-danger remove_data">Delete data</button></td>'
-                        html_edit += '</tr>'
-
-                        $('.body_edit').append(html_edit);
-
-                        $('.tema_bakat_select2').select2({
-                            placeholder: 'Select Data',
-                            allowClear: true,
-                            minimumInputLength: 0,
-                            ajax: {
-                                dataType: "json",
-                                method: 'POST',
-                                url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
-                                processResults: function (data) {
-                                    return {
-                                        results: data.map(function (
-                                            item) {
-                                            item.id = item
-                                                .id_tema_bakat;
-                                            item.text = item
-                                                .nama_tema;
-                                            return item;
-                                        })
-                                    };
-                                },
-                            },
-                            escapeMarkup: function (m) {
-                                return m;
-                            }
-                        }).on('select2:select', function (e) {});
-
-                        $('.js-example-basic-single').select2({
-                            placeholder: 'Select an option',
-                            allowClear: true,
-                        });
-                        $('.tema_option').append('<option selected value="' + item
-                            .tema_bakat.id_tema_bakat + '">' + item.tema_bakat
-                            .nama_tema +
-                            '</option>').trigger('change')
-                        $('.kategori_option').append('<option selected value="' +
-                            item
-                            .kategori_faktor + '">' + item.kategori_faktor +
-                            '</option>').trigger('change')
-                    })
-                }
-            })
-
-        });
 
         var id_parameter_del = ""
         $(document).on("click", ".delete-btn", function () {
             var item = table.row($(this).closest('tr')).data();
             document.getElementById('bodi_hapus').innerHTML =
                 'Apakah anda yakin akan menghapus data ?';
-            id_parameter_del = item.id_parameter_penilaian;
+            id_parameter_del = item.id_job_family;
         });
 
         $('#create_form').on("submit", function (e) {
@@ -503,9 +418,10 @@
         });
 
         $(document).on("click", "#konfirmasi-del", function () {
+            console.log(id_parameter_del);
             $.ajax({
-                type: "DELETE",
-                url: '/pernyataan/destroy/' + id_pernyataan_del,
+                type: "POST",
+                url: '/parameter/destroy/' + id_parameter_del,
                 cache: false,
                 success: function (res) {
                     if (res.status == 200) {

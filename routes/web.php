@@ -42,6 +42,8 @@ Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');
     Route::prefix('simulasi')->group(function () {
         Route::get('/index', [SimulasiController::class, 'index'])->name('simulasi.index');
+        Route::post('/store', [SimulasiController::class, 'store'])->name('simulasi.store');
+        Route::get('/end', [SimulasiController::class, 'end'])->name('simulasi.end');
     });
 });
 
@@ -54,7 +56,7 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
         Route::get('/show/{id}', [ParameterPenilaianController::class, 'show'])->name('parameter.show');
         Route::get('/edit/{id}', [ParameterPenilaianController::class, 'edit'])->name('parameter.edit');
         Route::get('/update/{id}', [ParameterPenilaianController::class, 'update'])->name('parameter.update');
-        Route::delete('/destroy', [ParameterPenilaianController::class, 'destroy'])->name('parameter.destroy');
+        Route::post('/destroy/{id}', [ParameterPenilaianController::class, 'destroy'])->name('parameter.destroy');
     });
     Route::prefix('job_family')->group(function () {
         Route::get('/getJobFamily', [JobFamilyController::class, 'getJobFamily'])->name('job_family.getJobFamily');

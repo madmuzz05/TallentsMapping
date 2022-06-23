@@ -21,7 +21,6 @@ class UnitKerja extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'kode',
         'job_family_id',
         'departemen',
     ];

@@ -18,7 +18,6 @@ class UsersImport implements ToModel, WithHeadingRow
     public function __construct()
     {
         $this->unit_kerjas = UnitKerja::all();
-        $this->jabatans = Jabatan::all();
     }
 
     /**
@@ -28,8 +27,7 @@ class UsersImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        $unit_kerja = $this->unit_kerjas->where('nama_unit_kerja', $row['unit_kerja'])->first();
-        $jabatan = $this->jabatans->where('kategori_jabatan', $row['jabatan'])->first();
+        $unit_kerja = $this->unit_kerjas->where('departemen', $row['unit_kerja'])->first();
         return new User([
             'no_pegawai' => $row['no_pegawai'],
             'nama' => $row['nama'],
@@ -39,7 +37,6 @@ class UsersImport implements ToModel, WithHeadingRow
             'password' => Hash::make($row['password']),
             'hak_akses' => $row['hak_akses'],
             'unit_kerja_id' => $unit_kerja->id_unit_kerja ?? NULL,
-            'jabatan_id' => $jabatan->id_jabatan ?? NULL,
         ]);
     }
 }

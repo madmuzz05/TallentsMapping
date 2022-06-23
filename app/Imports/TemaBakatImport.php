@@ -15,9 +15,10 @@ class TemaBakatImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        // dd($row);
         return new TemaBakat([
-            'nama_tema' => $row['tema_bakat'],
-            'deskripsi' => $row['deskripsi']
+            'nama_tema' => $row['nama_tema'],
+            'deskripsi' => $row['deskripsi'],
         ]);
     }
 }

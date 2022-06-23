@@ -27,9 +27,8 @@ class ParameterPenilaianController extends Controller
     {
         $data = JobFamily::select(
             'job_family.*'
-        )
-            ->rightjoin('parameter_penilaian', 'parameter_penilaian.job_family_id', '=', 'job_family.id_job_family')
-            ->groupBy('parameter_penilaian.job_family_id');
+        )->where('nilai_core_faktor', '!=', '0')
+        ->where('nilai_sec_faktor', '!=', '0');
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
@@ -141,8 +140,16 @@ class ParameterPenilaianController extends Controller
      * @param  \App\Models\Parameter_Penilaian  $Parameter_Penilaian
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Parameter_Penilaian $Parameter_Penilaian)
+    public function destroy($id)
     {
-        //
+        JobFamily::where('id_job_family', $id)->update([
+            'nilai_core_faktor' => '0',
+            'nilai_sec_faktor' => '0',
+        ]);
+
+        Parameter_Penilaian::where('job_family_id', $id)->delete();
+        return response()->json([
+            'status' => 200
+        ]);
     }
 }

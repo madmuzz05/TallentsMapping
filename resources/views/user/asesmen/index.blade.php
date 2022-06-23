@@ -8,51 +8,90 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-12 mb-2">
-                            <h5>Question No. 1</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12 text-center text-bold">
-                                <p><b>
-                                        1. Membuat Konsep Berdasarkan Apa Yang Dilihat, Dialami Atau Diyakini.
-                                    </b>
-                                </p>
+                        <form action="/simulasi/store" method="post">
+                            @csrf
+                            <div class="col-lg-12 mb-2">
+                                <h5>Question No. {{ Session::get("next") }}</h5>
                             </div>
-                            <div class="row animate-chk mt-4 mb-4">
-                                <div class="col-lg-5">
+                            <div class="row">
+                                <div class="col-lg-12 text-center text-bold">
+                                    <p><b>
+                                            {{ Session::get("next") }}. {{ $data->pernyataan }}
+                                        </b>
+                                    </p>
                                 </div>
-                                <div class="col-lg-7 text-left">
-                                    <label class="d-block" for="edo-ani">
-                                        <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani"> Tidak
-                                        Sesuai
-                                    </label>
-                                    <label class="d-block" for="edo-ani">
-                                        <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani"> Kurang
-                                        Sesuai
-                                    </label>
-                                    <label class="d-block" for="edo-ani">
-                                        <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani"> Sedang
-                                    </label>
-                                    <label class="d-block" for="edo-ani">
-                                        <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani"> Sesuai
-                                    </label>
-                                    <label class="d-block" for="edo-ani">
-                                        <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani"> Sangat Sesuai
-                                    </label>
+                                <div class="row animate-chk mt-4 mb-4">
+                                    <div class="col-lg-5">
+                                    </div>
+                                    <div class="col-lg-7 text-left">
+                                        <input type="hidden" name="id_pernyataan" value="{{ $data->id_pernyataan }}">
+                                        <input class="radio_animated" id="0" type="radio" value="0" checked
+                                            name="ans" hidden>
+                                        @if(!isset($answer->nilai))
+                                        @foreach($answer as $o)
+                                        <!-- <input type="text" name="test" value="{{$o->nilai}}" id=""> -->
+                                        <label class="d-block" for="a">
+                                            <input class="radio_animated" id="a" type="radio" value="1" {{ ($o->nilai == '1')? 'checked' : ''}}
+                                                name="ans"> Tidak
+                                            Sesuai
+                                        </label>
+                                        <label class="d-block" for="b">
+                                            <input class="radio_animated" id="b" type="radio" value="2"name="ans" {{ ($o->nilai == '2')? 'checked' : ''}}> Kurang
+                                            Sesuai
+                                        </label>
+                                        <label class="d-block" for="c">
+                                            <input class="radio_animated" id="c" type="radio" value="3"
+                                            {{ ($o->nilai == '3')? 'checked' : ''}} name="ans"> Sedang
+                                        </label>
+                                        <label class="d-block" for="d">
+                                            <input class="radio_animated" id="d" type="radio" value="4"
+                                            {{ ($o->nilai == '4')? 'checked' : ''}} name="ans"> Sesuai
+                                        </label>
+                                        <label class="d-block" for="e">
+                                            <input class="radio_animated" id="e" type="radio" value="5"
+                                            {{ ($o->nilai == '5')? 'checked' : ''}} name="ans"> Sangat Sesuai
+                                        </label>
+                                        @endforeach
+                                        @else
+                                        <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
+                                            hidden>
+                                        <label class="d-block" for="a">
+                                            <input class="radio_animated" id="a" type="radio" value="1" name="ans">
+                                            Tidak
+                                            Sesuai
+                                        </label>
+                                        <label class="d-block" for="b">
+                                            <input class="radio_animated" id="b" type="radio" value="2" name="ans">
+                                            Kurang
+                                            Sesuai
+                                        </label>
+                                        <label class="d-block" for="c">
+                                            <input class="radio_animated" id="c" type="radio" value="3" name="ans">
+                                            Sedang
+                                        </label>
+                                        <label class="d-block" for="d">
+                                            <input class="radio_animated" id="d" type="radio" value="4" name="ans">
+                                            Sesuai
+                                        </label>
+                                        <label class="d-block" for="e">
+                                            <input class="radio_animated" id="e" type="radio" value="5" name="ans">
+                                            Sangat Sesuai
+                                        </label>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row text-center">
-                                <div class="col-lg-12">
-                                    <button type="button" class="btn btn-secondary">Previous</button>
-                                    <button type="button" class="btn btn-primary m-l-20">Next</button>
-                                </div>
-                            </div>
-                        </div>
+                                <div class="row text-center">
+                                    <div class="col-lg-12">
+                                        <button type="submit" class="btn btn-primary m-l-20">Next</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- Container-fluid Ends-->

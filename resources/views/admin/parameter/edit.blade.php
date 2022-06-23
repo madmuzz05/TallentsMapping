@@ -69,6 +69,7 @@
                                                     <td>Nilai GAP</td>
                                                     <td><button type="button" class="btn btn-sm btn-info add">Add
                                                             Field</button></td>
+                                                            
                                                 </tr>
                                             </thead>
                                             <tbody class="body_edit">
@@ -84,7 +85,7 @@
                         <button class="btn btn-primary" id="btn-submit">Submit</button>
                         </form>
                         @endforeach
-                        <a href="/user/index" class="btn btn-light">Kembali</a>
+                        <a href="/parameter/index" class="btn btn-light">Kembali</a>
                     </div>
                 </div>
             </div>
@@ -173,8 +174,7 @@
                         '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" value="' +
                         item.nilai +
                         '" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
-                    html_edit +=
-                        '<td><button type="button" class="btn btn-sm btn-danger remove_data">Delete data</button></td>'
+                    
                     html_edit += '</tr>'
 
                     $('.body_edit').append(html_edit);
@@ -220,10 +220,6 @@
         $(document).on('click', '.remove', function () {
             $(this).closest("tr").remove();
         });
-
-        $('#btn-submit').on('click', function (e) {
-
-        })
     });
 
 </script>
