@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HasilController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitKerjaController;
@@ -65,6 +66,10 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     });
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');
+    });
+    Route::prefix('hasil')->group(function () {
+        Route::get('/index', [HasilController::class, 'index'])->name('hasil.index');
+        Route::get('/getHasil', [HasilController::class, 'getHasil'])->name('hasil.getHasil');
     });
     Route::prefix('jabatan')->group(function () {
         Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('jabatan.getJabatan');

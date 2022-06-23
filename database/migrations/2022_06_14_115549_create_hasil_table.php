@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('hasil', function (Blueprint $table) {
             $table->id('id_hasil');
-            $table->bigInteger('simulasi_id');
-            $table->bigInteger('parameter_peniliaian_id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('job_family_id');
             $table->string('nilai', 75);
             $table->timestamps();
         });

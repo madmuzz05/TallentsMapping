@@ -4,7 +4,7 @@
 <!-- Container-fluid starts-->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xl-6 xl-100 box-col-12">
+        <div class="col-xl-12 xl-100 box-col-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -25,34 +25,33 @@
                                     </div>
                                     <div class="col-lg-7 text-left">
                                         <input type="hidden" name="id_pernyataan" value="{{ $data->id_pernyataan }}">
-                                        <input class="radio_animated" id="0" type="radio" value="0" checked
-                                            name="ans" hidden>
-                                        @if(!isset($answer->nilai))
-                                        @foreach($answer as $o)
+                                        <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
+                                            hidden>
+                                        @forelse($answer as $o)
                                         <!-- <input type="text" name="test" value="{{$o->nilai}}" id=""> -->
                                         <label class="d-block" for="a">
-                                            <input class="radio_animated" id="a" type="radio" value="1" {{ ($o->nilai == '1')? 'checked' : ''}}
-                                                name="ans"> Tidak
+                                            <input class="radio_animated" id="a" type="radio" value="1"
+                                                {{ ($o->nilai == '1')? 'checked' : ''}} name="ans"> Tidak
                                             Sesuai
                                         </label>
                                         <label class="d-block" for="b">
-                                            <input class="radio_animated" id="b" type="radio" value="2"name="ans" {{ ($o->nilai == '2')? 'checked' : ''}}> Kurang
+                                            <input class="radio_animated" id="b" type="radio" value="2" name="ans"
+                                                {{ ($o->nilai == '2')? 'checked' : ''}}> Kurang
                                             Sesuai
                                         </label>
                                         <label class="d-block" for="c">
                                             <input class="radio_animated" id="c" type="radio" value="3"
-                                            {{ ($o->nilai == '3')? 'checked' : ''}} name="ans"> Sedang
+                                                {{ ($o->nilai == '3')? 'checked' : ''}} name="ans"> Sedang
                                         </label>
                                         <label class="d-block" for="d">
                                             <input class="radio_animated" id="d" type="radio" value="4"
-                                            {{ ($o->nilai == '4')? 'checked' : ''}} name="ans"> Sesuai
+                                                {{ ($o->nilai == '4')? 'checked' : ''}} name="ans"> Sesuai
                                         </label>
                                         <label class="d-block" for="e">
                                             <input class="radio_animated" id="e" type="radio" value="5"
-                                            {{ ($o->nilai == '5')? 'checked' : ''}} name="ans"> Sangat Sesuai
+                                                {{ ($o->nilai == '5')? 'checked' : ''}} name="ans"> Sangat Sesuai
                                         </label>
-                                        @endforeach
-                                        @else
+                                        @empty
                                         <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
                                             hidden>
                                         <label class="d-block" for="a">
@@ -77,7 +76,7 @@
                                             <input class="radio_animated" id="e" type="radio" value="5" name="ans">
                                             Sangat Sesuai
                                         </label>
-                                        @endif
+                                        @endforelse
                                     </div>
                                 </div>
                                 <div class="row text-center">

@@ -26,7 +26,6 @@ class UnitKerjaImport implements ToModel, WithHeadingRow
     {
         $job_family = $this->job_familys->where('job_family', $row['job_family'])->first();
         return new UnitKerja([
-            'kode' => $row['kode'],
             'job_family_id' => $job_family->id_job_family ?? NULL,
             'departemen' => $row['departemen'],
         ]);

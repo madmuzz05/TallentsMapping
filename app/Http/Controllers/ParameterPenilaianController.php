@@ -28,7 +28,7 @@ class ParameterPenilaianController extends Controller
         $data = JobFamily::select(
             'job_family.*'
         )->where('nilai_core_faktor', '!=', '0')
-        ->where('nilai_sec_faktor', '!=', '0');
+            ->where('nilai_sec_faktor', '!=', '0');
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)

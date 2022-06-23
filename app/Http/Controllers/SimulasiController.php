@@ -19,11 +19,11 @@ class SimulasiController extends Controller
     {
         Session::put('next', '1');
         $data = Pernyataan::all()->first();
-        
+
         $d = $data->id_pernyataan;
         $his_jab = Simulasi::where('pernyataan_id', $d)->get();
         // $his_jab->nilai;
-        
+
 
 
         // dd($his_jab->nilai->get());
@@ -52,18 +52,24 @@ class SimulasiController extends Controller
     public function store(Request $request)
     {
         $next = Session::get('next');
-        $next+=1;
-        Simulasi::updateOrCreate([
-            'user_id' => Auth::user()->id_user,
-            'pernyataan_id' => $request->id_pernyataan
-        ],
-        ['nilai' => $request->ans]
-    );
+        $next += 1;
+        if ($request->ans == 0) {
+            $bobot = 0;
+        } elseif ($request->ans == 1) {
+            $bobot = 0;
+        }
+        Simulasi::updateOrCreate(
+            [
+                'user_id' => Auth::user()->id_user,
+                'pernyataan_id' => $request->id_pernyataan
+            ],
+            ['nilai' => $request->ans]
+        );
 
         Session::put("next", $next);
-        $i=0;
+        $i = 0;
         $question = Pernyataan::all();
-        
+
         foreach ($question as $quest) {
             // dd($question);
             $i++;
@@ -75,12 +81,11 @@ class SimulasiController extends Controller
                 $answ = Simulasi::where('pernyataan_id', $q)->get();
                 // dd($answ);
                 return view('user.asesmen.index', ([
-                'data' => $quest,
-                'answer' => $answ
-            ]));
+                    'data' => $quest,
+                    'answer' => $answ
+                ]));
             }
         }
-
     }
 
     public function end()

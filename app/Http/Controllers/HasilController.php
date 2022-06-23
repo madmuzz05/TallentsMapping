@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasil;
+use App\Models\JobFamily;
+use App\Models\Parameter_Penilaian;
+use App\Models\Simulasi;
+use App\Models\User;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 
-class HasilControler extends Controller
+class HasilController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +19,22 @@ class HasilControler extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.hasil.end');
+    }
+
+    public function getHasil()
+    {
+        $users = User::where('hak_akses', 'User')->where('assesmen', 'Y')->get();
+        $simulasis = Simulasi::with('user', 'pernyataan')->get();
+        $parameters = Parameter_Penilaian::all();
+        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
+            ->where('nilai_sec_faktor', '!=', '0')->get();
+        return response()->json([
+            'users' => $users,
+            'simulasis' => $simulasis,
+            'parameters' => $parameters,
+            'job_familys' => $job_familys
+        ]);
     }
 
     /**
