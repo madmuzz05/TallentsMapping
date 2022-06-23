@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Simulasi;
 use App\Models\Pernyataan;
+use App\Models\JobFamily;
+use App\Models\Parameter_Penilaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -58,12 +60,57 @@ class SimulasiController extends Controller
         } elseif ($request->ans == 1) {
             $bobot = 0;
         }
+
+        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
+        ->where('nilai_sec_faktor', '!=', '0')->get();
+        foreach ($job_familys as $j ) {
+            $parameter = Parameter_Penilaian::where('job_family_id', $j->id_job_family)->get();
+            foreach ($parameter as $p ) {
+                $selisih=0;
+                // dd($request->id_tema_bakat);
+                    $selisih = $request->ans - $p->nilai;
+                    // dd($selisih);
+                    switch ($selisih) {
+                        case '0':
+                            $bobot_nilai = 5;
+                            break;
+                        case '1':
+                            $bobot_nilai = 4.5;
+                            break;
+                        case '-1':
+                            $bobot_nilai = 4;
+                            break;
+                        case '2':
+                            $bobot_nilai = 3.5;
+                            break;
+                        case '-2':
+                            $bobot_nilai = 3;
+                            break;
+                        case '3':
+                            $bobot_nilai = 2.5;
+                            break;
+                        case '-3':
+                            $bobot_nilai = 2;
+                            break;
+                        case '4':
+                            $bobot_nilai = 1.5;
+                            break;
+                        case '-4':
+                            $bobot_nilai = 1;
+                            break;
+                        
+                    }
+            }
+        }   
         Simulasi::updateOrCreate(
             [
                 'user_id' => Auth::user()->id_user,
                 'pernyataan_id' => $request->id_pernyataan
             ],
-            ['nilai' => $request->ans]
+            [
+                'nilai' => $request->ans,
+                'bobot_nilai' => $bobot_nilai
+            ]
         );
 
         Session::put("next", $next);

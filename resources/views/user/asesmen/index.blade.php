@@ -25,6 +25,7 @@
                                     </div>
                                     <div class="col-lg-7 text-left">
                                         <input type="hidden" name="id_pernyataan" value="{{ $data->id_pernyataan }}">
+                                        <input type="hidden" name="id_tema_bakat" value="{{ $data->tema_bakat_id }}">
                                         <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
                                             hidden>
                                         @forelse($answer as $o)

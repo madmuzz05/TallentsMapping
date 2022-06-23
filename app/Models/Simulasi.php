@@ -24,6 +24,7 @@ class Simulasi extends Model
         'user_id',
         'pernyataan_id',
         'nilai',
+        'bobot_nilai'
     ];
     public function user()
     {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('pernyataan_id');
             $table->integer('nilai');
+            $table->integer('bobot_nilai');
             $table->timestamps();
         });
     }
