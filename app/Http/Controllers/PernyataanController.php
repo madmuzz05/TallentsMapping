@@ -31,6 +31,7 @@ class PernyataanController extends Controller
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
         ])
+        ->orderBy('tema_bakat', 'ASC')
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
         if ($request->ajax()) {
             return  DataTables::of($data)

@@ -26,7 +26,7 @@ class TemaBakatController extends Controller
 
     function getTemaBakat(Request $request)
     {
-        $data = TemaBakat::all();
+        $data = TemaBakat::orderBy('nama_tema', 'ASC')->get();
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()

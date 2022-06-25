@@ -17,6 +17,8 @@
         </div>
     </div>
 </div>
+@foreach($getUser as $user)
+@if($user->assesmen == 'N')
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl-12 xl-100 box-col-12">
@@ -50,6 +52,7 @@
 
     </div>
 </div>
+@elseif($user->assesmen == 'Y')
 <div class="container-fluid">
     <div class="row ui-sortable" id="draggableMultiple">
         <div class="col col-lg-4">
@@ -84,7 +87,8 @@
         </div>
     </div>
 </div>
-
+@endif
+@endforeach
 <!-- Container-fluid Ends-->
 <!-- Intro Modal -->
 <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -30,8 +30,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        return view('user.index');
+        $id = Auth::user()->id_user;
+        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        return view('user.index', compact('getUser'));
     }
 
     /**

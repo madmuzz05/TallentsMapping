@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Hasil extends Model
 {
@@ -15,13 +17,14 @@ class Hasil extends Model
     
     protected $guarded = ['id_hasil'];
 
-    public function parameter_penilaian()
+    public function user()
     {
-        return $this->belongsTo(ParamaterPenilaian::class, 'penilaian_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function simulasi()
+
+    public function job_family()
     {
-        return $this->belongsTo(Simulasi::class, 'simulasi_id');
+        return $this->belongsTo(JobFamily::class, 'job_family_id');
     }
 }
 

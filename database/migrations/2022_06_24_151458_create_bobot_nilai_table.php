@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parameter_penilaian', function (Blueprint $table) {
-            $table->id('id_parameter_penilaian');
-            $table->bigInteger('job_family_id');
-            $table->bigInteger('tema_bakat_id');
-            $table->string('kategori_faktor', 75);
-            $table->string('nilai', 75);
+        Schema::create('bobot_nilai', function (Blueprint $table) {
+            $table->id("id_bobot_nilai");
+            $table->bigInteger('simulasi_id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('parameter_penilaian_id');
+            $table->double('nilai');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameter_penilaian');
+        Schema::dropIfExists('bobot_nilai');
     }
 };
