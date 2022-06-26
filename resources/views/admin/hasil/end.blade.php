@@ -18,27 +18,6 @@
 @push('js')
 <script>
     $(document).ready(function () {
-        var a = new Array();
-        $.ajax({
-            type: "GET",
-            url: "{{route('hasil.getHasil')}}",
-            dataType: 'json',
-            success: function (res) {
-                $.each(res.users, function (key, i_users) {
-                    $.each(res.parameters, function (key, i_parameters) {
-                        $.each(res.simulasis, function (key, i_simulasis) {
-                            if (i_simulasis.user_id == i_users.id_user) {
-                                if (i_parameters.job_family_id == 2) {
-                                    if (i_simulasis.pernyataan.tema_bakat_id == i_parameters.tema_bakat_id) {
-                                        console.log(i_simulasis.pernyataan_id);
-                                    }
-                                }
-                            }
-                        })
-                    })
-                })
-            }
-        })
     })
 
 </script>
