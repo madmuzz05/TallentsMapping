@@ -181,9 +181,9 @@ class SimulasiController extends Controller
                                 $NSF +=  $db['nilai'];
                                 $IS++;
                             }
-                            dd($NSF);
+                            // dd($NSF);
 
-                            // $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
+                            $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
                             array_push(
                                 $perhitungan,
                                 array(
