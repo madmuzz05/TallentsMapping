@@ -1,5 +1,6 @@
 @extends('layouts.user.app')
 @section('title', "Dashboard")
+
 @section('content')
 <!-- Container-fluid starts-->
 <div class="container-fluid">
@@ -49,7 +50,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @elseif($user->assesmen == 'Y')
@@ -87,8 +87,49 @@
         </div>
     </div>
 </div>
+@section('hasil')
+<a class="nav-link menu-title {{  request()->is('hasil') ? 'active' : '' }}"
+    href="javascript:void(0)"><i data-feather="home"></i><span>Beranda</span></a>
+<ul class="nav-submenu menu-content" style="display: none;">
+    <li><a href="{{route('index')}}"
+            class="{{ request()->routeIs('index') ? 'active' : ''}}">Dashboard</a>
+    </li>
+</ul>
+@stop
 @endif
 @endforeach
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-12 xl-100 box-col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12 mb-2">
+                            <h5>ASSESMEN TALENTS MAPPING</h5>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12 text-center">
+                                <p>Modul ini berisikan beberapa materi asesmen guna mengukur diri secara personal.
+                                    Banyak manfaat yang dapat diperoleh dengan mengerjakan asesmen-asemen di dalamnya,
+                                    selain mengusung konsep Right People on the Right Place juga memberikan masukkan
+                                    kepada seseorang tentang dirinya dan potensi kesuksesan yang akan diraihnya melalui
+                                    pengenalan diri berbasis BAKAT dan Potensi KEKUATAN Silahkan mengerjakan dengan
+                                    sebaik-baiknya sesuai
+                                    dengan pemahaman atas diri masing-masing. Yakinlah bahwa Anda-lah yang lebih
+                                    mengenal
+                                    tentang diri Anda, dan kami berusaha membantu Anda untuk lebih memahami tentang diri
+                                    Anda
+                                    melalui serangkaian materi asesmen di dalamnya.</p>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#introModal">Mulai Assesmen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Container-fluid Ends-->
 <!-- Intro Modal -->
 <div class="modal fade" id="introModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

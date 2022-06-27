@@ -35,6 +35,7 @@ class HomeController extends Controller
         return view('user.index', compact('getUser'));
     }
 
+
     /**
      * Show the application dashboard.
      *
@@ -46,5 +47,4 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
         return view('admin.index', compact('getUser'));
     }
-
 }
