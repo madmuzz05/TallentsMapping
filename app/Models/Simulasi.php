@@ -23,7 +23,8 @@ class Simulasi extends Model
         'id_simulasi',
         'user_id',
         'pernyataan_id',
-        'nilai'
+        'nilai',
+        'created_at'
     ];
     public function user()
     {

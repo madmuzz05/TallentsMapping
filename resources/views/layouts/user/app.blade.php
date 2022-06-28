@@ -44,8 +44,10 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/owlcarousel.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/prism.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/whether-icon.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/datatables.css')}}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/datatables.css')}}"> -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.css')}}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
     <!-- Plugins css Ends-->
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/bootstrap.css')}}">
@@ -135,6 +137,16 @@
                                                 class="{{ request()->routeIs('index') ? 'active' : ''}}">Dashboard</a>
                                         </li>
                                     </ul>
+                                    <div id="hasil_" style="display: none;">
+                                        <a class="nav-link menu-title {{  request()->is('simulasi') ? 'active' : '' }}"
+                                            href="javascript:void(0)"><i data-feather="book-open"></i><span>Hasil</span></a>
+                                        <ul class="nav-submenu menu-content" style="display: none;">
+                                            <li><a href="{{route('simulasi.show')}}"
+                                                    class="{{ request()->routeIs('show') ? 'active' : ''}}">Hasil Assesmen</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
                                 </li>
                             </ul>
                         </div>
@@ -186,9 +198,11 @@
     <script src="{{asset('assets/js/tooltip-init.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
-    <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script>
-    <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>  
+    <!-- <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script> -->
+    <!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js">
+    </script>
+    <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>
     <script type="text/javascript" src="{{asset('js\user\chart.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
         integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
@@ -204,16 +218,34 @@
         });
 
         $(document).ready(function () {
-
+            $('.table_hasil').DataTable({
+                ordering: false,
+                paging: false,
+            });
             $.ajax({
                 type: "GET",
                 url: "{{route('user.getUserLogin')}}",
                 dataType: 'json',
                 success: function (res) {
-                  $.each(res.data, function (key, item) {
-                      $('.nama_user').text(item.nama)
-                      $('.unit_jabatan').text(item.jabatan.kategori_jabatan+" "+item.unit_kerja.nama_unit_kerja)
-                        
+                    $.each(res.data, function (key, item) {
+                        $('.nama_user').text(item.nama)
+                        $('.unit_jabatan').text(item
+                            .unit_kerja.departemen)
+
+                    })
+                }
+            })
+            $.ajax({
+                type: "GET",
+                url: "{{route('index')}}",
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res.data);
+                    var html = ''
+                    $.each(res.data, function (key, item) {
+                        if (item.assesmen = "Y") {
+                            document.getElementById("hasil_").style.display = "block";
+                        }
                     })
                 }
             })

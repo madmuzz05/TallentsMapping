@@ -323,7 +323,6 @@
                         $('.nama_user').text(item.nama)
                         $('.unit_jabatan').text(item
                             .unit_kerja.departemen)
-
                     })
                 }
             })

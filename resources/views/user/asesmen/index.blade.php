@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="row text-center">
                                     <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary m-l-20">Next</button>
+                                        <button type="submit" class="btn btn-primary btn_submit m-l-20">Next</button>
                         </form>
                     </div>
                 </div>
@@ -96,3 +96,12 @@
 
 <!-- Container-fluid Ends-->
 @endsection
+@push('js')
+<script>
+    $(document).ready(function () {
+        $('form').submit(function () {
+            $('.btn_submit', this).attr('disabled', 'disabled');
+        });
+    })
+</script>
+@endpush

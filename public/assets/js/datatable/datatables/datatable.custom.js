@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $('.table_hasil').DataTable();
     $('product-list').DataTable();
     // Basic table example 
     $('#basic-1').DataTable();

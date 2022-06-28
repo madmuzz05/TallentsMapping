@@ -45,6 +45,7 @@ Route::middleware(['auth', 'user-access:User'])->group(function () {
         Route::get('/index', [SimulasiController::class, 'index'])->name('simulasi.index');
         Route::post('/store', [SimulasiController::class, 'store'])->name('simulasi.store');
         Route::get('/end', [SimulasiController::class, 'end'])->name('simulasi.end');
+        Route::get('/show', [SimulasiController::class, 'show'])->name('simulasi.show');
     });
 });
 

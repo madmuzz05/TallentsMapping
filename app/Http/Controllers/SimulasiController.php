@@ -9,9 +9,12 @@ use App\Models\Pernyataan;
 use App\Models\BobotNilai;
 use App\Models\JobFamily;
 use App\Models\Parameter_Penilaian;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SimulasiController extends Controller
 {
@@ -63,7 +66,8 @@ class SimulasiController extends Controller
                 'pernyataan_id' => $request->id_pernyataan,
             ],
             [
-                'nilai' => $request->ans
+                'nilai' => $request->ans,
+                'created_at' => Carbon::now()
             ]
         );
         $next = Session::get('next');
@@ -130,7 +134,7 @@ class SimulasiController extends Controller
 
                                 BobotNilai::updateOrCreate(
                                     [
-                                        'user_id' => Auth::user()->id_user,
+                                        'user_id' => $hs->user_id,
                                         'simulasi_id' => $hs->id_simulasi,
                                         'parameter_penilaian_id' => $p->id_parameter_penilaian
                                     ],
@@ -173,6 +177,7 @@ class SimulasiController extends Controller
                 foreach ($job_familys as $job) {
                     foreach ($user as $u) {
                         foreach ($data_bobot as $db) {
+                            // dd($db);
                             if ($db['user_id'] === $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Core Faktor") {
                                 $NCF = $NCF + $db['nilai'];
                                 $IC++;
@@ -180,21 +185,21 @@ class SimulasiController extends Controller
                             if ($db['user_id'] === $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Secondary Faktor") {
                                 $NSF +=  $db['nilai'];
                                 $IS++;
+                                // dd($NSF);
                             }
-                            // dd($NSF);
-
-                            $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
-                            array_push(
-                                $perhitungan,
-                                array(
-                                    'user_id' => $u->id_user,
-                                    'job_family_id' => $job->id_job_family,
-                                    // 'NCF' => $NCF / $IC,
-                                    // 'NSF' => $NSF / $IS,
-                                    'N' => $N
-                                )
-                            );
                         }
+                        $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
+
+                        array_push(
+                            $perhitungan,
+                            array(
+                                'user_id' => $u->id_user,
+                                'job_family_id' => $job->id_job_family,
+                                'NCF' => round($NCF / $IC, 3),
+                                'NSF' => round($NSF / $IS, 3),
+                                'N' => round($N, 3)
+                            )
+                        );
                     }
                     foreach ($perhitungan as $hasil_akhir) {
                         Hasil::updateOrCreate(
@@ -207,10 +212,9 @@ class SimulasiController extends Controller
                             ]
                         );
                     }
-                    dd($perhitungan);
-
-                    return view('user.asesmen.end');
                 }
+                // dd($perhitungan);
+                return view('user.asesmen.end');
             }
             if ($i == $next) {
                 $q = $quest->id_pernyataan;
@@ -227,6 +231,11 @@ class SimulasiController extends Controller
 
     public function end()
     {
+        // $data = Hasil::with('user', 'job_family')
+        //     ->whereHas('user', function ($query) {
+        //         $query->where('id_user', Auth::user()->id_user)->where('assesmen', 'Y');
+        //     })->orderBy('nilai', 'DESC')->get();
+        // dd($data);
         return view('user.asesmen.end');
     }
 
@@ -236,9 +245,43 @@ class SimulasiController extends Controller
      * @param  \App\Models\Simulasi  $simulasi
      * @return \Illuminate\Http\Response
      */
-    public function show(Simulasi $simulasi)
+    public function show(Request $request)
     {
-        //
+        $data = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('id_user', Auth::user()->id_user)->where('assesmen', 'Y');
+            })->orderBy('nilai', 'DESC')->take(5)->get();
+        $id_job = array();
+        foreach ($data as $d) {
+            array_push(
+                $id_job,
+                array(
+                    $d->job_family_id
+                )
+            );
+        }
+        $unit = UnitKerja::whereIn('job_family_id', $id_job)->orderBy('departemen', 'ASC')->get();
+        $sql1 ='SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 5';
+        $kekuatan = DB::select($sql1, [Auth::user()->id_user]);
+
+        $sql2 ='SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai ASC LIMIT 5';
+        $kelemahan = DB::select($sql2, [Auth::user()->id_user]);
+        if ($request->ajax()) {
+            return response()->json([
+                'data' => $data,
+                'kekuatan' => $kekuatan,
+                'kelemahan' => $kelemahan,
+            ]);
+        }
+        // dd($data);
+        return view('user.asesmen.hasil', [
+            'data' => $data,
+            'unit' => $unit,
+            'kelemahan' => $kelemahan,
+            'kekuatan' => $kekuatan,
+        ]);
     }
 
     /**

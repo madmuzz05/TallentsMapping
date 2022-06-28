@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
 use App\Models\User;
+use App\Models\Hasil;
 use App\Models\Simulasi;
 use App\Models\UnitKerja;
+use App\Models\JobFamily;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Foreach_;
+use Carbon\Carbon;
 
 
 class HomeController extends Controller
@@ -28,23 +32,68 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
+        $getUser = User::with('jabatan', 'unit_kerja')
+            ->where('id_user', $id)
+            ->get();
+            if ($request->ajax()) {
+                return response()->json([
+                    'data' => $getUser
+                ]);
+            }
         return view('user.index', compact('getUser'));
     }
+
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function indexAdmin()
+    public function indexAdmin(Request $request)
     {
         $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('id_user', $id)->get();
-        return view('admin.index', compact('getUser'));
-    }
+        $getUser = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->count();
+        $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->count();
+        $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->count();
+        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%M") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%M")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" AND users.assesmen = "Y" Group by bulan');
+        // $hasil = DB::table('hasil')
+        // ->leftJoin('job_family', 'job_family.id_job_family', '=', 'hasil.job_family_id')
+        // ->select('job_family.job_family as nama', 'nilai')->orderBy('nilai', 'desc')->get();
+        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
+        ->where('nilai_sec_faktor', '!=', '0')->get();
+        $akhir = array();
+        foreach ($job_familys as $j) {
+            $i=0;
+            // dd($j->job_family);
+            $hasil = DB::select('SELECT * FROM hasil WHERE job_family_id = ? ORDER BY nilai DESC LIMIT 3', [$j->id_job_family]);
+            foreach ($hasil as $h ) {
+                $i++;
+            }
+            array_push(
+                $akhir,
+                array(
+                    'nama' => $j->job_family,
+                    'total' => $i
+                )
+            );
+        }
 
+        $byjob = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
+        $byuser = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc');
+        $messages = DB::table(DB::raw("({$byuser->toSql()}) as byuser"))
+        ->groupBy('user_id')
+        ->get();
+        // dd($messages);
+        if ($request->ajax()) {
+            return response()->json([
+                'assesmen' => $assesmen,
+                'rekomendasi' => $akhir
+            ]);
+        }
+
+        return view('admin.index', compact('getUser', 'sudah', 'belum'));
+    }
 }

@@ -1,5 +1,6 @@
 @extends('layouts.user.app')
 @section('title', "Dashboard")
+
 @section('content')
 <!-- Container-fluid starts-->
 <div class="container-fluid">
@@ -49,7 +50,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 @elseif($user->assesmen == 'Y')
@@ -81,7 +81,7 @@
                     <h5>Pie Chart</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
-                    <div class="chart-overflow" id="chart-user3"></div>
+                    <div class="chart-overflow" id="hasil-rekomendasi"></div>
                 </div>
             </div>
         </div>
@@ -135,3 +135,11 @@
 </div>
 <!-- Intro Modal end -->
 @endsection
+@push('js')
+<script>
+    $(document).ready(function () {
+        
+    })
+
+</script>
+@endpush

@@ -26,7 +26,7 @@
                         <div class="align-self-center text-center"><i data-feather="users"></i></div>
                         <div class="media-body">
                             <span class="m-0">Total User</span>
-                            <h4 class="mb-0 counter">100</h4>
+                            <h4 class="mb-0 counter">{{$getUser}}</h4>
                             <i class="icon-bg" data-feather="users"></i>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                         <div class="align-self-center text-center"><i data-feather="check-square"></i></div>
                         <div class="media-body">
                             <span class="m-0">Sudah Assesmen</span>
-                            <h4 class="mb-0 counter">70</h4>
+                            <h4 class="mb-0 counter">{{$sudah}}</h4>
                             <i class="icon-bg" data-feather="check-square"></i>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                         <div class="align-self-center text-center"><i data-feather="x-square"></i></div>
                         <div class="media-body">
                             <span class="m-0">Belum Assesmen</span>
-                            <h4 class="mb-0 counter">30</h4>
+                            <h4 class="mb-0 counter">{{$belum}}</h4>
                             <i class="icon-bg" data-feather="x-square"></i>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="row ui-sortable" id="draggableMultiple">
-            <div class="col col-lg-3">
+            <div class="col col-lg-5">
                 <div class="card">
                     <div class="card-header">
                         <h6>Jumlah rekomendasi user</h6>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col col-lg-9">
+            <div class="col col-lg-7">
                 <div class="card">
                     <div class="card-header">
                         <h6>User yang mengikuti Assesmen </h6>
