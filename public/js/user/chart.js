@@ -38,11 +38,11 @@ function drawBasic() {
                 data.addColumn('number', 'Nilai');
                 $.each(res.kelemahan, function (key, item) {
                     // console.log(item.nama_tema);
-                    if (item.nilai = '0') {
-                        data.addRows([[item.nama_tema, 0.1]]);
-                    } else {
+                    // if (item.nilai = '0') {
+                    //     data.addRows([[item.nama_tema, 0.1]]);
+                    // } else {
                         data.addRows([[item.nama_tema, item.nilai]]);
-                    }
+                    // }
                 })
                 var options = {
                     width: '100%',

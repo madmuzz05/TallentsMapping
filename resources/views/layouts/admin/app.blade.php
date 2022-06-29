@@ -144,6 +144,8 @@
                                         <li><a href="{{route('tema_bakat.index')}}"
                                                 class="{{ request()->routeIs('tema_bakat.index') ? 'active' : ''}}">Tema
                                                 Bakat</a></li>
+                                        <li><a href="{{route('job_family.index')}}"
+                                                class="{{ request()->routeIs('job_family.index') ? 'active' : ''}}">Job Family</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -222,6 +224,10 @@
         });
 
         $(document).ready(function () {
+            $('.table_hasil_admin').DataTable({
+                ordering: false,
+                paging: false,
+            });
             $('.tema_bakat_select2').select2({
                 placeholder: 'Select Data',
                 allowClear: true,

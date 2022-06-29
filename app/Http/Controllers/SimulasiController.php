@@ -214,7 +214,43 @@ class SimulasiController extends Controller
                     }
                 }
                 // dd($perhitungan);
-                return view('user.asesmen.end');
+
+                $data1 = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('id_user', Auth::user()->id_user)->where('assesmen', 'Y');
+            })->orderBy('nilai', 'DESC')->take(5)->get();
+        $id_job = array();
+        foreach ($data as $d) {
+            array_push(
+                $id_job,
+                array(
+                    $d->job_family_id
+                )
+            );
+        }
+
+        $unit = UnitKerja::whereIn('job_family_id', $id_job)->orderBy('departemen', 'ASC')->get();
+        $sql1 ='SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 5';
+        $kekuatan = DB::select($sql1, [Auth::user()->id_user]);
+
+        $sql2 ='SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? and a.nilai > 0 ORDER BY a.nilai ASC LIMIT 5';
+        $kelemahan = DB::select($sql2, [Auth::user()->id_user]);
+        if ($request->ajax()) {
+            return response()->json([
+                'data' => $data,
+                'kekuatan' => $kekuatan,
+                'kelemahan' => $kelemahan,
+            ]);
+        }
+        // dd($kelemahan);
+        return view('user.asesmen.hasil', [
+            'data' => $data1,
+            'unit' => $unit,
+            'kelemahan' => $kelemahan,
+            'kekuatan' => $kekuatan,
+        ]);
             }
             if ($i == $next) {
                 $q = $quest->id_pernyataan;
@@ -266,7 +302,7 @@ class SimulasiController extends Controller
         $kekuatan = DB::select($sql1, [Auth::user()->id_user]);
 
         $sql2 ='SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
-        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai ASC LIMIT 5';
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? and a.nilai > 0 ORDER BY a.nilai ASC LIMIT 5';
         $kelemahan = DB::select($sql2, [Auth::user()->id_user]);
         if ($request->ajax()) {
             return response()->json([
@@ -275,7 +311,7 @@ class SimulasiController extends Controller
                 'kelemahan' => $kelemahan,
             ]);
         }
-        // dd($data);
+        // dd($kelemahan);
         return view('user.asesmen.hasil', [
             'data' => $data,
             'unit' => $unit,

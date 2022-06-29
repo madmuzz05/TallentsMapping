@@ -59,9 +59,6 @@ class HomeController extends Controller
         $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->count();
         $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->count();
         $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%M") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%M")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" AND users.assesmen = "Y" Group by bulan');
-        // $hasil = DB::table('hasil')
-        // ->leftJoin('job_family', 'job_family.id_job_family', '=', 'hasil.job_family_id')
-        // ->select('job_family.job_family as nama', 'nilai')->orderBy('nilai', 'desc')->get();
         $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
         ->where('nilai_sec_faktor', '!=', '0')->get();
         $akhir = array();
@@ -81,19 +78,16 @@ class HomeController extends Controller
             );
         }
 
-        $byjob = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
-        $byuser = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc');
-        $messages = DB::table(DB::raw("({$byuser->toSql()}) as byuser"))
-        ->groupBy('user_id')
-        ->get();
-        // dd($messages);
+        $byJob = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
+        $byUsers = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('user_id');
+        // dd($byUsers);
         if ($request->ajax()) {
             return response()->json([
                 'assesmen' => $assesmen,
-                'rekomendasi' => $akhir
+                'rekomendasi' => $akhir,
             ]);
         }
 
-        return view('admin.index', compact('getUser', 'sudah', 'belum'));
+        return view('admin.index', compact('getUser', 'sudah', 'belum', 'byJob', 'byUsers'));
     }
 }

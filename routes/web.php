@@ -64,6 +64,12 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
         Route::get('/getJobFamily', [JobFamilyController::class, 'getJobFamily'])->name('job_family.getJobFamily');
         Route::post('/getJobFamilySelect2', [JobFamilyController::class, 'getJobFamilySelect2'])->name('job_family.getJobFamilySelect2');
         Route::GET('/detail/{id}', [JobFamilyController::class, 'show'])->name('job_family.detail');
+        Route::get('/index', [JobFamilyController::class, 'index'])->name('job_family.index');
+        Route::post('/store', [JobFamilyController::class, 'store'])->name('job_family.store');
+        Route::put('/update/{id}', [JobFamilyController::class, 'update'])->name('job_family.update');
+        Route::delete('/destroy/{id}', [JobFamilyController::class, 'destroy'])->name('job_family.destroy');
+        Route::post('/import', [JobFamilyController::class, 'import'])->name('job_family.import');
+        Route::get('/export', [JobFamilyController::class, 'export'])->name('job_family.export');
     });
     Route::prefix('admin')->group(function () {
         Route::get('/index', [HomeController::class, 'indexAdmin'])->name('admin.index');

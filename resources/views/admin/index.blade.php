@@ -87,36 +87,25 @@
             <div class="col col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h6>Rekomendasi Pegawai By Unit Kerja </h6>
+                        <h6>Rekomendasi Hasil Assesmen By Job Family </h6>
                     </div>
                     <div class="card-body p-10 chart-block">
-                        <table class="table">
+                        <table class="table table-bordered text-center table_hasil_admin">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th>No</th>
+                                    <th>Job Family</th>
+                                    <th>Rekomendasi User</th>
+                                    <!-- <th>Departemen</th> -->
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($byJob as $d)
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->job_family->job_family}}</td>
+                                    <td>{{$d->user->nama}}</td>
+                                    @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -125,36 +114,27 @@
             <div class="col col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h6>Rekomendasi Pegawai By Hasil Assesmen </h6>
+                        <h6>Rekomendasi Hasil Assesmen By User </h6>
                     </div>
                     <div class="card-body p-10 chart-block">
-                        <table class="table">
+                    <table class="table table-bordered text-center table_hasil_admin">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th>No</th>
+                                    <th>Nama User</th>
+                                    <th>Job Family<x/th>
+                                    <th>Nilai<x/th>
+                                    <!-- <th>Departemen</th> -->
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($byUsers as $d)
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->user->nama}}</td>
+                                    <td>{{$d->job_family->job_family}}</td>
+                                    <td>{{$d->nilai}}</td>
+                                    @endforeach
                             </tbody>
                         </table>
                     </div>
