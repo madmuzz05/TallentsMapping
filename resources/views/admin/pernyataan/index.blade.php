@@ -60,6 +60,7 @@
                                     <th>No</th>
                                     <th>Pernyataan</th>
                                     <th>Tema Bakat</th>
+                                    <th>Bobot Nilai</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -69,6 +70,7 @@
                                     <th>No</th>
                                     <th>Pernyataan</th>
                                     <th>Tema Bakat</th>
+                                    <th>Bobot Nilai</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -129,34 +131,50 @@
 </div>
 <!-- end modal -->
 <!-- Create modal -->
+<!-- Create modal -->
 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Create Data Pernyataan</h5>
+                <h5 class="modal-title">Create Parameter Penilaian Assesmen</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Pernyataan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control pernyataan" id="pernyataan_create" rows="3"
-                            name="pernyataan_create" value="" required></textarea>
+                <form method="post" id="create_form">
+                    <div class="row mr-5 ml-5">
+                        <div class="col-lg-12 table-responsive-lg text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Pernyataan</td>
+                                        <td>Tema Bakat</td>
+                                        <td>Bobot Nilai</td>
+                                        <td><button type="button" class="btn btn-sm btn-info" id="add">Add
+                                                Field</button></td>
+                                    </tr>
+                                </thead>
+                                <tbody id="body">
+                                    <tr>
+                                        <td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>
+                                        <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
+                                                name="tema_bakat_create[]" id="tema_bakat_create"
+                                                required></select></td>
+                                        <td><input class="form-control digits nilai" type="text"
+                                                name="nilai_create[]" id="nilai_create"
+                                                placeholder="Input nilai dalam bentuk angka"
+                                                required /></td>
+                                        <td><button type="button"
+                                                class="btn btn-sm btn-danger remove">Delete Field</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Tema Bakat</label>
-                    <div class="col-sm-9">
-                        <select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create"
-                            id="tema_bakat_create">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="create-data" type="button">Simpan</button>
+                <button class="btn btn-primary" id="create-data" type="submit">Simpan</button>
+                </form>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -263,6 +281,10 @@
                     name: 'tema_bakat'
                 },
                 {
+                    data: 'bobot_nilai',
+                    name: 'pernyataan.bobot_nilai'
+                },
+                {
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -279,7 +301,56 @@
             $('.tema_bakat_select2').val(null).trigger('change')
             table.draw()
             e.preventDefault();
+        });
 
+        var html = '';
+
+        function create_field() {
+            html = '<tr>'
+            html +=
+                '<td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>'
+            html +=
+                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
+            html +=
+                '<td><input class="form-control digits nilai" type="text" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" required/></td>'
+            html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
+            html += '</tr>'
+            $('#body').append(html);
+
+            $('.tema_bakat_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_tema_bakat;
+                                item.text = item.nama_tema;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.js-example-basic-single').select2({
+                placeholder: 'Select an option',
+                allowClear: true,
+            });
+        }
+        $(document).on('click', '#add', function () {
+            create_field()
+        });
+
+        $(document).on('click', '.remove', function () {
+            $(this).closest("tr").remove();
         });
         var id_modal_edit = "";
         $(document).on("click", ".edit-btn", function () {
@@ -299,23 +370,41 @@
             id_pernyataan_del = item.id_pernyataan;
         });
 
-        $(document).on("click", "#create-data", function () {
-            $.ajax({
+        $('#create_form').on("submit", function (e) {
+            // console.log($(".nilai").val());
+            var arr = document.getElementsByClassName('nilai');
+    var tot=0;
+    for(var i=0;i<arr.length;i++){
+        if(parseFloat(arr[i].value))
+            tot += parseFloat(arr[i].value);
+    }
+    // console.log(tot);
+    if (tot > 1) {
+        alert("Total bobot nilai tidak boleh dari 1");
+    }else{
+        // console.log('n');
+        $.ajax({
                 type: "POST",
                 url: "{{ route('pernyataan.store') }}",
-                data: {
-                    _token: $("#csrf").val(),
-                    pernyataan: $("#pernyataan_create").val(),
-                    tema_bakat_id: $("#tema_bakat_create").val()
+                data: $(this).serialize(),
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#create-data').attr('disabled', 'disabled');
                 },
                 cache: false,
                 success: function (res) {
                     if (res.status == 200) {
-                        $("#createModal").modal('hide');
+                        $('#create-data').attr('disabled', false);
                         table.draw()
+                        document.getElementById("create_form").reset();
+                        // $("select").val(null);
+                        $("#createModal").modal('hide');
                     }
                 }
             })
+    }
+            e.preventDefault();
+            
         });
 
         $(document).on("click", "#edit-data", function () {

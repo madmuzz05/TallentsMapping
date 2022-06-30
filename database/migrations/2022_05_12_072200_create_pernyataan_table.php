@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_pernyataan');
             $table->string('pernyataan');
             $table->integer('tema_bakat_id');
+            $table->double('bobot_nilai');
             $table->timestamps();
         });
     }

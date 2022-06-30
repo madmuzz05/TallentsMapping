@@ -22,6 +22,7 @@ class Pernyataan extends Model
     protected $fillable = [
         'pernyataan',
         'tema_bakat_id',
+        'bobot_nilai'
     ];
     public function tema_bakat()
     {

@@ -6,7 +6,7 @@
     <div class="page-header">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Edit Parameter Penilaian Assesmen</h3>
+                <h3>Detail Parameter Penilaian Assesmen</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Assesmen</li>
                     <li class="breadcrumb-item"><a href="{{route('parameter.index')}}">Parameter Penilaian Assesmen</a>
@@ -39,7 +39,7 @@
                                         <div class="input-group"><input class="form-control digits core_faktor"
                                                 type="number" name="core_faktor_edit" id="core_faktor_edit"
                                                 placeholder="Input nilai dalam bentuk angka"
-                                                aria-label="Recipient's username" min="0" max="100" required
+                                                aria-label="Recipient's username" min="0" max="100" readonly required
                                                 value="{{$item->nilai_core_faktor}}" /><span class="input-group-text"><i
                                                     data-feather="percent"></i></span></div>
                                     </div>
@@ -50,7 +50,7 @@
                                         <div class="input-group"><input class="form-control digits sec_faktor"
                                                 type="number" name="sec_faktor_edit" id="sec_faktor_edit"
                                                 placeholder="Input nilai dalam bentuk angka"
-                                                aria-label="Recipient's username" min="0" max="100" required
+                                                aria-label="Recipient's username" min="0" max="100" readonly required
                                                 value="{{$item->nilai_sec_faktor}}" /><span class="input-group-text"><i
                                                     data-feather="percent"></i></span></div>
                                     </div>
@@ -76,7 +76,6 @@
                 </div>
                 <div class="card-footer text-end">
                     <div class="col-sm-9 offset-sm-3">
-                        <button class="btn btn-primary" id="btn-submit">Submit</button>
                         </form>
                         @endforeach
                         <a href="/parameter/index" class="btn btn-light">Kembali</a>
@@ -96,7 +95,7 @@
         var id_modal_edit = document.getElementById('id_job_family').value
         $.ajax({
             type: "GET",
-            url: '/parameter/edit/' + id_modal_edit,
+            url: '/parameter/show/' + id_modal_edit,
             cache: false,
             success: function (res) {
                 // console.log(res.parameter);
@@ -104,12 +103,12 @@
                 $.each(res.parameter, function (key, item) {
                     html_edit = '<tr>'
                     html_edit +=
-                        '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat tema_option" name="tema_bakat_create[]" id="tema_bakat_create" required>'
+                        '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat tema_option" name="tema_bakat_create[]" disabled id="tema_bakat_create" required>'
                     html_edit += '<option value="' + item.tema_bakat.id_tema_bakat + '">' +
                         item.tema_bakat.nama_tema + '</option></select></td>'
 
                     html_edit +=
-                        '<td><select class="js-example-basic-single col-sm-12 kategori_faktor kategori_option" name="kategori_faktor_create[]" id="kategori_faktor_create" required>'
+                        '<td><select class="js-example-basic-single col-sm-12 kategori_faktor kategori_option" name="kategori_faktor_create[]" disabled id="kategori_faktor_create" required>'
                     html_edit += '<option value="' + item.kategori_faktor + '">' + item
                         .kategori_faktor + '</option>'
 
@@ -119,7 +118,7 @@
                         '<option value="Secondary Faktor">Secondary Faktor</option>'
                     html_edit += '</select></td>'
                     html_edit +=
-                        '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" value="' +
+                        '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" disabled value="' +
                         item.nilai +
                         '" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
                     
@@ -162,26 +161,6 @@
                 })
             }
         })
-    
-        $('#create_form').on("submit", function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "{{ route('parameter.update') }}",
-                data: $(this).serialize(),
-                dataType: 'json',
-                beforeSend: function () {
-                    $('#btn-submit').attr('disabled', 'disabled');
-                },
-                cache: false,
-                success: function (res) {
-                    if (res.status == 200) {
-                        $('#btn-submit').attr('disabled', false);
-                        location.reload()
-                    }
-                }
-            })
-        });
     });
 
 </script>

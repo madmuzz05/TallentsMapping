@@ -34,7 +34,7 @@ class ParameterPenilaianController extends Controller
             return  DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="#detailModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
+                    $btn = '<a href="show/' . $row->id_job_family . '" class=" me-2 mb-2 btn btn-outline-light btn-sm detail-btn"><i class="fa-solid fa-circle-info"></i> Detail</a>';
                     $btn = $btn . '<a href="edit/' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
                     return $btn;
@@ -94,13 +94,17 @@ class ParameterPenilaianController extends Controller
      * @param  \App\Models\Parameter_Penilaian  $Parameter_Penilaian
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $data = Parameter_Penilaian::with('job_family', 'tema_bakat')->where('job_family_id', $id)->get();
-        // dd($data);
-        return response()->json([
-            'data' => $data
-        ]);
+        $parameter = Parameter_Penilaian::with('job_family', 'tema_bakat')->where('job_family_id', $id)->get();
+        $job_family = JobFamily::where('id_job_family', $id)->get();
+        // dd($job_family);
+        if ($request->ajax()) {
+            return response()->json([
+                'parameter' => $parameter
+            ]);
+        }
+        return view('admin.parameter.show', compact('parameter', 'job_family'));
     }
 
 
@@ -129,9 +133,31 @@ class ParameterPenilaianController extends Controller
      * @param  \App\Models\Parameter_Penilaian  $Parameter_Penilaian
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Parameter_Penilaian $Parameter_Penilaian)
+    public function update(Request $request)
     {
-        //
+        JobFamily::where('id_job_family', $request->id_job_family)->update([
+            'nilai_core_faktor' => $request->core_faktor_edit,
+            'nilai_sec_faktor' => $request->sec_faktor_edit,
+        ]);
+
+        $tema_bakat = $request->tema_bakat_create;
+        $kategori_faktor = $request->kategori_faktor_create;
+        $nilai = $request->nilai_create;
+        $job_family = $request->id_job_family;
+        $id_parameter = $request->id_parameter;
+        for ($count = 0; $count < count($tema_bakat); $count++) {
+            $data = [
+                'job_family_id' => $job_family,
+                'tema_bakat_id' => $tema_bakat[$count],
+                'kategori_faktor'  => $kategori_faktor[$count],
+                'nilai'  => $nilai[$count]
+            ];
+            Parameter_Penilaian::where('id_parameter_penilaian', $id_parameter[$count])->update($data);
+        }
+
+        return response()->json([
+            'status' => 200
+        ]);
     }
 
     /**

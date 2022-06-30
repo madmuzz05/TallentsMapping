@@ -27,7 +27,8 @@ class PernyataanImport implements ToModel, WithHeadingRow
         $tema_bakat = $this->tema_bakats->where('nama_tema', $row['tema_bakat'])->first();
         return new Pernyataan([
             'pernyataan' => $row['pernyataan'],
-            'tema_bakat_id' => $tema_bakat->id_tema_bakat ?? NULL
+            'tema_bakat_id' => $tema_bakat->id_tema_bakat ?? NULL,
+            'bobot_nilai' => $row['bobot_nilai'],
         ]);
     }
 }

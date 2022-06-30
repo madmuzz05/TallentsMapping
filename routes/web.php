@@ -57,7 +57,7 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
         Route::post('/store', [ParameterPenilaianController::class, 'store'])->name('parameter.store');
         Route::get('/show/{id}', [ParameterPenilaianController::class, 'show'])->name('parameter.show');
         Route::get('/edit/{id}', [ParameterPenilaianController::class, 'edit'])->name('parameter.edit');
-        Route::get('/update/{id}', [ParameterPenilaianController::class, 'update'])->name('parameter.update');
+        Route::post('/update', [ParameterPenilaianController::class, 'update'])->name('parameter.update');
         Route::post('/destroy/{id}', [ParameterPenilaianController::class, 'destroy'])->name('parameter.destroy');
     });
     Route::prefix('job_family')->group(function () {

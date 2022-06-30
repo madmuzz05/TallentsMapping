@@ -7,6 +7,7 @@ use App\Models\JobFamily;
 use App\Models\Parameter_Penilaian;
 use App\Models\Simulasi;
 use App\Models\User;
+use App\Http\Controllers\SimulasiController;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -38,6 +39,8 @@ class HasilController extends Controller
     }
     public function hasil_pegawai(Request $request)
     {
+        $rumus = (new SimulasiController)->rumus();
+        // dd($rumus);
         $data = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('user_id');
         // dd($data);
         if ($request->ajax()) {
@@ -66,6 +69,7 @@ class HasilController extends Controller
     }
     public function hasil_job_family(Request $request)
     {
+        $rumus = (new SimulasiController)->rumus();
         $data = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
         // dd($data);
         if ($request->ajax()) {

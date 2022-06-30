@@ -132,17 +132,19 @@
                                 <li class="dropdown">
                                     <a class="nav-link menu-title {{  request()->is('index') ? 'active' : '' }}"
                                         href="javascript:void(0)"><i data-feather="home"></i><span>Beranda</span></a>
-                                    <ul class="nav-submenu menu-content" style="display: none;">
+                                    <ul class="nav-submenu menu-content">
                                         <li><a href="{{route('index')}}"
                                                 class="{{ request()->routeIs('index') ? 'active' : ''}}">Dashboard</a>
                                         </li>
                                     </ul>
                                     <div id="hasil_">
                                         <a class="nav-link menu-title {{  request()->is('simulasi') ? 'active' : '' }}"
-                                            href="javascript:void(0)"><i data-feather="book-open"></i><span>Hasil</span></a>
-                                        <ul class="nav-submenu menu-content" style="display: none;">
+                                            href="javascript:void(0)"><i
+                                                data-feather="book-open"></i><span>Hasil</span></a>
+                                        <ul class="nav-submenu menu-content">
                                             <li><a href="{{route('simulasi.show')}}"
-                                                    class="{{ request()->routeIs('show') ? 'active' : ''}}">Hasil Assesmen</a>
+                                                    class="{{ request()->routeIs('show') ? 'active' : ''}}">Hasil
+                                                    Assesmen</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -240,14 +242,17 @@
                 url: "{{route('index')}}",
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res.data);
+                    // console.log(res.data);
                     var html = ''
                     $.each(res.data, function (key, item) {
-                        if (item.assesmen = "Y") {
-                            document.getElementById("hasil_").style.display = "block";
-                        }
-                        if (item.assesmen = "N") {
-                            document.getElementById("hasil_").style.display = "none";
+                        console.log(item.assesmen);
+                        switch (item.assesmen) {
+                            case 'Y':
+                                document.getElementById("hasil_").style.display = "block";
+                                break;
+                            case 'N':
+                                document.getElementById("hasil_").style.display = "none";
+                                break;
                         }
                     })
                 }

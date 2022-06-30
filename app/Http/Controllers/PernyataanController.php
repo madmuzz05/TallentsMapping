@@ -33,6 +33,7 @@ class PernyataanController extends Controller
         ])
         ->orderBy('tema_bakat', 'ASC')
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
+            // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
@@ -75,15 +76,21 @@ class PernyataanController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->ajax()) {
-            Pernyataan::create([
-                'pernyataan' => request('pernyataan'),
-                'tema_bakat_id' => request('tema_bakat_id')
-            ]);
+        $tema_bakat = $request->tema_bakat_create;
+        $pernyataan = $request->pernyataan_create;
+        $nilai = $request->nilai_create;
+        for ($count = 0; $count < count($tema_bakat); $count++) {
+            $data = [
+                'tema_bakat_id' => $tema_bakat[$count],
+                'pernyataan'  => $pernyataan[$count],
+                'bobot_nilai'  => $nilai[$count]
+            ];
+            Pernyataan::create($data);
+        }
             return response()->json([
                 'status' => 200
             ]);
-        }
+        
     }
 
     /**

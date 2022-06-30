@@ -21,9 +21,6 @@
             <div class="card">
                 <div class="card-header m-b-0 p-b-0">
                     <div class="m-b-0 col-sm-12 text-end">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#importModal"
-                            class="btn btn-warning mb-2">Import Data</button>
-                        <a href="{{ route('parameter.export') }}" class="btn btn-info mb-2">Export Data</a>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#createModal"
                             class="btn btn-success mb-2">Create Data</button>
 
@@ -385,6 +382,8 @@
                     if (res.status == 200) {
                         $('#create-data').attr('disabled', false);
                         table.draw()
+                        document.getElementById("create_form").reset();
+                        // $("select").val(null);
                         $("#createModal").modal('hide');
                     }
                 }

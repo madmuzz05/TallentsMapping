@@ -51,42 +51,8 @@ class SimulasiController extends Controller
     {
         //
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $data = Simulasi::updateOrCreate(
-            [
-                'user_id' => Auth::user()->id_user,
-                'pernyataan_id' => $request->id_pernyataan,
-            ],
-            [
-                'nilai' => $request->ans,
-                'created_at' => Carbon::now()
-            ]
-        );
-        $next = Session::get('next');
-        $next += 1;
-
-        Session::put("next", $next);
-        $i = 0;
-        $question = Pernyataan::all();
-
-        foreach ($question as $quest) {
-            // dd($question);
-            $i++;
-            if ($quest->count() < $next) {
-                User::where('id_user', Auth::user()->id_user)->update(
-                    [
-                        'assesmen' => 'Y'
-                    ]
-                );
-                $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
+    public function rumus(){
+        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
                     ->where('nilai_sec_faktor', '!=', '0')->get();
                 $hasil_simulasi = Simulasi::with('user', 'pernyataan')
                     ->whereHas('user', function ($query) {
@@ -213,7 +179,45 @@ class SimulasiController extends Controller
                         );
                     }
                 }
-                // dd($perhitungan);
+                return $perhitungan;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = Simulasi::updateOrCreate(
+            [
+                'user_id' => Auth::user()->id_user,
+                'pernyataan_id' => $request->id_pernyataan,
+            ],
+            [
+                'nilai' => $request->ans,
+                'created_at' => Carbon::now()
+            ]
+        );
+        $next = Session::get('next');
+        $next += 1;
+
+        Session::put("next", $next);
+        $i = 0;
+        $question = Pernyataan::all();
+
+        foreach ($question as $quest) {
+            // dd($question);
+            $i++;
+            if ($quest->count() < $next) {
+                User::where('id_user', Auth::user()->id_user)->update(
+                    [
+                        'assesmen' => 'Y'
+                    ]
+                );
+                $rumus = $this->rumus();
+                // dd(rumus());
 
                 $data1 = Hasil::with('user', 'job_family')
                     ->whereHas('user', function ($query) {
@@ -283,6 +287,8 @@ class SimulasiController extends Controller
      */
     public function show(Request $request)
     {
+        $rumus = $this->rumus();
+        // dd($rumus);
         $data = Hasil::with('user', 'job_family')
             ->whereHas('user', function ($query) {
                 $query->where('id_user', Auth::user()->id_user)->where('assesmen', 'Y');
