@@ -78,7 +78,7 @@
         <div class="col col-lg-4">
             <div class="card">
                 <div class="card-header">
-                    <h5>Hasil Rekkomendasi</h5>
+                    <h5>Hasil Rekomendasi</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
                     <div class="chart-overflow" id="hasil-rekomendasi"></div>
@@ -138,7 +138,7 @@
 @push('js')
 <script>
     $(document).ready(function () {
-        
+
     })
 
 </script>

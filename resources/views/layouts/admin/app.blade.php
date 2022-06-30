@@ -73,7 +73,7 @@
                     <div class="logo-wrapper"><a href="{{route('admin.index')}}"><img class="img-fluid"
                                 src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
                     <div class="dark-logo-wrapper"><a href="{{route('admin.index')}}"><img class="img-fluid"
-                                src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
+                                src="{{asset('assets/images/logo/dark-logo.png')}}" alt=""></a></div>
                     <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center"
                             id="sidebar-toggle"> </i></div>
                 </div>
@@ -149,11 +149,15 @@
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a class="nav-link menu-title {{  request()->is('parameter*') ? 'active' : '' }} " href="javascript:void(0)"><i
+                                    <a class="nav-link menu-title {{  request()->is('parameter*') ? 'active' : '' }} {{  request()->is('hasil*') ? 'active' : '' }} " href="javascript:void(0)"><i
                                             data-feather="book-open"></i><span>Assesmen</span></a>
                                     <ul class="nav-submenu menu-content" style="display: none;">
                                         <li><a href="{{route('parameter.index')}}"
                                                 class="{{ request()->routeIs('parameter.index') ? 'active' : ''}}">Parameter Penilaian</a></li>
+                                        <li><a href="{{route('hasil.pegawai')}}"
+                                                class="{{ request()->routeIs('hasil.pegawai') ? 'active' : ''}}">Hasil Assesmen By Pegawai</a></li>
+                                        <li><a href="{{route('hasil.job_family')}}"
+                                                class="{{ request()->routeIs('hasil.job_family') ? 'active' : ''}}">Hasil Assesmen By Job Family</a></li>
                                     </ul>
                                 </li>
                             </ul>

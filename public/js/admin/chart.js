@@ -12,19 +12,19 @@ function drawBasic() {
             success: function (res) {
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'Job Family');
-                data.addColumn('number', 'Total');                 
+                data.addColumn('number', 'Total');
                     $.each(res.rekomendasi, function (key, item) {
                         data.addRows([[item.nama, item.total]]);
                     })
                 var options = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'value' },
-        
+
                 };
                 var chart1 = new google.visualization.PieChart(document.getElementById('potensi-kekuatan'));
                 chart1.draw(data, options);
             }
-        })    
+        })
     }
 }
 
@@ -42,7 +42,7 @@ function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Hari');
             data.addColumn('number', 'Total');
-            // console.log(res.assesmen);
+            console.log(res.assesmen);
             $.each(res.assesmen, function (key, item) {
                     data.addRows([[item.bulan, item.total]]);
             })
@@ -53,9 +53,9 @@ function drawChart() {
                     'width': '98%'
                 },
             };
-        
+
             var chart = new google.charts.Line(document.getElementById('potensi-kelemahan'));
-        
+
             chart.draw(data, google.charts.Line.convertOptions(options));
             $(window).resize(function () {
                 chart.draw(data, options);

@@ -38,11 +38,12 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')
             ->where('id_user', $id)
             ->get();
-            if ($request->ajax()) {
-                return response()->json([
-                    'data' => $getUser
-                ]);
-            }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'data' => $getUser
+            ]);
+        }
         return view('user.index', compact('getUser'));
     }
 
@@ -58,15 +59,15 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->count();
         $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->count();
         $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->count();
-        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%M") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%M")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" AND users.assesmen = "Y" Group by bulan');
+        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%D") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%M")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" AND users.assesmen = "Y" Group by bulan');
         $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
-        ->where('nilai_sec_faktor', '!=', '0')->get();
+            ->where('nilai_sec_faktor', '!=', '0')->get();
         $akhir = array();
         foreach ($job_familys as $j) {
-            $i=0;
+            $i = 0;
             // dd($j->job_family);
             $hasil = DB::select('SELECT * FROM hasil WHERE job_family_id = ? ORDER BY nilai DESC LIMIT 3', [$j->id_job_family]);
-            foreach ($hasil as $h ) {
+            foreach ($hasil as $h) {
                 $i++;
             }
             array_push(

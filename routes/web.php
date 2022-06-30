@@ -77,6 +77,12 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     Route::prefix('hasil')->group(function () {
         Route::get('/index', [HasilController::class, 'index'])->name('hasil.index');
         Route::get('/getHasil', [HasilController::class, 'getHasil'])->name('hasil.getHasil');
+        Route::get('/pegawai', [HasilController::class, 'hasil_pegawai'])->name('hasil.pegawai');
+        Route::get('/job_family', [HasilController::class, 'hasil_job_family'])->name('hasil.job_family');
+        Route::get('/show/pegawai/{id}', [HasilController::class, 'show_pegawai'])->name('hasil.show.pegawai');
+        Route::get('/show/job_family/{id}', [HasilController::class, 'show_job_family'])->name('hasil.show.job_family');
+        Route::delete('/destroy/pegawai/{id}', [HasilController::class, 'destroy_pegawai'])->name('hasil.destroy.pegawai');
+        Route::delete('/destroy/job_family/{id}', [HasilController::class, 'destroy_job_family'])->name('hasil.destroy.job_family');
     });
     Route::prefix('jabatan')->group(function () {
         Route::get('/getJabatan', [JabatanController::class, 'getJabatan'])->name('jabatan.getJabatan');

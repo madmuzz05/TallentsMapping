@@ -20,12 +20,12 @@ function drawBasic() {
                 var options = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
-        
+
                 };
                 var chart1 = new google.visualization.PieChart(document.getElementById('potensi-kekuatan'));
                 chart1.draw(data, options);
             }
-        })    
+        })
     }
     if ($('#potensi-kelemahan').length > 0) {
         $.ajax({
@@ -47,14 +47,14 @@ function drawBasic() {
                 var options = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
-        
+
                 };
                 var chart1 = new google.visualization.PieChart(document.getElementById('potensi-kelemahan'));
                 chart1.draw(data, options);
             }
         })
     }
-    
+
     if ($('#hasil-rekomendasi').length > 0) {
         $.ajax({
             type: "GET",
@@ -71,14 +71,15 @@ function drawBasic() {
                 var options = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
-        
+                    sliceVisibilityThreshold: 0
+
                 };
                 var chart3 = new google.visualization.PieChart(document.getElementById('hasil-rekomendasi'));
                 chart3.draw(data, options);
             }
         })
     }
-    
-    
-    
+
+
+
 }

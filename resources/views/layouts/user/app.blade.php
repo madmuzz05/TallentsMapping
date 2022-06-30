@@ -75,7 +75,7 @@
                     <div class="logo-wrapper"><a href="{{route('index')}}"><img class="img-fluid"
                                 src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
                     <div class="dark-logo-wrapper"><a href="{{route('index')}}"><img class="img-fluid"
-                                src="{{asset('assets/images/logo/LogoTm.png')}}" alt=""></a></div>
+                                src="{{asset('assets/images/logo/dark-logo.png')}}" alt=""></a></div>
                     <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center"
                             id="sidebar-toggle"> </i></div>
                 </div>
@@ -137,7 +137,7 @@
                                                 class="{{ request()->routeIs('index') ? 'active' : ''}}">Dashboard</a>
                                         </li>
                                     </ul>
-                                    <div id="hasil_" style="display: none;">
+                                    <div id="hasil_">
                                         <a class="nav-link menu-title {{  request()->is('simulasi') ? 'active' : '' }}"
                                             href="javascript:void(0)"><i data-feather="book-open"></i><span>Hasil</span></a>
                                         <ul class="nav-submenu menu-content" style="display: none;">
@@ -245,6 +245,9 @@
                     $.each(res.data, function (key, item) {
                         if (item.assesmen = "Y") {
                             document.getElementById("hasil_").style.display = "block";
+                        }
+                        if (item.assesmen = "N") {
+                            document.getElementById("hasil_").style.display = "none";
                         }
                     })
                 }
