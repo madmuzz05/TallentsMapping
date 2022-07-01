@@ -105,6 +105,7 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$d->job_family->job_family}}</td>
                                     <td>{{$d->user->nama}}</td>
+                                    </tr>
                                     @endforeach
                             </tbody>
                         </table>

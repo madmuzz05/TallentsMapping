@@ -38,7 +38,7 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')
             ->where('id_user', $id)
             ->get();
-            // dd($getUser);
+        // dd($getUser);
 
         if ($request->ajax()) {
             return response()->json([
