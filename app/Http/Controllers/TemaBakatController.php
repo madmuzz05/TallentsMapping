@@ -20,7 +20,7 @@ class TemaBakatController extends Controller
      */
     public function index()
     {
-       
+
         return view('admin.tema_bakat.index');
     }
 
@@ -44,9 +44,9 @@ class TemaBakatController extends Controller
     }
     function getTemaBakatSelect2(Request $request)
     {
-        $data = TemaBakat::all();
+        $data = TemaBakat::orderBy('nama_tema', 'asc')->get();
         if (isset($request->q)) {
-            $data = TemaBakat::where('nama_tema', 'like', "%".$request->q."%")->get();
+            $data = TemaBakat::where('nama_tema', 'like', "%" . $request->q . "%")->get();
         }
         return $data;
     }

@@ -23,20 +23,6 @@ class HasilController extends Controller
         return view('admin.hasil.end');
     }
 
-    public function getHasil()
-    {
-        $users = User::where('hak_akses', 'User')->where('assesmen', 'Y')->get();
-        $simulasis = Simulasi::with('user', 'pernyataan')->get();
-        $parameters = Parameter_Penilaian::all();
-        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
-            ->where('nilai_sec_faktor', '!=', '0')->get();
-        return response()->json([
-            'users' => $users,
-            'simulasis' => $simulasis,
-            'parameters' => $parameters,
-            'job_familys' => $job_familys
-        ]);
-    }
     public function hasil_pegawai(Request $request)
     {
         $rumus = (new SimulasiController)->rumus();

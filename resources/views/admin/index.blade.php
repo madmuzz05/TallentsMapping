@@ -96,7 +96,7 @@
                                     <th>No</th>
                                     <th>Job Family</th>
                                     <th>Rekomendasi User</th>
-                                    <!-- <th>Departemen</th> -->
+                                    <th>Nilai</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +105,8 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{$d->job_family->job_family}}</td>
                                     <td>{{$d->user->nama}}</td>
-                                    </tr>
+                                    <td>{{$d->nilai}}</td>
+                                </tr>
                                     @endforeach
                             </tbody>
                         </table>
@@ -123,8 +124,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama User</th>
-                                    <th>Job Family<x/th>
-                                    <th>Nilai<x/th>
+                                    <th>Job Family</th>
+                                    <th>Nilai</th>
                                     <!-- <th>Departemen</th> -->
                                 </tr>
                             </thead>
@@ -135,6 +136,7 @@
                                     <td>{{$d->user->nama}}</td>
                                     <td>{{$d->job_family->job_family}}</td>
                                     <td>{{$d->nilai}}</td>
+                                </tr>
                                     @endforeach
                             </tbody>
                         </table>

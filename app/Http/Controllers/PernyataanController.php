@@ -31,9 +31,9 @@ class PernyataanController extends Controller
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
         ])
-        ->orderBy('tema_bakat', 'ASC')
+            ->orderBy('tema_bakat', 'ASC')
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
-            // dd($data);
+        // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
@@ -87,10 +87,9 @@ class PernyataanController extends Controller
             ];
             Pernyataan::create($data);
         }
-            return response()->json([
-                'status' => 200
-            ]);
-        
+        return response()->json([
+            'status' => 200
+        ]);
     }
 
     /**
@@ -114,9 +113,13 @@ class PernyataanController extends Controller
      * @param  \App\Models\Pernyataan  $pernyataan
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pernyataan $pernyataan)
+    public function edit(Request $request, $id)
     {
-        //
+        $data = Pernyataan::with('tema_bakat')
+            ->select('pernyataan.*')->where('tema_bakat_id', $id)->get();
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
     }
 
     /**
@@ -126,12 +129,20 @@ class PernyataanController extends Controller
      * @param  \App\Models\Pernyataan  $pernyataan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $data = Pernyataan::where('id_pernyataan', $id)->update([
-            'pernyataan' => request('pernyataan'),
-            'tema_bakat_id' => request('tema_bakat_id')
-        ]);
+        $tema_bakat = $request->tema_bakat_edit;
+        $pernyataan = $request->pernyataan_edit;
+        $nilai = $request->nilai_edit;
+        $id = $request->id_pernyataan_edit;
+        for ($count = 0; $count < count($tema_bakat); $count++) {
+            $data = [
+                'tema_bakat_id' => $tema_bakat[$count],
+                'pernyataan'  => $pernyataan[$count],
+                'bobot_nilai'  => $nilai[$count]
+            ];
+            Pernyataan::where('id_pernyataan', $id[$count])->update($data);
+        }
         if ($request->ajax()) {
             return response()->json(['status' => 200]);
         }
@@ -164,7 +175,7 @@ class PernyataanController extends Controller
      */
     public function destroy($id)
     {
-        Pernyataan::destroy($id);
+        Pernyataan::where('tema_bakat_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);

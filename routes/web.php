@@ -110,7 +110,8 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
         Route::get('/getPernyataan', [PernyataanController::class, 'getPernyataan'])->name('pernyataan.getPernyataan');
         Route::get('/index', [PernyataanController::class, 'index'])->name('pernyataan.index');
         Route::post('/store', [PernyataanController::class, 'store'])->name('pernyataan.store');
-        Route::put('/update/{id}', [PernyataanController::class, 'update'])->name('pernyataan.update');
+        Route::get('/edit/{id}', [PernyataanController::class, 'edit'])->name('pernyataan.edit');
+        Route::post('/update', [PernyataanController::class, 'update'])->name('pernyataan.update');
         Route::delete('/destroy/{id}', [PernyataanController::class, 'destroy'])->name('pernyataan.destroy');
         Route::get('/detail/{id}', [PernyataanController::class, 'show'])->name('pernyataan.detail');
         Route::post('/import', [PernyataanController::class, 'import'])->name('pernyataan.import');

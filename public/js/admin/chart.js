@@ -34,13 +34,16 @@ google.charts.load('current', {
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const d = new Date();
     $.ajax({
         type: "GET",
         url: '/admin/index',
         dataType: 'json',
         success: function (res) {
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Hari');
+            data.addColumn('string',  month[d.getMonth()]);
             data.addColumn('number', 'Total');
             console.log(res.assesmen);
             $.each(res.assesmen, function (key, item) {

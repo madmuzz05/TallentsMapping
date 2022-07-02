@@ -58,8 +58,8 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Pernyataan</th>
                                     <th>Tema Bakat</th>
+                                    <th>Pernyataan</th>
                                     <th>Bobot Nilai</th>
                                     <th>Action</th>
                                 </tr>
@@ -68,8 +68,8 @@
                             <tfoot>
                                 <tr>
                                     <th>No</th>
-                                    <th>Pernyataan</th>
                                     <th>Tema Bakat</th>
+                                    <th>Pernyataan</th>
                                     <th>Bobot Nilai</th>
                                     <th>Action</th>
                                 </tr>
@@ -155,16 +155,17 @@
                                 </thead>
                                 <tbody id="body">
                                     <tr>
-                                        <td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>
-                                        <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
-                                                name="tema_bakat_create[]" id="tema_bakat_create"
-                                                required></select></td>
-                                        <td><input class="form-control digits nilai" type="text"
-                                                name="nilai_create[]" id="nilai_create"
-                                                placeholder="Input nilai dalam bentuk angka"
+                                        <td><textarea class="form-control pernyataan_create" id="pernyataan_create"
+                                                name="pernyataan_create[]" rows="3" name="pernyataan_create"
+                                                required></textarea></td>
+                                        <td><select class="tema_bakat_select2 col-sm-12 tema_bakat_create"
+                                                name="tema_bakat_create[]" id="tema_bakat_create" required></select>
+                                        </td>
+                                        <td><input class="form-control digits nilai" type="text" name="nilai_create[]"
+                                                id="nilai_create" placeholder="Input nilai dalam bentuk angka"
                                                 required /></td>
-                                        <td><button type="button"
-                                                class="btn btn-sm btn-danger remove">Delete Field</button>
+                                        <td><button type="button" class="btn btn-sm btn-danger remove">Delete
+                                                Field</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -191,27 +192,27 @@
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input type="hidden" class="id_pernyataan_edit" id="id_pernyataan_edit" name="id_pernyataan_edit"
-                    value="">
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Pernyataan</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control pernyataan_edit" id="pernyataan_edit" rows="3"
-                            name="pernyataan_edit" required></textarea>
+                <form method="post" id="edit_form">
+                    <div class="row mr-5 ml-5">
+                        <div class="col-lg-12 table-responsive-lg text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>Pernyataan</td>
+                                        <td>Tema Bakat</td>
+                                        <td>Bobot Nilai</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="body_edit">
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-3 col-form-label">Tema Bakat</label>
-                    <div class="col-sm-9">
-                        <select class="col-sm-12 tema_bakat_select2 add_option" name="tema_bakat_edit"
-                            id="tema_bakat_edit">
-                        </select>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="edit-data" type="button">Simpan</button>
+                <button class="btn btn-primary" id="edit-data" type="submit">Simpan</button>
+                </form>
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -273,12 +274,12 @@
                     searchable: false
                 },
                 {
-                    data: 'pernyataan',
-                    name: 'pernyataan.pernyataan'
-                },
-                {
                     data: 'tema_bakat',
                     name: 'tema_bakat'
+                },
+                {
+                    data: 'pernyataan',
+                    name: 'pernyataan.pernyataan'
                 },
                 {
                     data: 'bobot_nilai',
@@ -290,7 +291,7 @@
                     orderable: false,
                     searchable: false
                 }
-            ]
+            ],
         })
         $('#search_form').on('submit', function (e) {
             table.draw()
@@ -302,6 +303,9 @@
             table.draw()
             e.preventDefault();
         });
+        $('#editModal').on("hide.bs.modal", function () {
+            $('.body_edit').empty()
+        })
 
         var html = '';
 
@@ -310,7 +314,7 @@
             html +=
                 '<td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>'
             html +=
-                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
+                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat_create" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
             html +=
                 '<td><input class="form-control digits nilai" type="text" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" required/></td>'
             html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
@@ -352,78 +356,156 @@
         $(document).on('click', '.remove', function () {
             $(this).closest("tr").remove();
         });
+
         var id_modal_edit = "";
         $(document).on("click", ".edit-btn", function () {
             var data = table.row($(this).closest('tr')).data();
+            // console.log(data);
             id_modal_edit = data.id_pernyataan;
-            $('.pernyataan_edit').val(data.pernyataan)
-            $('.add_option').append('<option selected value="' + data.tema_bakat_id + '">' + data
-                .tema_bakat +
-                '</option>').trigger('change')
+            load_ajax(data.tema_bakat_id)
         });
+
+        function load_ajax(id_data) {
+            $.ajax({
+                type: "GET",
+                url: "/pernyataan/edit/" + id_data,
+                dataType: 'json',
+                success: function (res) {
+                    var html_edit = '';
+                    $.each(res.data, function (key, item) {
+                        // console.log(item.tema_bakat_id);
+                        html_edit = '<tr>'
+                        html_edit +=
+                            '<td><textarea class="form-control pernyataan_edit" id="pernyataan_edit" name="pernyataan_edit[]" rows="3" name="pernyataan_edit" required>' +
+                            item.pernyataan + '</textarea></td>'
+                        html_edit +=
+                            '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_edit[]" id="tema_bakat_edit" required>'
+                        html_edit +=
+                            '</select></td>'
+                        html_edit +=
+                            '<td><input class="form-control digits nilai" type="text" name="nilai_edit[]" id="nilai_edit" value="' +
+                            item.bobot_nilai +
+                            '" placeholder="Input nilai dalam bentuk angka" required/></td>'
+                        html_edit += '</tr>'
+                        html_edit +=
+                            '<input type="hidden" id="id_pernyataan" name="id_pernyataan_edit[]" value="' +
+                            item.id_pernyataan + '">'
+                        $('.body_edit').append(html_edit);
+                        $('.tema_bakat').append('<option selected value="' + item
+                            .tema_bakat_id + '">' + item.tema_bakat.nama_tema +
+                            '</option>')
+
+
+                    })
+
+                    $('.tema_bakat_select2').select2({
+                        placeholder: 'Select Data',
+                        allowClear: true,
+                        minimumInputLength: 0,
+                        ajax: {
+                            dataType: "json",
+                            method: 'POST',
+                            url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                            processResults: function (data) {
+                                return {
+                                    results: data.map(function (item) {
+                                        item.id = item.id_tema_bakat;
+                                        item.text = item.nama_tema;
+                                        return item;
+                                    })
+                                };
+                            },
+                        },
+                        escapeMarkup: function (m) {
+                            return m;
+                        }
+                    }).on('select2:select', function (e) {});
+                }
+            })
+        }
 
         var id_pernyataan_del = ""
         $(document).on("click", ".delete-btn", function () {
             var item = table.row($(this).closest('tr')).data();
             document.getElementById('bodi_hapus').innerHTML =
                 'Apakah anda yakin akan menghapus data ?';
-            id_pernyataan_del = item.id_pernyataan;
+            id_pernyataan_del = item.tema_bakat_id;
+
         });
 
         $('#create_form').on("submit", function (e) {
             // console.log($(".nilai").val());
             var arr = document.getElementsByClassName('nilai');
-    var tot=0;
-    for(var i=0;i<arr.length;i++){
-        if(parseFloat(arr[i].value))
-            tot += parseFloat(arr[i].value);
-    }
-    // console.log(tot);
-    if (tot > 1) {
-        alert("Total bobot nilai tidak boleh dari 1");
-    }else{
-        // console.log('n');
-        $.ajax({
-                type: "POST",
-                url: "{{ route('pernyataan.store') }}",
-                data: $(this).serialize(),
-                dataType: 'json',
-                beforeSend: function () {
-                    $('#create-data').attr('disabled', 'disabled');
-                },
-                cache: false,
-                success: function (res) {
-                    if (res.status == 200) {
-                        $('#create-data').attr('disabled', false);
-                        table.draw()
-                        document.getElementById("create_form").reset();
-                        // $("select").val(null);
-                        $("#createModal").modal('hide');
+            var tot = 0;
+            for (var i = 0; i < arr.length; i++) {
+                if (parseFloat(arr[i].value))
+                    tot += parseFloat(arr[i].value);
+            }
+            // console.log(tot);
+            if (tot > 1) {
+                alert("Total bobot nilai tidak boleh dari 1");
+            } else {
+                // console.log('n');
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('pernyataan.store') }}",
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('#create-data').attr('disabled', 'disabled');
+                    },
+                    cache: false,
+                    success: function (res) {
+                        if (res.status == 200) {
+                            $('#create-data').attr('disabled', false);
+                            table.draw()
+                            document.getElementById("create_form").reset();
+                            // $("select").val(null);
+                            $("#createModal").modal('hide');
+                        }
                     }
-                }
-            })
-    }
+                })
+            }
             e.preventDefault();
-            
+
         });
 
-        $(document).on("click", "#edit-data", function () {
-            $.ajax({
-                type: "PUT",
-                url: '/pernyataan/update/' + id_modal_edit,
-                data: {
-                    pernyataan: $("#pernyataan_edit").val(),
-                    tema_bakat_id: $("#tema_bakat_edit").val()
-                },
-                cache: false,
-                success: function (res) {
-                    console.log(res.status);
-                    if (res.status == 200) {
-                        $("#editModal").modal('hide');
-                        table.draw()
+        $('#edit_form').on("submit", function (e) {
+            // console.log($(".nilai").val());
+            var arr = document.getElementsByClassName('nilai');
+            var tot = 0;
+            for (var i = 0; i < arr.length; i++) {
+                if (parseFloat(arr[i].value))
+                    tot += parseFloat(arr[i].value);
+            }
+            // console.log(tot);
+            if (tot > 1) {
+                alert("Total bobot nilai tidak boleh lebih dari 1");
+            } else if (tot < 1) {
+                alert("Total bobot nilai tidak boleh kurang dari 1");
+            } else {
+                // console.log('n');
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('pernyataan.update') }}",
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('#create-data').attr('disabled', 'disabled');
+                    },
+                    cache: false,
+                    success: function (res) {
+                        if (res.status == 200) {
+                            $('#create-data').attr('disabled', false);
+                            table.draw()
+                            document.getElementById("edit_form").reset();
+                            // $("select").val(null);
+                            $("#editModal").modal('hide');
+                        }
                     }
-                }
-            })
+                })
+            }
+            e.preventDefault();
         });
 
         $(document).on("click", ".detail-btn", function () {

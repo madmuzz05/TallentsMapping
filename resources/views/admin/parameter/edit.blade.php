@@ -26,11 +26,13 @@
                         <div class="col">
                             @foreach ($job_family as $item)
                             <form method="post" id="create_form">
-                                <input type="hidden" id="id_job_family" name="id_job_family" value="{{$item->id_job_family}}">
+                                <input type="hidden" id="id_job_family" name="id_job_family"
+                                    value="{{$item->id_job_family}}">
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Job Family</label>
                                     <div class="col-sm-9">
-                                    <input class="form-control job_family" type="text" name="job_family_edit[]" value="{{$item->job_family}}" id="_family_edit" readonly required/>
+                                        <input class="form-control job_family" type="text" name="job_family_edit[]"
+                                            value="{{$item->job_family}}" id="_family_edit" readonly required />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -63,7 +65,6 @@
                                                     <td>Tema Bakat</td>
                                                     <td>Faktor Penilaian</td>
                                                     <td>Nilai GAP</td>
-                                                            
                                                 </tr>
                                             </thead>
                                             <tbody class="body_edit">
@@ -122,47 +123,49 @@
                         '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" value="' +
                         item.nilai +
                         '" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
-                    
-                        html_edit += '<input type="hidden" id="id_parameter" name="id_parameter[]" value="'+item.id_parameter_penilaian+'">'
+
+                    html_edit +=
+                        '<input type="hidden" id="id_parameter" name="id_parameter[]" value="' +
+                        item.id_parameter_penilaian + '">'
                     html_edit += '</tr>'
-                    
+
 
                     $('.body_edit').append(html_edit);
                     $('.tema_bakat_select2').select2({
-                            placeholder: 'Select Data',
-                            allowClear: true,
-                            minimumInputLength: 0,
-                            ajax: {
-                                dataType: "json",
-                                method: 'POST',
-                                url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
-                                processResults: function (data) {
-                                    return {
-                                        results: data.map(function (
-                                            item) {
-                                            item.id = item
-                                                .id_tema_bakat;
-                                            item.text = item
-                                                .nama_tema;
-                                            return item;
-                                        })
-                                    };
-                                },
+                        placeholder: 'Select Data',
+                        allowClear: true,
+                        minimumInputLength: 0,
+                        ajax: {
+                            dataType: "json",
+                            method: 'POST',
+                            url: "{{route('tema_bakat.getTemaBakatSelect2')}}",
+                            processResults: function (data) {
+                                return {
+                                    results: data.map(function (
+                                        item) {
+                                        item.id = item
+                                            .id_tema_bakat;
+                                        item.text = item
+                                            .nama_tema;
+                                        return item;
+                                    })
+                                };
                             },
-                            escapeMarkup: function (m) {
-                                return m;
-                            }
-                        }).on('select2:select', function (e) {});
+                        },
+                        escapeMarkup: function (m) {
+                            return m;
+                        }
+                    }).on('select2:select', function (e) {});
 
-                        $('.js-example-basic-single').select2({
-                            placeholder: 'Select an option',
-                            allowClear: true,
-                        });
+                    $('.js-example-basic-single').select2({
+                        placeholder: 'Select an option',
+                        allowClear: true,
+                    });
 
                 })
             }
         })
-    
+
         $('#create_form').on("submit", function (e) {
             e.preventDefault();
             $.ajax({
