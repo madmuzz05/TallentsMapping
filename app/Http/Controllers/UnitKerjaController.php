@@ -28,22 +28,24 @@ class UnitKerjaController extends Controller
     {
         $data = UnitKerja::select(
             'unit_kerja.*',
-            DB::raw('kode as kode'), 
-            DB::raw('job_family as job_family') )
+            DB::raw('kode as kode'),
+            DB::raw('job_family as job_family')
+        )
+            ->where('unit_kerja.instansi_id', Auth::user()->instansi_id)
             ->leftjoin('job_family', 'job_family.id_job_family', '=', 'unit_kerja.job_family_id');
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
-                ->filter(function ($query) use ($request)
-                {
-                    if (!empty($request->get('job_family'))) {
-                        $query->where('unit_kerja.job_family_id', 'like', "%{$request->get('job_family')}%");
+                ->filter(
+                    function ($query) use ($request) {
+                        if (!empty($request->get('job_family'))) {
+                            $query->where('unit_kerja.job_family_id', 'like', "%{$request->get('job_family')}%");
+                        }
+                        if (!empty($request->get('departemen'))) {
+                            $query->where('unit_kerja.id_unit_kerja', 'like', "%{$request->get('departemen')}%");
+                        }
                     }
-                    if (!empty($request->get('departemen'))) {
-                        $query->where('unit_kerja.id_unit_kerja', 'like', "%{$request->get('departemen')}%");
-                    }
-                }
                 )
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_unit_kerja . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
@@ -58,9 +60,11 @@ class UnitKerjaController extends Controller
     }
     function getUnitKerjaSelect2(Request $request)
     {
-        $data = UnitKerja::all();
+        // $data = UnitKerja::all();
+        $data = UnitKerja::where('instansi_id', Auth::user()->instansi_id)->get();
+        // dd($data);
         if (isset($request->q)) {
-            $data = UnitKerja::where('departemen', 'like', "%".$request->q."%")->get();
+            $data = UnitKerja::where('departemen', 'like', "%" . $request->q . "%")->get();
         }
         return $data;
     }
@@ -86,7 +90,8 @@ class UnitKerjaController extends Controller
         if ($request->ajax()) {
             UnitKerja::create([
                 'job_family_id' => request('job_family_id'),
-                'departemen' => request('departemen')
+                'departemen' => request('departemen'),
+                'instansi_id' => Auth::user()->instansi_id
             ]);
             return response()->json([
                 'status' => 200
@@ -104,9 +109,10 @@ class UnitKerjaController extends Controller
     {
         $data = UnitKerja::select(
             '*',
-            DB::raw('kode as kode'), 
-            DB::raw('job_family as job_family') )
-            ->leftjoin('job_family', 'job_family.id_job_family', '=', 'unit_kerja.job_family_id')->where('id_unit_kerja', $id)->get();
+            DB::raw('kode as kode'),
+            DB::raw('job_family as job_family')
+        )
+            ->leftjoin('job_family', 'job_family.id_job_family', '=', 'unit_kerja.job_family_id')->where('id_unit_kerja', $id)->where('unit_kerja.instansi_id', Auth::user()->instansi_id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
         }
@@ -133,9 +139,11 @@ class UnitKerjaController extends Controller
     public function update(Request $request, $id)
     {
         UnitKerja::where('id_unit_kerja', $id)
-            ->update([ 
+            ->update([
                 'job_family_id' => request('job_family_id'),
-                'departemen' => request('departemen')]);
+                'departemen' => request('departemen'),
+                'instansi_id' => Auth::user()->instansi_id
+            ]);
         if ($request->ajax()) {
             return response()->json(['status' => 200]);
         }

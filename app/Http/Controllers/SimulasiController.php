@@ -32,6 +32,7 @@ class SimulasiController extends Controller
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
         ])
+            ->where('pernyataan.instansi_id', Auth::user()->instansi_id)
             ->orderBy('tema_bakat', 'ASC')
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->first();
 
@@ -65,8 +66,7 @@ class SimulasiController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('hak_akses', 'User')->where('assesmen', 'Y');
             })->get();
-        $bobot_nilai = array();
-        $tema = TemaBakat::orderBy('nama_tema', 'asc')->get();
+        $tema = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'asc')->get();
         $bobot_pernyataan = array();
         $nilai_pernyataan = 0;
         $iteration = 0;
@@ -79,7 +79,8 @@ class SimulasiController extends Controller
                         DB::raw('id_tema_bakat as id_tema')
                     ])
                         ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')
-                        ->where('tema_bakat_id', $t->id_tema_bakat)->get();
+                        ->where('pernyataan.instansi_id', Auth::user()->instansi_id)
+                        ->where('pernyataan.tema_bakat_id', $t->id_tema_bakat)->get();
                     // dd($pernyataan);
                     foreach ($pernyataan as $p) {
                         if ($hs->pernyataan_id == $p->id_pernyataan) {
@@ -100,7 +101,7 @@ class SimulasiController extends Controller
         }
         // dd($bobot_pernyataan);
         $akhir_bobot = array();
-        $user =  User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->get();
+        $user =  User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->where('instansi_id', Auth::user()->instansi_id)->get();
         foreach ($user as $u) {
             foreach ($tema as $t) {
                 foreach ($bobot_pernyataan as $bp) {
@@ -126,10 +127,11 @@ class SimulasiController extends Controller
     public function rumus()
     {
         $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
-            ->where('nilai_sec_faktor', '!=', '0')->get();
-        
-           $akhir_bobot = $this->pembobotan_pernyataan();
+            ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id)->get();
+
+        $akhir_bobot = $this->pembobotan_pernyataan();
         // dd($hasil);
+        // $bobot_nilai = array();
         foreach ($job_familys as $j) {
             $parameter = Parameter_Penilaian::where('job_family_id', $j->id_job_family)->get();
             $bobot_nilai = 0;
@@ -185,7 +187,11 @@ class SimulasiController extends Controller
             }
         }
 
-        $bobot = BobotNilai::with('user', 'parameter')->get();
+        $bobot = BobotNilai::with('user', 'parameter')
+            ->whereHas('user', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id);
+            })
+            ->get();
         // dd($bobot);
         $data_bobot = array();
         foreach ($bobot as $row) {
@@ -202,7 +208,7 @@ class SimulasiController extends Controller
         }
         // dd($data_bobot);
         $user = User::where('hak_akses', 'User')
-            ->where('assesmen', 'Y')->get();
+            ->where('assesmen', 'Y')->where('instansi_id', Auth::user()->instansi_id)->get();
         $perhitungan = array();
         // dd($user);
         $core = array();
@@ -269,6 +275,7 @@ class SimulasiController extends Controller
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
         ])
+            ->where('pernyataan.instansi_id', Auth::user()->instansi_id)
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->get();
         $data = Simulasi::updateOrCreate(
             [
@@ -313,7 +320,7 @@ class SimulasiController extends Controller
                     );
                 }
 
-                $unit = UnitKerja::whereIn('job_family_id', $id_job)->orderBy('departemen', 'ASC')->get();
+                $unit = UnitKerja::whereIn('job_family_id', $id_job)->where('instansi_id', Auth::user()->instansi_id)->orderBy('departemen', 'ASC')->get();
                 $sql1 = 'SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
         ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 5';
                 $kekuatan = DB::select($sql1, [Auth::user()->id_user]);
@@ -382,7 +389,7 @@ class SimulasiController extends Controller
                 )
             );
         }
-        $unit = UnitKerja::whereIn('job_family_id', $id_job)->orderBy('departemen', 'ASC')->get();
+        $unit = UnitKerja::whereIn('job_family_id', $id_job)->where('instansi_id', Auth::user()->instansi_id)->orderBy('departemen', 'ASC')->get();
         $sql1 = 'SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
         ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 5';
         $kekuatan = DB::select($sql1, [Auth::user()->id_user]);

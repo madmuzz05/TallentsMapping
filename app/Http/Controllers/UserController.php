@@ -42,8 +42,10 @@ class UserController extends Controller
             'users.*',
             DB::raw('departemen as nama_unit'),
         ])
-            ->leftjoin('unit_kerja', 'unit_kerja.id_unit_kerja', '=', 'users.unit_kerja_id');
+            ->leftjoin('unit_kerja', 'unit_kerja.id_unit_kerja', '=', 'users.unit_kerja_id')
+            ->where('users.instansi_id', Auth::user()->instansi_id);
         // $data = User::with('jabatan', 'unit_kerja')->select('users.*', 'users.id_user as id_user');
+        // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
@@ -66,7 +68,7 @@ class UserController extends Controller
                     $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_user . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['action','unit_kerja'])
+                ->rawColumns(['action', 'unit_kerja'])
                 ->make(true);
         }
         return response()->json([
@@ -100,7 +102,6 @@ class UserController extends Controller
             'alamat' => 'required',
             'telepon' => 'required',
             'email' => 'required',
-            'password' => 'required|confirmed|min:6',
         ]);
         if ($validator->fails()) {
             return Response::json(array(
@@ -108,7 +109,9 @@ class UserController extends Controller
                 'errors' => $validator->errors()->all()
             ));
         }
-        User::create($request->all());
+        $data = $request->all();
+        $data['instansi_id'] = Auth::user()->instansi_id;
+        User::create($data);
         return response()->json([
             'status' => 200
         ]);
@@ -122,7 +125,7 @@ class UserController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = User::with('unit_kerja')
+        $data = User::with('unit_kerja', 'instansi')
             ->select('users.*')->where('id_user', $id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
@@ -166,6 +169,7 @@ class UserController extends Controller
                     'telepon' => request('telepon'),
                     'email' => request('email'),
                     'password' => Hash::make(request('password')),
+                    'instansi_id' => Auth::user()->instansi_id,
                 ]);
 
             return response()->json([
@@ -195,6 +199,7 @@ class UserController extends Controller
                     'alamat' => request('alamat'),
                     'telepon' => request('telepon'),
                     'email' => request('email'),
+                    'instansi_id' => Auth::user()->instansi_id,
                 ]);
             return response()->json([
                 'status' => 200

@@ -60,4 +60,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
     }
+    public function instansi()
+    {
+        return $this->belongsTo(Instansi::class, 'instansi_id');
+    }
 }

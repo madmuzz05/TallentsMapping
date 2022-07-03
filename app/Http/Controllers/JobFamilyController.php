@@ -6,6 +6,7 @@ use App\Models\JobFamily;
 use Illuminate\Http\Request;
 use App\Exports\JobFamilyExport;
 use App\Imports\JobFamilyImport;
+use App\Models\BobotNilai;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -19,28 +20,30 @@ class JobFamilyController extends Controller
      */
     public function index()
     {
+
+        // dd($bobot);
         return view('admin.job_family.index');
     }
 
     public function getJobFamily()
     {
-        $data = JobFamily::all();
+        $data = JobFamily::where('instansi_id', Auth::user()->instansi_id);
         return  DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
-                    $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '<a href="#editModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-secondary btn-sm edit-btn"><i class="fa-regular fa-pen-to-square"></i> Edit</a>';
+                $btn = $btn . '<a href="#deleteModal" data-bs-toggle="modal" data-id="' . $row->id_job_family . '" class="me-2 mb-2 btn btn-outline-danger btn-sm delete-btn"><i class="fa-regular fa-trash-can"></i> Delete</a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
         return response()->json([
             'data' => $data
         ]);
     }
     public function getJobFamilySelect2(Request $request)
     {
-        $data = JobFamily::all();
+        $data = JobFamily::where('instansi_id', Auth::user()->instansi_id)->get();
         if (isset($request->q)) {
             $data = JobFamily::where('job_family', 'like', "%" . $request->q . "%")->get();
         }
@@ -68,7 +71,8 @@ class JobFamilyController extends Controller
         if ($request->ajax()) {
             JobFamily::create([
                 'kode' => request('kode'),
-                'job_family' => request('job_family')
+                'job_family' => request('job_family'),
+                'instansi_id' => Auth::user()->instansi_id
             ]);
             return response()->json([
                 'status' => 200
@@ -84,7 +88,7 @@ class JobFamilyController extends Controller
      */
     public function show($id)
     {
-        $data = JobFamily::where('id_job_family', $id)->get();
+        $data = JobFamily::where('id_job_family', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         // dd($data);
         return response()->json([
             "data" => $data
@@ -111,9 +115,10 @@ class JobFamilyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = JobFamily::where('id_job_family', $id)->update([
+        $data = JobFamily::where('id_job_family', $id)->where('instansi_id', Auth::user()->instansi_id)->update([
             'kode' => request('kode'),
-            'job_family' => request('job_family')
+            'job_family' => request('job_family'),
+            'instansi_id' => Auth::user()->instansi_id
         ]);
         if ($request->ajax()) {
             return response()->json(['status' => 200]);

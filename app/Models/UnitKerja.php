@@ -15,15 +15,7 @@ class UnitKerja extends Model
     protected $table = 'unit_kerja';
 
     protected $primaryKey = 'id_unit_kerja';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'job_family_id',
-        'departemen',
-    ];
+    protected $guarded = ['id_unit_kerja'];
 
     public function job_family()
     {

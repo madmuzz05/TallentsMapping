@@ -9,6 +9,7 @@
             <th><b>Email</b></th>
             <th><b>Hak Akses</b></th>
             <th><b>Departemen</b></th>
+            <th><b>Instansi</b></th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
             <td>{{$item->email}}</td>
             <td>{{$item->hak_akses}}</td>
             <td>{{$item->unit_kerja->departemen}}</td>
+            <td>{{$item->instansi->nama_instansi}}</td>
         </tr>
         @endforeach
     </tbody>

@@ -280,8 +280,7 @@
                     document.getElementById('nama').innerHTML = item.nama;
                     document.getElementById('alamat').innerHTML = ":  " + item.alamat;
                     document.getElementById('email').innerHTML = ":  " + item.email;
-                    document.getElementById('jabatan').innerHTML = item.jabatan
-                        .kategori_jabatan
+                    document.getElementById('jabatan').innerHTML = item.instansi.nama_instansi
                     document.getElementById('unitKerja').innerHTML = ":  " + item.unit_kerja
                         .departemen
                     document.getElementById('no_pegawai').innerHTML = ":  " + item

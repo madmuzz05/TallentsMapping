@@ -30,7 +30,7 @@ class PernyataanController extends Controller
             'pernyataan.*',
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
-        ])
+        ])->where('pernyataan.instansi_id', Auth::user()->instansi_id)
             ->orderBy('tema_bakat', 'ASC')
             ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id');
         // dd($data);
@@ -83,7 +83,8 @@ class PernyataanController extends Controller
             $data = [
                 'tema_bakat_id' => $tema_bakat[$count],
                 'pernyataan'  => $pernyataan[$count],
-                'bobot_nilai'  => $nilai[$count]
+                'bobot_nilai'  => $nilai[$count],
+                'instansi_id' => Auth::user()->instansi_id
             ];
             Pernyataan::create($data);
         }
@@ -101,7 +102,7 @@ class PernyataanController extends Controller
     public function show(Request $request, $id)
     {
         $data = Pernyataan::with('tema_bakat')
-            ->select('pernyataan.*')->where('id_pernyataan', $id)->get();
+            ->select('pernyataan.*')->where('id_pernyataan', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
         }
@@ -116,7 +117,7 @@ class PernyataanController extends Controller
     public function edit(Request $request, $id)
     {
         $data = Pernyataan::with('tema_bakat')
-            ->select('pernyataan.*')->where('tema_bakat_id', $id)->get();
+            ->select('pernyataan.*')->where('tema_bakat_id', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
         }
@@ -139,7 +140,8 @@ class PernyataanController extends Controller
             $data = [
                 'tema_bakat_id' => $tema_bakat[$count],
                 'pernyataan'  => $pernyataan[$count],
-                'bobot_nilai'  => $nilai[$count]
+                'bobot_nilai'  => $nilai[$count],
+                'instansi_id' => Auth::user()->instansi_id
             ];
             Pernyataan::where('id_pernyataan', $id[$count])->update($data);
         }
@@ -175,7 +177,7 @@ class PernyataanController extends Controller
      */
     public function destroy($id)
     {
-        Pernyataan::where('tema_bakat_id', $id)->delete();
+        Pernyataan::where('tema_bakat_id', $id)->where('instansi_id', Auth::user()->instansi_id)->delete();
         return response()->json([
             'status' => 200
         ]);

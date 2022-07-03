@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -29,5 +30,4 @@ class BobotNilai extends Model
     {
         return $this->belongsTo(Simulasi::class, 'simulasi_id');
     }
-
 }

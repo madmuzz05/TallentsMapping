@@ -14,16 +14,7 @@ class Pernyataan extends Model
     protected $table = 'pernyataan';
 
     protected $primaryKey = 'id_pernyataan';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'pernyataan',
-        'tema_bakat_id',
-        'bobot_nilai'
-    ];
+    protected $guarded = ['id_pernyataan'];
     public function tema_bakat()
     {
         return $this->belongsTo(TemaBakat::class, 'tema_bakat_id');

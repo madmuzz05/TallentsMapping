@@ -12,7 +12,7 @@ class UsersExport implements FromView
 {
     public function view(): View
     {
-        $data = User::with('jabatan', 'unit_kerja')->get();
+        $data = User::with('instansi', 'unit_kerja')->get();
         return view('admin.user.export', [
             'data' => $data
         ]);

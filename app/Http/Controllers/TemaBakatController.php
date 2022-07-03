@@ -26,7 +26,7 @@ class TemaBakatController extends Controller
 
     function getTemaBakat(Request $request)
     {
-        $data = TemaBakat::orderBy('nama_tema', 'ASC')->get();
+        $data = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'ASC')->get();
         if ($request->ajax()) {
             return  DataTables::of($data)
                 ->addIndexColumn()
@@ -44,7 +44,7 @@ class TemaBakatController extends Controller
     }
     function getTemaBakatSelect2(Request $request)
     {
-        $data = TemaBakat::orderBy('nama_tema', 'asc')->get();
+        $data = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'asc')->get();
         if (isset($request->q)) {
             $data = TemaBakat::where('nama_tema', 'like', "%" . $request->q . "%")->get();
         }
@@ -73,7 +73,8 @@ class TemaBakatController extends Controller
         if ($request->ajax()) {
             TemaBakat::create([
                 'nama_tema' => request('nama_tema'),
-                'deskripsi' => request('deskripsi')
+                'deskripsi' => request('deskripsi'),
+                'instansi_id' => Auth::user()->instansi_id
             ]);
             return response()->json([
                 'status' => 200
@@ -89,7 +90,7 @@ class TemaBakatController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $data = TemaBakat::where('id_tema_bakat', $id)->get();
+        $data = TemaBakat::where('id_tema_bakat', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         if ($request->ajax()) {
             return response()->json(['data' => $data]);
         }
@@ -115,9 +116,10 @@ class TemaBakatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = TemaBakat::where('id_tema_bakat', $id)->update([
+        $data = TemaBakat::where('id_tema_bakat', $id)->where('instansi_id', Auth::user()->instansi_id)->update([
             'nama_tema' => request('nama_tema'),
             'deskripsi' => request('deskripsi'),
+            'instansi_id' => Auth::user()->instansi_id
         ]);
         if ($request->ajax()) {
             return response()->json(['status' => 200]);

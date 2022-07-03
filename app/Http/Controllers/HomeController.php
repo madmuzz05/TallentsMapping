@@ -38,7 +38,7 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')
             ->where('id_user', $id)
             ->get();
-            // dd($getUser);
+        // dd($getUser);
 
         if ($request->ajax()) {
             return response()->json([
@@ -56,13 +56,14 @@ class HomeController extends Controller
      */
     public function indexAdmin(Request $request)
     {
+        $rumus6 = (new SimulasiController)->rumus();
         $id = Auth::user()->id_user;
-        $getUser = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->count();
-        $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->count();
-        $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->count();
-        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%D") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%D")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" Group by bulan');
+        $getUser = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('instansi_id', Auth::user()->instansi_id)->count();
+        $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->where('instansi_id', Auth::user()->instansi_id)->count();
+        $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->where('instansi_id', Auth::user()->instansi_id)->count();
+        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%D") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%D")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" and users.instansi_id = ? Group by bulan', [Auth::user()->instansi_id]);
         $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
-            ->where('nilai_sec_faktor', '!=', '0')->get();
+            ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id)->get();
         $akhir = array();
         foreach ($job_familys as $j) {
             $i = 0;
@@ -80,8 +81,16 @@ class HomeController extends Controller
             );
         }
 
-        $byJob = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
-        $byUsers = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('user_id');
+        $byJob = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id)->where('assesmen', 'Y');
+            })
+            ->orderBy('nilai', 'desc')->get()->unique('job_family_id');
+        $byUsers = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id)->where('assesmen', 'Y');
+            })
+            ->orderBy('nilai', 'desc')->get()->unique('user_id');
         // dd($assesmen);
         if ($request->ajax()) {
             return response()->json([

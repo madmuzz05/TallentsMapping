@@ -254,7 +254,7 @@
         var data = table.row($(this).closest('tr')).data();
         console.log(data);
         $('.add_option').append('<option selected value="' + data.id_job_family + '">' + data.job_family +
-            '</option>').trigger('change')
+            '</option>')
         document.getElementsByClassName('departemen')[1].value = data
             .departemen;
         id_unit_kerja_edit = data.id_unit_kerja;

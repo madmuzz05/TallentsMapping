@@ -127,7 +127,6 @@
             var d_nama = document.getElementById('nama').value;
             var d_no_pegawai = document.getElementById('no_pegawai').value;
             var d_hak_akses = document.getElementById('hak_akses').value;
-            var d_jabatan = document.getElementById('jabatan').value;
             var d_unit_kerja = document.getElementById('unit_kerja').value;
             var d_alamat = document.getElementById('alamat').value;
             var d_telepon = document.getElementById('telepon').value;
@@ -141,7 +140,6 @@
                     _token: $("#csrf").val(),
                     nama: d_nama,
                     no_pegawai: d_no_pegawai,
-                    jabatan_id: d_jabatan,
                     unit_kerja_id: d_unit_kerja,
                     hak_akses: d_hak_akses,
                     alamat: d_alamat,

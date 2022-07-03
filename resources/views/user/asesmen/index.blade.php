@@ -26,10 +26,13 @@
                                     <div class="col-lg-7 text-left">
                                         <input type="hidden" name="id_pernyataan" value="{{ $data->id_pernyataan }}">
                                         <input type="hidden" name="id_tema_bakat" value="{{ $data->tema_bakat_id }}">
-                                        <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
-                                            hidden>
                                         @forelse($answer as $o)
                                         <!-- <input type="text" name="test" value="{{$o->nilai}}" id=""> -->
+                                        <label class="d-block" for="0">
+                                            <input class="radio_animated" id="0" type="radio" value="0"
+                                                {{ ($o->nilai == '0')? 'checked' : ''}} name="ans"> Tidak
+                                            Relevan
+                                        </label>
                                         <label class="d-block" for="a">
                                             <input class="radio_animated" id="a" type="radio" value="1"
                                                 {{ ($o->nilai == '1')? 'checked' : ''}} name="ans"> Tidak
@@ -53,8 +56,12 @@
                                                 {{ ($o->nilai == '5')? 'checked' : ''}} name="ans"> Sangat Sesuai
                                         </label>
                                         @empty
-                                        <input class="radio_animated" id="0" type="radio" value="0" checked name="ans"
-                                            hidden>
+
+                                        <label class="d-block" for="0">
+                                            <input class="radio_animated" id="0" type="radio" value="0" name="ans">
+                                            Tidak
+                                            Relevan
+                                        </label>
                                         <label class="d-block" for="a">
                                             <input class="radio_animated" id="a" type="radio" value="1" name="ans">
                                             Tidak

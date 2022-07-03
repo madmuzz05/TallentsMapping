@@ -14,15 +14,7 @@ class TemaBakat extends Model
     protected $table = 'tema_bakat';
 
     protected $primaryKey = 'id_tema_bakat';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'nama_tema',
-        'deskripsi'
-    ];
+    protected $guarded = ['id_tema_bakat'];
 
     public function pernyataan()
     {

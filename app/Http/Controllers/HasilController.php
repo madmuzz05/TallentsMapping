@@ -9,6 +9,7 @@ use App\Models\Simulasi;
 use App\Models\User;
 use App\Http\Controllers\SimulasiController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class HasilController extends Controller
@@ -27,7 +28,11 @@ class HasilController extends Controller
     {
         $rumus = (new SimulasiController)->rumus();
         // dd($rumus);
-        $data = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('user_id');
+        $data = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id)->where('assesmen', 'Y');
+            })
+            ->orderBy('nilai', 'desc')->get()->unique('user_id');
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
@@ -56,7 +61,11 @@ class HasilController extends Controller
     public function hasil_job_family(Request $request)
     {
         $rumus = (new SimulasiController)->rumus();
-        $data = Hasil::with('user', 'job_family')->orderBy('nilai', 'desc')->get()->unique('job_family_id');
+        $data = Hasil::with('user', 'job_family')
+            ->whereHas('user', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id)->where('assesmen', 'Y');
+            })
+            ->orderBy('nilai', 'desc')->get()->unique('job_family_id');
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)

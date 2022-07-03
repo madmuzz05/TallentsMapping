@@ -28,7 +28,7 @@ class ParameterPenilaianController extends Controller
         $data = JobFamily::select(
             'job_family.*'
         )->where('nilai_core_faktor', '!=', '0')
-            ->where('nilai_sec_faktor', '!=', '0');
+            ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id);
         // dd($data);
         if ($request->ajax()) {
             return  DataTables::of($data)
@@ -64,7 +64,7 @@ class ParameterPenilaianController extends Controller
     public function store(Request $request)
     {
 
-        JobFamily::where('id_job_family', $request->job_family_create)->update([
+        JobFamily::where('id_job_family', $request->job_family_create)->where('instansi_id', Auth::user()->instansi_id)->update([
             'nilai_core_faktor' => $request->core_faktor_create,
             'nilai_sec_faktor' => $request->sec_faktor_create,
         ]);
@@ -97,7 +97,7 @@ class ParameterPenilaianController extends Controller
     public function show(Request $request, $id)
     {
         $parameter = Parameter_Penilaian::with('job_family', 'tema_bakat')->where('job_family_id', $id)->get();
-        $job_family = JobFamily::where('id_job_family', $id)->get();
+        $job_family = JobFamily::where('id_job_family', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         // dd($job_family);
         if ($request->ajax()) {
             return response()->json([
@@ -116,7 +116,7 @@ class ParameterPenilaianController extends Controller
     public function edit(Request $request, $id)
     {
         $parameter = Parameter_Penilaian::with('job_family', 'tema_bakat')->where('job_family_id', $id)->get();
-        $job_family = JobFamily::where('id_job_family', $id)->get();
+        $job_family = JobFamily::where('id_job_family', $id)->where('instansi_id', Auth::user()->instansi_id)->get();
         // dd($job_family);
         if ($request->ajax()) {
             return response()->json([
@@ -135,7 +135,7 @@ class ParameterPenilaianController extends Controller
      */
     public function update(Request $request)
     {
-        JobFamily::where('id_job_family', $request->id_job_family)->update([
+        JobFamily::where('id_job_family', $request->id_job_family)->where('instansi_id', Auth::user()->instansi_id)->update([
             'nilai_core_faktor' => $request->core_faktor_edit,
             'nilai_sec_faktor' => $request->sec_faktor_edit,
         ]);
@@ -168,12 +168,12 @@ class ParameterPenilaianController extends Controller
      */
     public function destroy($id)
     {
-        JobFamily::where('id_job_family', $id)->update([
+        JobFamily::where('id_job_family', $id)->where('instansi_id', Auth::user()->instansi_id)->update([
             'nilai_core_faktor' => '0',
             'nilai_sec_faktor' => '0',
         ]);
 
-        Parameter_Penilaian::where('job_family_id', $id)->delete();
+        Parameter_Penilaian::where('job_family_id', $id)->where('instansi_id', Auth::user()->instansi_id)->delete();
         return response()->json([
             'status' => 200
         ]);
