@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('bobot_nilai', function (Blueprint $table) {
             $table->id("id_bobot_nilai");
-            $table->bigInteger('simulasi_id');
+            $table->bigInteger('tema_bakat_id');
             $table->bigInteger('user_id');
             $table->bigInteger('parameter_penilaian_id');
             $table->double('nilai');

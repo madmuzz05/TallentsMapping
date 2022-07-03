@@ -91,7 +91,7 @@
                             <a class="link" href="forget-password.html">Forgot password?</a>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                            <button class="btn btn-primary btn-block btn_submit" type="submit">Sign in</button>
                         </div>
                         <div class="login-social-title">
                             <h5>Sign in with</h5>
@@ -138,6 +138,13 @@
 <!-- Theme js-->
 <script src="{{asset('assets/js/script.js')}}"></script>
 <!-- Plugin used-->
+<script>
+    $(document).ready(function () {
+        $('form').submit(function () {
+            $('.btn_submit', this).attr('disabled', 'disabled');
+        });
+    })
+</script>
     </body>
 
 <!-- Mirrored from laravel.pixelstrap.com/viho/login by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Apr 2022 03:45:45 GMT -->

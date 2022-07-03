@@ -33,7 +33,7 @@ class SimulasiController extends Controller
             DB::raw('id_tema_bakat as id_tema')
         ])
             ->orderBy('tema_bakat', 'ASC')
-            ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->take(10)->first();
+            ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->first();
 
         $d = $data->id_pernyataan;
         $his_jab = Simulasi::where('pernyataan_id', $d)
@@ -58,10 +58,9 @@ class SimulasiController extends Controller
     {
         //
     }
-    public function rumus()
+
+    public function pembobotan_pernyataan()
     {
-        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
-            ->where('nilai_sec_faktor', '!=', '0')->get();
         $hasil_simulasi = Simulasi::with('user', 'pernyataan')
             ->whereHas('user', function ($query) {
                 $query->where('hak_akses', 'User')->where('assesmen', 'Y');
@@ -79,7 +78,6 @@ class SimulasiController extends Controller
                         DB::raw('nama_tema as tema_bakat'),
                         DB::raw('id_tema_bakat as id_tema')
                     ])
-                        ->orderBy('tema_bakat', 'ASC')
                         ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')
                         ->where('tema_bakat_id', $t->id_tema_bakat)->get();
                     // dd($pernyataan);
@@ -115,23 +113,33 @@ class SimulasiController extends Controller
                     array(
                         'user_id' => $u->id_user,
                         'tema_bakat_id' => $t->id_tema_bakat,
-                        'nilai' => $nilai_pernyataan,
+                        'nilai' => round($nilai_pernyataan),
                     )
                 );
                 $nilai_pernyataan = 0;
             }
         }
-        dd($akhir_bobot);
+        // dd($akhir_bobot);
+        return $akhir_bobot;
+    }
+
+    public function rumus()
+    {
+        $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
+            ->where('nilai_sec_faktor', '!=', '0')->get();
+        
+           $akhir_bobot = $this->pembobotan_pernyataan();
+        // dd($hasil);
         foreach ($job_familys as $j) {
             $parameter = Parameter_Penilaian::where('job_family_id', $j->id_job_family)->get();
             $bobot_nilai = 0;
             foreach ($parameter as $p) {
-                foreach ($hasil_simulasi as $hs) {
+                foreach ($akhir_bobot as $hs) {
                     $selisih = 0;
-                    if ($hs->pernyataan->tema_bakat_id == $p->tema_bakat_id) {
+                    if ($hs['tema_bakat_id'] == $p->tema_bakat_id) {
                         // dd($hs->pernyataan->tema_bakat_id);
                         // dd($hs->nilai);
-                        $selisih = $hs->nilai - $p->nilai;
+                        $selisih = $hs['nilai'] - $p->nilai;
                         switch ($selisih) {
                             case '0':
                                 $bobot_nilai = 5;
@@ -164,8 +172,8 @@ class SimulasiController extends Controller
 
                         BobotNilai::updateOrCreate(
                             [
-                                'user_id' => $hs->user_id,
-                                'simulasi_id' => $hs->id_simulasi,
+                                'user_id' => $hs['user_id'],
+                                'tema_bakat_id' => $hs['tema_bakat_id'],
                                 'parameter_penilaian_id' => $p->id_parameter_penilaian
                             ],
                             [
@@ -238,7 +246,9 @@ class SimulasiController extends Controller
                         'job_family_id' => $hasil_akhir['job_family_id']
                     ],
                     [
-                        'nilai' => $hasil_akhir['N']
+                        'nilai' => $hasil_akhir['N'],
+                        'NCF' => $hasil_akhir['NCF'],
+                        'NSF' => $hasil_akhir['NSF'],
                     ]
                 );
             }
@@ -259,8 +269,7 @@ class SimulasiController extends Controller
             DB::raw('nama_tema as tema_bakat'),
             DB::raw('id_tema_bakat as id_tema')
         ])
-            ->orderBy('tema_bakat', 'ASC')
-            ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->take(10)->get();
+            ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')->get();
         $data = Simulasi::updateOrCreate(
             [
                 'user_id' => Auth::user()->id_user,
@@ -280,7 +289,7 @@ class SimulasiController extends Controller
         foreach ($question as $quest) {
             // dd($question);
             $i++;
-            if (10 < $next) {
+            if ($quest->count() < $next) {
                 // dd('y');
                 User::where('id_user', Auth::user()->id_user)->update(
                     [
@@ -288,7 +297,7 @@ class SimulasiController extends Controller
                     ]
                 );
                 $rumus = $this->rumus();
-                // dd(rumus());
+                // dd($rumus);
 
                 $data1 = Hasil::with('user', 'job_family')
                     ->whereHas('user', function ($query) {
