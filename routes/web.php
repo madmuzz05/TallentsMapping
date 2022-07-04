@@ -33,7 +33,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
-
+    request()->session()->invalidate();
+ 
+        request()->session()->regenerateToken();
     return Redirect::to('/login');
 })->name('logout');
 

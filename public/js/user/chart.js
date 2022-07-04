@@ -4,82 +4,60 @@ google.charts.load('current', {
 google.charts.setOnLoadCallback(drawBasic)
 
 function drawBasic() {
-    if ($('#potensi-kekuatan').length > 0) {
         $.ajax({
             type: "GET",
             url: '/simulasi/show',
             dataType: 'json',
             success: function (res) {
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Tema bakat');
-                data.addColumn('number', 'Nilai');
+                var data1 = new google.visualization.DataTable();
+                data1.addColumn('string', 'Tema bakat');
+                data1.addColumn('number', 'Nilai');
                 $.each(res.kekuatan, function (key, item) {
                     // console.log(item.nama_tema);
-                    data.addRows([[item.nama_tema, item.nilai]]);
+                    data1.addRow([item.nama_tema, parseFloat(item.nilai)]);
                 })
-                var options = {
+                var options1 = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
 
                 };
-                var chart1 = new google.visualization.PieChart(document.getElementById('potensi-kekuatan'));
-                chart1.draw(data, options);
-            }
-        })
-    }
-    if ($('#potensi-kelemahan').length > 0) {
-        $.ajax({
-            type: "GET",
-            url: '/simulasi/show',
-            dataType: 'json',
-            success: function (res) {
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Tema bakat');
-                data.addColumn('number', 'Nilai');
+                var chart1 = new google.visualization.PieChart(document.getElementById('hasil1'));
+                chart1.draw(data1, options1);
+
+                var data2 = new google.visualization.DataTable();
+                data2.addColumn('string', 'Tema bakat');
+                data2.addColumn('number', 'Nilai');
                 $.each(res.kelemahan, function (key, item) {
                     // console.log(item.nama_tema);
                     // if (item.nilai = '0') {
                     //     data.addRows([[item.nama_tema, 0.1]]);
                     // } else {
-                        data.addRows([[item.nama_tema, item.nilai]]);
+                        data2.addRow([item.nama_tema, parseFloat(item.nilai)]);
                     // }
                 })
-                var options = {
+                var options2 = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
 
                 };
-                var chart1 = new google.visualization.PieChart(document.getElementById('potensi-kelemahan'));
-                chart1.draw(data, options);
-            }
-        })
-    }
+                var chart2 = new google.visualization.PieChart(document.getElementById('hasil2'));
+                chart2.draw(data2, options2);
 
-    if ($('#hasil-rekomendasi').length > 0) {
-        $.ajax({
-            type: "GET",
-            url: '/simulasi/show',
-            dataType: 'json',
-            success: function (res) {
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Job Family');
-                data.addColumn('number', 'Nilai');
+                var data3 = new google.visualization.DataTable();
+                data3.addColumn('string', 'Job Family');
+                data3.addColumn('number', 'Nilai');
                 console.log(res.data);
                 $.each(res.data, function (key, item) {
-                        data.addRows([[item.job_family.job_family, item.nilai]]);
+                        data3.addRows([[item.job_family, parseFloat(item.nilai)]]);
                 })
-                var options = {
+                var options3 = {
                     width: '100%',
                     tooltip: { trigger: 'selection',text: 'percentage' },
                     sliceVisibilityThreshold: 0
 
                 };
                 var chart3 = new google.visualization.PieChart(document.getElementById('hasil-rekomendasi'));
-                chart3.draw(data, options);
+                chart3.draw(data3, options3);
             }
         })
     }
-
-
-
-}

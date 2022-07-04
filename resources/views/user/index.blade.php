@@ -61,7 +61,7 @@
                     <h5>Potensi Kekuatan</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
-                    <div class="chart-overflow" id="potensi-kekuatan"></div>
+                    <div class="chart-overflow" id="hasil1"></div>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                     <h5>Potensi Kelemahan</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
-                    <div class="chart-overflow" id="potensi-kelemahan"></div>
+                    <div class="chart-overflow" id="hasil2"></div>
                 </div>
             </div>
         </div>

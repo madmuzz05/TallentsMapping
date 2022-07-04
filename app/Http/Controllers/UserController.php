@@ -7,6 +7,9 @@ use App\Models\Jabatan;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Hasil;
+use App\Models\Simulasi;
+use App\Models\BobotNilai;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
@@ -236,6 +239,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::destroy($id);
+        Hasil::where('user_id', $id)->delete();
+        BobotNilai::where('user_id', $id)->delete();
+        Simulasi::where('user_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);

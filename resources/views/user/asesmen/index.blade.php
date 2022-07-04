@@ -30,7 +30,7 @@
                                         <!-- <input type="text" name="test" value="{{$o->nilai}}" id=""> -->
                                         <label class="d-block" for="0">
                                             <input class="radio_animated" id="0" type="radio" value="0"
-                                                {{ ($o->nilai == '0')? 'checked' : ''}} name="ans"> Tidak
+                                                {{ ($o->nilai == '0')? 'checked' : ''}} name="ans" required> Tidak
                                             Relevan
                                         </label>
                                         <label class="d-block" for="a">
@@ -58,7 +58,7 @@
                                         @empty
 
                                         <label class="d-block" for="0">
-                                            <input class="radio_animated" id="0" type="radio" value="0" name="ans">
+                                            <input class="radio_animated" id="0" type="radio" value="0" name="ans" required>
                                             Tidak
                                             Relevan
                                         </label>
