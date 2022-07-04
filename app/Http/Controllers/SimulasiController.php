@@ -226,7 +226,7 @@ class SimulasiController extends Controller
                         $NCF = $NCF + $db['nilai'];
                         $IC++;
                     }
-                    if ($db['user_id'] === $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Secondary Faktor") {
+                    if ($db['user_id'] == $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Secondary Faktor") {
                         $NSF +=  $db['nilai'];
                         $IS++;
                         // dd($NSF);
