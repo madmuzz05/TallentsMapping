@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', function () {
     return Redirect::to('/login');
 });
-
+Route::post('/storeAdmin', [UserController::class, 'storeAdmin'])->name('user.storeAdmin');
 Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
@@ -38,8 +38,13 @@ Route::get('logout', function () {
         request()->session()->regenerateToken();
     return Redirect::to('/login');
 })->name('logout');
+Route::get('register', function () {
+    return view('auth/register');
+})->name('register');
 
 Route::get('/getUserLogin', [UserController::class, 'getUserLogin'])->name('user.getUserLogin');
+Route::get('/editProfil', [UserController::class, 'editProfil'])->name('user.editProfil');
+Route::post('/updateProfil', [UserController::class, 'updateProfil'])->name('user.updateProfil');
 
 Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');

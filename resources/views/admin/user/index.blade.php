@@ -106,7 +106,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-12 mt-3 avatars text-center">
                         <div class="avatar">
-                            <img class="img-70 mb-2 rounded-circle" src="{{asset('assets/images/user/16.png')}}"
+                            <img class="img-70 mb-2 rounded-circle" src="{{asset('images/').'/'.auth()->user()->foto}}"
                                 alt="#">
                             <h4 class="mb-0" id="nama"></h4>
                             <p id="jabatan"></p>
