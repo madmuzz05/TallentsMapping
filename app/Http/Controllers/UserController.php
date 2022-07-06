@@ -194,18 +194,22 @@ class UserController extends Controller
 
     public function updateProfil(Request $request)
     {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+    
+            $nama_file = rand() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $nama_file);
+        } else {
+            $nama_file = '1.png';
+        }
+        
 
-        $file = $request->file('file');
-
-        $nama_file = rand() . '_' . $file->getClientOriginalName();
-
-        $file->move(public_path('images'), $nama_file);
         if ($request->password) {
             User::where('id_user', $request->id_user)
                 ->update([
                     'nama' => $request->nama,
                     'no_pegawai' => $request->no_pegawai,
-                    'unit_kerja_id' => $request->unit_kerja_id,
+                    'unit_kerja_id' => $request->unit_kerja,
                     'hak_akses' => $request->hak_akses,
                     'alamat' => $request->alamat,
                     'telepon' => $request->telepon,
@@ -237,7 +241,7 @@ class UserController extends Controller
                 ->update([
                     'nama' => $request->nama,
                     'no_pegawai' => $request->no_pegawai,
-                    'unit_kerja_id' => $request->unit_kerja_id,
+                    'unit_kerja_id' => $request->unit_kerja,
                     'hak_akses' => $request->hak_akses,
                     'alamat' => $request->alamat,
                     'telepon' => $request->telepon,

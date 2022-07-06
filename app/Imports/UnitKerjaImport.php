@@ -7,6 +7,7 @@ use App\Models\UnitKerja;
 use App\Models\JobFamily;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Facades\Auth;
 
 class UnitKerjaImport implements ToModel, WithHeadingRow
 {
@@ -32,7 +33,7 @@ class UnitKerjaImport implements ToModel, WithHeadingRow
         return new UnitKerja([
             'job_family_id' => $job_family->id_job_family ?? NULL,
             'departemen' => $row['departemen'],
-            'instansi_id' => $instansi->id_instansi ?? NULL,
+            'instansi_id' => Auth::user()->instansi_id,
         ]);
     }
 }

@@ -154,21 +154,6 @@
                 })
             }
         })
-
-        $.ajax({
-            type: "GET",
-            url: "{{route('unit_kerja.getUnitKerja')}}",
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_unit_kerja + '">' + item
-                        .departemen + '</option>'
-                })
-                $(".unit_kerja").append(option)
-            }
-        })
     });
 
 </script>

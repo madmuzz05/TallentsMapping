@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.user.app')
 @section('title', "Edit Profil")
 @section('content')
 <!-- Container-fluid starts-->
@@ -49,6 +49,7 @@
                                     <div class="col-sm-9">
                                         <select class="unit_kerja_select2 col-sm-12 unit_kerja add_option" name="unit_kerja"
                                             id="unit_kerja">
+                                            <option value="{{$d->unit_kerja_id}}">{{$d->unit_kerja->departemen}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -108,7 +109,7 @@
                     <div class="card-footer text-end">
                         <div class="col-sm-9 offset-sm-3">
                             <button class="btn btn-primary" type="submit" id="create-data">Submit</button>
-                            <a href="/user/index" class="btn btn-light">Kembali</a>
+                            <a href="/index" class="btn btn-light">Kembali</a>
                         </div>
                     </div>
                 </form>
@@ -143,32 +144,17 @@
             })
         });
 
-        $.ajax({
-            type: "GET",
-            url: '/unit_kerja/detail/' + document.getElementById('id_unit_kerja').value,
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                $.each(res.data, function (key, data) {
-                    $('.add_option').append('<option selected value="' + data.id_unit_kerja + '">' + data.departemen +'</option>').trigger('change')
-                })
-            }
-        })
-
-        $.ajax({
-            type: "GET",
-            url: "{{route('unit_kerja.getUnitKerja')}}",
-            dataType: 'json',
-            success: function (res) {
-                console.log(res.data);
-                var option = ''
-                $.each(res.data, function (key, item) {
-                    option += ' <option value="' + item.id_unit_kerja + '">' + item
-                        .departemen + '</option>'
-                })
-                $(".unit_kerja").append(option)
-            }
-        })
+        // $.ajax({
+        //     type: "GET",
+        //     url: '/unit_kerja/detail/' + document.getElementById('id_unit_kerja').value,
+        //     dataType: 'json',
+        //     success: function (res) {
+        //         console.log(res.data);
+        //         $.each(res.data, function (key, data) {
+        //             $('.add_option').append('<option selected value="' + data.id_unit_kerja + '">' + data.departemen +'</option>').trigger('change')
+        //         })
+        //     }
+        // })
     });
 
 </script>

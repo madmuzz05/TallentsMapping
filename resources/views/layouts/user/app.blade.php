@@ -316,7 +316,30 @@
                         return {
                             results: data.map(function (item) {
                                 item.id = item.id_unit_kerja;
-                                item.text = item.nama_unit_kerja;
+                                item.text = item.departemen;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.job_family_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('job_family.getJobFamilySelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_job_family;
+                                item.text = item.job_family;
                                 return item;
                             })
                         };
