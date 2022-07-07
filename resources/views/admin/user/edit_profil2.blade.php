@@ -49,7 +49,9 @@
                                     <div class="col-sm-9">
                                         <select class="unit_kerja_select2 col-sm-12 unit_kerja add_option" name="unit_kerja"
                                             id="unit_kerja">
-                                            <option value="{{$d->unit_kerja_id}}">{{$d->unit_kerja->departemen}}</option>
+                                            @if(!empty($d->unit_kerja_id))
+                                                <option value="{{$d->unit_kerja_id}}">{{$d->unit_kerja->departemen}}</option>
+                                            @endif
                                         </select>
                                     </div>
                                 </div>
