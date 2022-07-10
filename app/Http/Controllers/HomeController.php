@@ -61,7 +61,7 @@ class HomeController extends Controller
         $getUser = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('instansi_id', Auth::user()->instansi_id)->count();
         $sudah = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'Y')->where('instansi_id', Auth::user()->instansi_id)->count();
         $belum = User::with('jabatan', 'unit_kerja')->where('hak_akses', 'User')->where('assesmen', 'N')->where('instansi_id', Auth::user()->instansi_id)->count();
-        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%D") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%D")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" and users.instansi_id = ? Group by bulan', [Auth::user()->instansi_id]);
+        $assesmen = DB::select('SELECT DATE_FORMAT(simulasi.created_at, "%M") AS bulan, count(DATE_FORMAT(simulasi.created_at, "%M")) AS total FROM simulasi LEFT JOIN users ON users.id_user = simulasi.user_id WHERE users.hak_akses = "User" and users.instansi_id = ? Group by bulan', [Auth::user()->instansi_id]);
         $job_familys = JobFamily::where('nilai_core_faktor', '!=', '0')
             ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id)->get();
         $akhir = array();

@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\JobFamily;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class JobFamilyImport implements ToModel, WithHeadingRow
@@ -19,6 +20,7 @@ class JobFamilyImport implements ToModel, WithHeadingRow
         return new JobFamily([
             'kode' => $row['kode'],
             'job_family' => $row['job_family'],
+            'instansi_id' => Auth::user()->instansi_id,
         ]);
     }
 }

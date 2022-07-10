@@ -113,8 +113,8 @@
             <!-- Page Sidebar Start-->
             <header class="main-nav">
                 <div class="sidebar-user text-center">
-                    <a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a><img
-                        class="img-90 rounded-circle" src="{{asset('assets/images/dashboard/1.png')}}" alt="" />
+                    <a class="setting-primary" href="{{route('user.editProfil')}}"><i data-feather="settings"></i></a><img
+                    class="img-90 rounded-circle" src="{{asset('images/').'/'.auth()->user()->foto}}" alt="" />
                     <h6 class="mt-3 f-14 f-w-600 nama_user"></h6>
                     <p class="mb-0 font-roboto unit_jabatan">
                     </p>
@@ -316,7 +316,30 @@
                         return {
                             results: data.map(function (item) {
                                 item.id = item.id_unit_kerja;
-                                item.text = item.nama_unit_kerja;
+                                item.text = item.departemen;
+                                return item;
+                            })
+                        };
+                    },
+                },
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }).on('select2:select', function (e) {});
+
+            $('.job_family_select2').select2({
+                placeholder: 'Select Data',
+                allowClear: true,
+                minimumInputLength: 0,
+                ajax: {
+                    dataType: "json",
+                    method: 'POST',
+                    url: "{{route('job_family.getJobFamilySelect2')}}",
+                    processResults: function (data) {
+                        return {
+                            results: data.map(function (item) {
+                                item.id = item.id_job_family;
+                                item.text = item.job_family;
                                 return item;
                             })
                         };

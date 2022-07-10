@@ -7,6 +7,10 @@ use App\Models\Jabatan;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Instansi;
+use App\Models\Hasil;
+use App\Models\Simulasi;
+use App\Models\BobotNilai;
 use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
@@ -87,6 +91,34 @@ class UserController extends Controller
         $getUser = User::with('unit_kerja')->where('id_user', $id)->get();
         return view('admin.user.add', compact('getUser'));
     }
+    public function storeAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_depan' => ['required', 'string', 'max:255'],
+            'nama_belakang' => ['required', 'string', 'max:255'],
+            'alamat' => ['required', 'string', 'max:255'],
+            'telepon' => ['required', 'string', 'max:20'],
+            'instansi' => ['required', 'string', 'max:225'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+        $data = $request->all();
+        $instansi = Instansi::updateOrCreate([
+            'nama_instansi' => $data['instansi'],
+        ]);
+        // dd($instansi->id_instansi);
+
+        User::create([
+            'nama' => $data['nama_depan'].' '.$data['nama_belakang'],
+            'alamat' => $data['alamat'],
+            'telepon' => $data['telepon'],
+            'instansi_id' => $instansi->id_instansi,
+            'hak_akses' => 'Admin',
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+        return redirect()->route('login');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -146,6 +178,81 @@ class UserController extends Controller
         $data = User::with('unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
         return view('admin.user.edit', compact('getUser', 'data'));
+    }
+    public function editProfil()
+    {
+        $id = Auth::user()->id_user;
+        $data = User::with('unit_kerja')
+            ->select('users.*')->where('id_user', $id)->get();
+            if (Auth::user()->hak_akses == 'Admin') {
+                return view('admin.user.edit_profil1', compact('data'));
+            }else{
+                return view('admin.user.edit_profil2', compact('data'));
+
+            }
+    }
+
+    public function updateProfil(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+    
+            $nama_file = rand() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $nama_file);
+        } else {
+            $nama_file = '1.png';
+        }
+        
+
+        if ($request->password) {
+            User::where('id_user', $request->id_user)
+                ->update([
+                    'nama' => $request->nama,
+                    'no_pegawai' => $request->no_pegawai,
+                    'unit_kerja_id' => $request->unit_kerja,
+                    'hak_akses' => $request->hak_akses,
+                    'alamat' => $request->alamat,
+                    'telepon' => $request->telepon,
+                    'email' => $request->email,
+                    'foto' => $nama_file,
+                    'password' => Hash::make($request->password),
+                    'instansi_id' => Auth::user()->instansi_id,
+                ]);
+
+            return response()->json([
+                'status' => 200
+            ]);
+        } elseif (empty($request->password)) {
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required',
+                'no_pegawai' => 'required',
+                'alamat' => 'required',
+                'telepon' => 'required',
+                'email' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->errors()->all()
+                ));
+            }
+            User::where('id_user', $request->id_user)
+                ->update([
+                    'nama' => $request->nama,
+                    'no_pegawai' => $request->no_pegawai,
+                    'unit_kerja_id' => $request->unit_kerja,
+                    'hak_akses' => $request->hak_akses,
+                    'alamat' => $request->alamat,
+                    'telepon' => $request->telepon,
+                    'email' => $request->email,
+                    'foto' => $nama_file,
+                    'instansi_id' => Auth::user()->instansi_id,
+                ]);
+            return response()->json([
+                'status' => 200
+            ]);
+        }
     }
 
     /**
@@ -236,6 +343,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::destroy($id);
+        Hasil::where('user_id', $id)->delete();
+        BobotNilai::where('user_id', $id)->delete();
+        Simulasi::where('user_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);

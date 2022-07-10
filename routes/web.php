@@ -29,15 +29,25 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', function () {
     return Redirect::to('/login');
 });
-
+Route::post('/storeAdmin', [UserController::class, 'storeAdmin'])->name('user.storeAdmin');
 Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
-
-    return Redirect::to('/login');
-})->name('logout');
+    request()->session()->invalidate();
+ 
+        request()->session()->regenerateToken();
+        return Redirect::to('/login');
+    })->name('logout');
+    Route::get('register', function () {
+    return view('auth/register');
+})->name('register');
 
 Route::get('/getUserLogin', [UserController::class, 'getUserLogin'])->name('user.getUserLogin');
+Route::get('/editProfil', [UserController::class, 'editProfil'])->name('user.editProfil');
+Route::post('/updateProfil', [UserController::class, 'updateProfil'])->name('user.updateProfil');
+Route::post('/job_family/getJobFamilySelect2', [JobFamilyController::class, 'getJobFamilySelect2'])->name('job_family.getJobFamilySelect2');
+Route::post('/tema_bakat/getTemaBakatSelect2', [TemaBakatController::class, 'getTemaBakatSelect2'])->name('tema_bakat.getTemaBakatSelect2');
+Route::post('/unit_kerja/getUnitKerjaSelect2', [UnitKerjaController::class, 'getUnitKerjaSelect2'])->name('unit_kerja.getUnitKerjaSelect2');
 
 Route::middleware(['auth', 'user-access:User'])->group(function () {
     Route::get('/index', [HomeController::class, 'index'])->name('index');
@@ -62,7 +72,6 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     });
     Route::prefix('job_family')->group(function () {
         Route::get('/getJobFamily', [JobFamilyController::class, 'getJobFamily'])->name('job_family.getJobFamily');
-        Route::post('/getJobFamilySelect2', [JobFamilyController::class, 'getJobFamilySelect2'])->name('job_family.getJobFamilySelect2');
         Route::GET('/detail/{id}', [JobFamilyController::class, 'show'])->name('job_family.detail');
         Route::get('/index', [JobFamilyController::class, 'index'])->name('job_family.index');
         Route::post('/store', [JobFamilyController::class, 'store'])->name('job_family.store');
@@ -97,7 +106,6 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     });
     Route::prefix('unit_kerja')->group(function () {
         Route::get('/getUnitKerja', [UnitKerjaController::class, 'getUnitKerja'])->name('unit_kerja.getUnitKerja');
-        Route::post('/getUnitKerjaSelect2', [UnitKerjaController::class, 'getUnitKerjaSelect2'])->name('unit_kerja.getUnitKerjaSelect2');
         Route::get('/index', [UnitKerjaController::class, 'index'])->name('unit_kerja.index');
         Route::post('/store', [UnitKerjaController::class, 'store'])->name('unit_kerja.store');
         Route::put('/update/{id}', [UnitKerjaController::class, 'update'])->name('unit_kerja.update');
@@ -119,7 +127,6 @@ Route::middleware(['auth', 'user-access:Admin'])->group(function () {
     });
     Route::prefix('tema_bakat')->group(function () {
         Route::get('/getTemaBakat', [TemaBakatController::class, 'getTemaBakat'])->name('tema_bakat.getTemaBakat');
-        Route::post('/getTemaBakatSelect2', [TemaBakatController::class, 'getTemaBakatSelect2'])->name('tema_bakat.getTemaBakatSelect2');
         Route::get('/index', [TemaBakatController::class, 'index'])->name('tema_bakat.index');
         Route::post('/store', [TemaBakatController::class, 'store'])->name('tema_bakat.store');
         Route::put('/update/{id}', [TemaBakatController::class, 'update'])->name('tema_bakat.update');

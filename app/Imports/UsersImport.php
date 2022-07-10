@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Facades\Auth;
 
 class UsersImport implements ToModel, WithHeadingRow
 {
@@ -40,7 +41,7 @@ class UsersImport implements ToModel, WithHeadingRow
             'password' => Hash::make($row['password']),
             'hak_akses' => $row['hak_akses'],
             'unit_kerja_id' => $unit_kerja->id_unit_kerja ?? NULL,
-            'instansi_id' => $instansi->id_instansi ?? NULL,
+            'instansi_id' => Auth::user()->instansi_id,
         ]);
     }
 }

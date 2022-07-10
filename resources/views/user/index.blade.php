@@ -61,7 +61,7 @@
                     <h5>Potensi Kekuatan</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
-                    <div class="chart-overflow" id="potensi-kekuatan"></div>
+                    <div class="chart-overflow" id="hasil1"></div>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
                     <h5>Potensi Kelemahan</h5>
                 </div>
                 <div class="card-body p-0 chart-block">
-                    <div class="chart-overflow" id="potensi-kelemahan"></div>
+                    <div class="chart-overflow" id="hasil2"></div>
                 </div>
             </div>
         </div>
@@ -103,8 +103,8 @@
                     <div class="col-lg-12 text-left">
                         <ul class="point_ul">
                             <li>
-                                Waktu Normal yang dibutuhkan untuk menjawab kuesioner ini (114 pernyataan) adalah 30 s/d
-                                40 menit.
+                                Waktu Normal yang dibutuhkan untuk menjawab kuesioner ini adalah 40 s/d
+                                50 menit.
                             </li>
                             <li>
                                 Hasil akurat dan mewakili keadaan yang sebenarnya apabila :
@@ -121,6 +121,29 @@
                                 "SALAH". Apapun yang Anda pilih hendaknya merupakan suatu penggambaran dari hal-hal yang
                                 "Anda lakukan" atau "Perasaan anda".
                             </li>
+                            <li>
+                                Setiap jawaban yang anda pilih memiliki nilai sebagai berikut:
+                            </li>
+                            <ul class="point_ul">
+                                <li>
+                                    Tidak Revelan mempunyai nilai 0
+                                </li>
+                                <li>
+                                    Tidak Sesuai mempunyai nilai 1
+                                </li>
+                                <li>
+                                    Kurang Sesuai mempunyai nilai 2
+                                </li>
+                                <li>
+                                    Sedang mempunyai nilai 3
+                                </li>
+                                <li>
+                                    Sesuai mempunyai nilai 4
+                                </li>
+                                <li>
+                                    Sangat Sesuai mempunyai nilai 5
+                                </li>
+                            </ul>
                             <li>Jika anda telah siap, silahkan klik tombol START untuk memulai.
                             </li>
                         </ul>
