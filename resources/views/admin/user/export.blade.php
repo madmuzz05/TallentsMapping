@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($data as $item)
+        @foreach($data as $item)
         <tr>
             <td>{{$loop->iteration}}</td>
             <td>{{$item->no_pegawai}}</td>
@@ -22,7 +22,11 @@
             <td>{{$item->telepon}}</td>
             <td>{{$item->email}}</td>
             <td>{{$item->hak_akses}}</td>
+            @if(empty($item->unit_kerja->departemen))
+            <td></td>
+            @else
             <td>{{$item->unit_kerja->departemen}}</td>
+            @endif
             <td>{{$item->instansi->nama_instansi}}</td>
         </tr>
         @endforeach
