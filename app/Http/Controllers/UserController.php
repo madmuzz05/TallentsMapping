@@ -109,7 +109,7 @@ class UserController extends Controller
         // dd($instansi->id_instansi);
 
         User::create([
-            'nama' => $data['nama_depan'].' '.$data['nama_belakang'],
+            'nama' => $data['nama_depan'] . ' ' . $data['nama_belakang'],
             'alamat' => $data['alamat'],
             'telepon' => $data['telepon'],
             'instansi_id' => $instansi->id_instansi,
@@ -184,25 +184,40 @@ class UserController extends Controller
         $id = Auth::user()->id_user;
         $data = User::with('unit_kerja')
             ->select('users.*')->where('id_user', $id)->get();
-            if (Auth::user()->hak_akses == 'Admin') {
-                return view('admin.user.edit_profil1', compact('data'));
-            }else{
-                return view('admin.user.edit_profil2', compact('data'));
-
-            }
+        if (Auth::user()->hak_akses == 'Admin') {
+            return view('admin.user.edit_profil1', compact('data'));
+        } else {
+            return view('admin.user.edit_profil2', compact('data'));
+        }
     }
 
     public function updateProfil(Request $request)
     {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-    
+
             $nama_file = rand() . '_' . $file->getClientOriginalName();
             $file->move(public_path('images'), $nama_file);
         } else {
             $nama_file = '1.png';
         }
-        
+
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'no_pegawai' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
+            'email' => 'required',
+            'unit_kerja' => 'required',
+            'hak_akses' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'status' => 405,
+                'errors' => "Action gagal"
+            ));
+        }
 
         if ($request->password) {
             User::where('id_user', $request->id_user)
@@ -223,20 +238,6 @@ class UserController extends Controller
                 'status' => 200
             ]);
         } elseif (empty($request->password)) {
-            $validator = Validator::make($request->all(), [
-                'nama' => 'required',
-                'no_pegawai' => 'required',
-                'alamat' => 'required',
-                'telepon' => 'required',
-                'email' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                return Response::json(array(
-                    'success' => false,
-                    'errors' => $validator->errors()->all()
-                ));
-            }
             User::where('id_user', $request->id_user)
                 ->update([
                     'nama' => $request->nama,
@@ -250,7 +251,8 @@ class UserController extends Controller
                     'instansi_id' => Auth::user()->instansi_id,
                 ]);
             return response()->json([
-                'status' => 200
+                'status' => 200,
+                'success' => "Action Berhasil"
             ]);
         }
     }
@@ -264,7 +266,22 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'no_pegawai' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
+            'email' => 'required',
+            'unit_kerja_id' => 'required',
+            'hak_akses' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+            return Response::json(array(
+                'status' => 405,
+                'errors' => "Action gagal"
+            ));
+        }
         if (request('password')) {
             User::where('id_user', request('id_user'))
                 ->update([
@@ -283,20 +300,6 @@ class UserController extends Controller
                 'status' => 200
             ]);
         } elseif (empty(request('password'))) {
-            $validator = Validator::make($request->all(), [
-                'nama' => 'required',
-                'no_pegawai' => 'required',
-                'alamat' => 'required',
-                'telepon' => 'required',
-                'email' => 'required',
-            ]);
-
-            if ($validator->fails()) {
-                return Response::json(array(
-                    'success' => false,
-                    'errors' => $validator->errors()->all()
-                ));
-            }
             User::where('id_user', request('id_user'))
                 ->update([
                     'nama' => request('nama'),
@@ -309,7 +312,8 @@ class UserController extends Controller
                     'instansi_id' => Auth::user()->instansi_id,
                 ]);
             return response()->json([
-                'status' => 200
+                'status' => 200,
+                'success' => "Action Berhasil"
             ]);
         }
     }

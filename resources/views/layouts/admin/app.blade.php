@@ -33,6 +33,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/fontawesome.css')}}">
     <!-- ico-font-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/icofont.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/sweetalert2.css')}}">
+
     <!-- Themify icon-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themify.css')}}">
     <!-- Flag icon-->
@@ -206,9 +208,10 @@
     <script src="{{asset('assets/js/owlcarousel/owl.carousel.js')}}"></script>
     <script src="{{asset('assets/js/general-widget.js')}}"></script>
     <script src="{{asset('assets/js/height-equal.js')}}"></script>
-    <script src="{{asset('assets/js/tooltip-init.js')}}"></script>
+    {{-- <script src="{{asset('assets/js/tooltip-init.js')}}"></script> --}}
     <script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
+    <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script>
     <script src="{{asset('assets/js/chart/google/google-chart-loader.js')}}"></script>
@@ -227,6 +230,8 @@
         });
 
         $(document).ready(function () {
+
+
             $('.table_hasil_admin').DataTable({
                 ordering: false,
                 paging: false,

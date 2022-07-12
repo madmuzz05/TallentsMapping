@@ -37,12 +37,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/themify.css')}}">
     <!-- Flag icon-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/flag-icon.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Feather icon-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/feather-icon.css')}}">
     <!-- Plugins css start-->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/date-picker.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/owlcarousel.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/prism.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/sweetalert2.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/whether-icon.css')}}">
     <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/css/datatables.css')}}"> -->
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.css')}}">
@@ -188,6 +190,7 @@
     <script src="{{asset('assets/js/prism/prism.min.js')}}"></script>
     <script src="{{asset('assets/js/clipboard/clipboard.min.js')}}"></script>
     <script src="{{asset('assets/js/counter/jquery.waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
     <script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
     <script src="{{asset('assets/js/custom-card/custom-card.js')}}"></script>
@@ -200,6 +203,8 @@
     <script src="{{asset('assets/js/tooltip-init.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
+    <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>
+
     <!-- <script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script> -->
     <!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js">

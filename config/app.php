@@ -169,6 +169,7 @@ return [
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Yoeunes\Toastr\ToastrServiceProvider::class,
 
 
         /*

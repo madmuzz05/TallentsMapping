@@ -58,12 +58,8 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Akses</label>
                                     <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12" id="hak_akses"
-                                            name="hak_akses">
-                                            <option value="{{$d->hak_akses}}">{{$d->hak_akses}}</option>
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
+                                        <input class="form-control" type="text" value="{{$d->hak_akses}}" id="hak_akses"
+                                            name="hak_akses" placeholder="hak_akses" readonly/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -81,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-3 col-form-label">Foto</label>
+                                    <label class="col-sm-3 col-form-label">Foto (Optional)</label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="file" value="" id="file"
                                             name="file" placeholder="Ganti Foto" />
@@ -140,7 +136,18 @@
                 },
                 success: function (res) {
                     if (res.status == 200) {
-                        location.reload();   
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: res.success,
+                        }).then(function () {
+                            window.history.back();
+                            location.reload();
+                        });
+                    } else if (res.status == 405) {
+
+                        swal("Pesan", res.errors, "error");
+                        $('#create-data').removeAttr('disabled');
                     }
                 }
             })

@@ -20,7 +20,7 @@
         <div class="col-sm-12">
             <div class="card">
                 @foreach($data as $d)
-                <form  id="create_form" class="form theme-form create_form" method="POST" enctype="multipart/form-data">
+                <form id="create_form" class="form theme-form create_form" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="alert alert-danger outline error-msg" id="error-msg" role="alert"
@@ -47,20 +47,16 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Departemen</label>
                                     <div class="col-sm-9">
-                                        <select class="unit_kerja_select2 col-sm-12 unit_kerja add_option" name="unit_kerja"
-                                            id="unit_kerja">
+                                        <select class="unit_kerja_select2 col-sm-12 unit_kerja add_option"
+                                            name="unit_kerja" id="unit_kerja">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Akses</label>
                                     <div class="col-sm-9">
-                                        <select class="js-example-basic-single col-sm-12" id="hak_akses"
-                                            name="hak_akses">
-                                            <option value="{{$d->hak_akses}}">{{$d->hak_akses}}</option>
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
+                                        <input class="form-control" type="text" value="{{$d->hak_akses}}" id="hak_akses"
+                                            name="hak_akses" placeholder="hak_akses" readonly/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -80,8 +76,8 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-3 col-form-label">Foto</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="file" value="" id="file"
-                                            name="file" placeholder="Ganti Foto" />
+                                        <input class="form-control" type="file" value="" id="file" name="file"
+                                            placeholder="Ganti Foto" />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -92,9 +88,10 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                                    <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                                     <input type="hidden" name="id_user" id="id_user" value="{{$d->id_user}}">
-                                    <input type="hidden" name="id_unit_kerja" id="id_unit_kerja" value="{{$d->unit_kerja_id}}">
+                                    <input type="hidden" name="id_unit_kerja" id="id_unit_kerja"
+                                        value="{{$d->unit_kerja_id}}">
                                     <label class="col-sm-3 col-form-label">Password (Optional)</label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="password" id="password" name="password"
@@ -129,7 +126,7 @@
                 type: "POST",
                 url: "{{ route('user.updateProfil') }}",
                 data: formData,
-                cache:false,
+                cache: false,
                 contentType: false,
                 processData: false,
                 beforeSend: function () {
@@ -137,7 +134,17 @@
                 },
                 success: function (res) {
                     if (res.status == 200) {
-                        location.reload();   
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: res.success,
+                        }).then(function () {
+                            window.history.back();
+                            location.reload();
+                        });
+                    } else if (res.status == 405) {
+                        swal("Pesan", res.errors, "error");
+                        $('#create-data').removeAttr('disabled');
                     }
                 }
             })
@@ -150,7 +157,9 @@
             success: function (res) {
                 console.log(res.data);
                 $.each(res.data, function (key, data) {
-                    $('.add_option').append('<option selected value="' + data.id_unit_kerja + '">' + data.departemen +'</option>').trigger('change')
+                    $('.add_option').append('<option selected value="' + data
+                        .id_unit_kerja + '">' + data.departemen + '</option>').trigger(
+                        'change')
                 })
             }
         })

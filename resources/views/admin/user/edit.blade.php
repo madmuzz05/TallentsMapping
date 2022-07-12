@@ -143,20 +143,17 @@
                     password: d_password,
                 },
                 success: function (res) {
-                    var err = ''
-                    const list = document.getElementById("body-error-msg")
-                    while (list.hasChildNodes()) {
-                        list.removeChild(list.firstChild);
-                    }
-                    $.each(res.errors, function (key, value) {
-                        document.getElementsByClassName("error-msg")[0].style
-                            .display = "block";
-                        err += '<li>' + value + '</li>'
-                    });
-                    $('.body-error-msg').append(err)
                     if (res.status == 200) {
-                        window.location = "/user/index"
-                        // console.log('oke');
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: res.success,
+                        }).then(function () {
+                            window.location = "/user/index"
+                        });
+                    } else if (res.status == 405) {
+                        swal("Pesan", res.errors, "error");
+                        $('#create-data').removeAttr('disabled');
                     }
                 }
             })
