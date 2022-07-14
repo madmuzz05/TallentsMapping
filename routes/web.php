@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Support\Jsonable;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HasilController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\PernyataanController;
 use App\Http\Controllers\SimulasiController;
 use App\Http\Controllers\JobFamilyController;
 use App\Http\Controllers\ParameterPenilaianController;
+use App\Models\Pernyataan;
+use App\Models\Simulasi;
 use Illuminate\Support\Facades\Redirect;
 
 /*
@@ -34,11 +37,11 @@ Auth::routes();
 Route::get('logout', function () {
     auth()->logout();
     request()->session()->invalidate();
- 
-        request()->session()->regenerateToken();
-        return Redirect::to('/login');
-    })->name('logout');
-    Route::get('register', function () {
+
+    request()->session()->regenerateToken();
+    return Redirect::to('/login');
+})->name('logout');
+Route::get('register', function () {
     return view('auth/register');
 })->name('register');
 

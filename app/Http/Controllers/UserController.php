@@ -330,7 +330,7 @@ class UserController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new UsersImport, public_path('/imports/' . $nama_file));
-        return back();
+        return back()->with('success', 'Email-Address And Password Are Wrong.');
     }
 
     public function export()
