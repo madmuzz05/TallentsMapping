@@ -76,12 +76,12 @@ class PernyataanController extends Controller
      */
     public function store(Request $request)
     {
-        $tema_bakat = $request->tema_bakat_create;
+
         $pernyataan = $request->pernyataan_create;
         $nilai = $request->nilai_create;
-        for ($count = 0; $count < count($tema_bakat); $count++) {
+        for ($count = 0; $count < count($pernyataan); $count++) {
             $data = [
-                'tema_bakat_id' => $tema_bakat[$count],
+                'tema_bakat_id' => $request->tema_bakat_create,
                 'pernyataan'  => $pernyataan[$count],
                 'bobot_nilai'  => $nilai[$count],
                 'instansi_id' => Auth::user()->instansi_id
@@ -161,7 +161,7 @@ class PernyataanController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new PernyataanImport, public_path('/imports/' . $nama_file));
-        return back();
+        return back()->with('success', 'Berhasil menambahkan data');
     }
 
     public function export()

@@ -119,13 +119,12 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Kode</label>
                     <div class="col-sm-9">
-                        <input class="form-control kode" type="text" name="kode" id="kode" value=""
-                            required />
-                        </div>
+                        <input class="form-control kode" type="text" name="kode" id="kode" value="" required />
                     </div>
-                    <div class="mb-3 row">
-                        <label class="col-sm-3 col-form-label">Nama Job Family</label>
-                        <div class="col-sm-9">
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Nama Job Family</label>
+                    <div class="col-sm-9">
                         <input class="form-control job_family" type="text" name="job_family" id="job_family" value=""
                             required />
                     </div>
@@ -155,14 +154,14 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Kode</label>
                     <div class="col-sm-9">
-                        <input class="form-control kode" type="text" name="kode_edit" id="kode_edit"
-                            value="" required />
+                        <input class="form-control kode" type="text" name="kode_edit" id="kode_edit" value=""
+                            required />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Nama Job Family</label>
                     <div class="col-sm-9">
-                    <input class="form-control job_family" type="text" name="job_family_edit" id="job_family_edit"
+                        <input class="form-control job_family" type="text" name="job_family_edit" id="job_family_edit"
                             value="" required />
                     </div>
                 </div>
@@ -242,6 +241,11 @@
                 if (res.status == 200) {
                     $("#createModal").modal('hide');
                     table.draw()
+                    swal({
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil ditambahkan",
+                    })
                 }
             }
         })
@@ -262,6 +266,11 @@
                 if (res.status == 200) {
                     $("#editModal").modal('hide');
                     table.draw()
+                    swal({
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil disimpan",
+                    })
                 }
             }
         })
@@ -286,6 +295,11 @@
                 if (res.status == 200) {
                     $("#deleteModal").modal('hide');
                     table.draw()
+                    swal({
+                                title: "Pesan",
+                                icon: 'success',
+                                text: "Data berhasil dihapus",
+                            })
                 }
             }
         })

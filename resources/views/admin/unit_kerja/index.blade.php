@@ -285,6 +285,11 @@
                     $("#job_family").val(null).trigger('change')
                     $("#departemen").val('')
                     $("#createModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil ditambahkan",
+                        })
                     table.draw()
                 }
             }
@@ -305,6 +310,11 @@
                     $("#job_family").val(null).trigger('change')
                     $("#departemen").val('')
                     $("#editModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil disimpan",
+                        })
                     table.draw()
                 }
             }
@@ -319,6 +329,11 @@
             success: function (res) {
                 if (res.status == 200) {
                     $("#deleteModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil dihapus",
+                        })
                     table.draw()
                 }
             }

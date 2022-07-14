@@ -138,7 +138,7 @@ class TemaBakatController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new TemaBakatImport, public_path('/imports/' . $nama_file));
-        return back();
+        return back()->with('success', 'Data berhasil ditambahkan');
     }
 
     public function export()

@@ -130,22 +130,19 @@
                                 <tbody id="body">
                                     <tr>
                                         <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
-                                                name="tema_bakat_create[]" id="tema_bakat_create"
-                                                required></select></td>
-                                        <td><select
-                                                class="js-example-basic-single col-sm-12 kategori_faktor"
-                                                name="kategori_faktor_create[]" id="kategori_faktor_create"
-                                                required>
+                                                name="tema_bakat_create[]" id="tema_bakat_create" required></select>
+                                        </td>
+                                        <td><select class="js-example-basic-single col-sm-12 kategori_faktor"
+                                                name="kategori_faktor_create[]" id="kategori_faktor_create" required>
                                                 <option value=""></option>
                                                 <option value="Core Faktor">Core Faktor</option>
                                                 <option value="Secondary Faktor">Secondary Faktor</option>
                                             </select></td>
-                                        <td><input class="form-control digits nilai" type="number"
-                                                name="nilai_create[]" id="nilai_create"
-                                                placeholder="Input nilai dalam bentuk angka" min="1" max="5"
-                                                required /></td>
-                                        <td><button type="button"
-                                                class="btn btn-sm btn-danger remove">Delete Field</button>
+                                        <td><input class="form-control digits nilai" type="number" name="nilai_create[]"
+                                                id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1"
+                                                max="5" required /></td>
+                                        <td><button type="button" class="btn btn-sm btn-danger remove">Delete
+                                                Field</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -384,6 +381,11 @@
                         table.draw()
                         document.getElementById("create_form").reset();
                         // $("select").val(null);
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil ditambahkan",
+                        })
                         $("#createModal").modal('hide');
                     }
                 }
@@ -426,6 +428,11 @@
                     if (res.status == 200) {
                         $("#deleteModal").modal('hide');
                         table.draw()
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil dihapus",
+                        })
                     }
                 }
             })

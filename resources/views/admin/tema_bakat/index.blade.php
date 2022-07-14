@@ -273,7 +273,18 @@
             success: function (res) {
                 if (res.status == 200) {
                     $("#createModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil ditambahkan",
+                        })
                     table.draw()
+                }else{
+                    swal({
+                            title: "Pesan",
+                            icon: 'error',
+                            text: "Gagal menambahakan data",
+                        })
                 }
             }
         })
@@ -293,7 +304,18 @@
                 console.log(res.status);
                 if (res.status == 200) {
                     $("#editModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil disimpan",
+                        })
                     table.draw()
+                }else{
+                    swal({
+                            title: "Pesan",
+                            icon: 'error',
+                            text: "Data gagal disimpan",
+                        })
                 }
             }
         })
@@ -317,7 +339,18 @@
             success: function (res) {
                 if (res.status == 200) {
                     $("#deleteModal").modal('hide');
+                    swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil dihapus",
+                        })
                     table.draw()
+                } else {
+                    swal({
+                            title: "Pesan",
+                            icon: 'error',
+                            text: "Gagal menghapus data",
+                        })
                 }
             }
         })

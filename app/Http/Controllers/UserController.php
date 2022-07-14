@@ -143,6 +143,7 @@ class UserController extends Controller
         }
         $data = $request->all();
         $data['instansi_id'] = Auth::user()->instansi_id;
+        $data['password'] =  Hash::make($request->password);
         User::create($data);
         return response()->json([
             'status' => 200
@@ -330,7 +331,7 @@ class UserController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new UsersImport, public_path('/imports/' . $nama_file));
-        return back()->with('success', 'Email-Address And Password Are Wrong.');
+        return back()->with('success', 'Berhasil menambahkan data.');
     }
 
     public function export()

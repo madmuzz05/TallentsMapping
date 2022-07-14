@@ -101,8 +101,9 @@
             <!-- Page Sidebar Start-->
             <header class="main-nav">
                 <div class="sidebar-user text-center">
-                    <a class="setting-primary" href="{{route('user.editProfil')}}"><i data-feather="settings"></i></a><img
-                        class="img-90 rounded-circle" src="{{asset('images/').'/'.auth()->user()->foto}}" alt="" />
+                    <a class="setting-primary" href="{{route('user.editProfil')}}"><i
+                            data-feather="settings"></i></a><img class="img-90 rounded-circle"
+                        src="{{asset('images/').'/'.auth()->user()->foto}}" alt="" />
                     <h6 class="mt-3 f-14 f-w-600 nama_user"></h6>
                     <p class="mb-0 font-roboto unit_jabatan">
                     </p>
@@ -146,19 +147,24 @@
                                                 class="{{ request()->routeIs('tema_bakat.index') ? 'active' : ''}}">Tema
                                                 Bakat</a></li>
                                         <li><a href="{{route('job_family.index')}}"
-                                                class="{{ request()->routeIs('job_family.index') ? 'active' : ''}}">Job Family</a></li>
+                                                class="{{ request()->routeIs('job_family.index') ? 'active' : ''}}">Job
+                                                Family</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                    <a class="nav-link menu-title {{  request()->is('parameter*') ? 'active' : '' }} {{  request()->is('hasil*') ? 'active' : '' }} " href="javascript:void(0)"><i
+                                    <a class="nav-link menu-title {{  request()->is('parameter*') ? 'active' : '' }} {{  request()->is('hasil*') ? 'active' : '' }} "
+                                        href="javascript:void(0)"><i
                                             data-feather="book-open"></i><span>Assesmen</span></a>
                                     <ul class="nav-submenu menu-content" style="display: none;">
                                         <li><a href="{{route('parameter.index')}}"
-                                                class="{{ request()->routeIs('parameter.index') ? 'active' : ''}}">Parameter Penilaian</a></li>
+                                                class="{{ request()->routeIs('parameter.index') ? 'active' : ''}}">Parameter
+                                                Penilaian</a></li>
                                         <li><a href="{{route('hasil.pegawai')}}"
-                                                class="{{ request()->routeIs('hasil.pegawai') ? 'active' : ''}}">Hasil Assesmen By Pegawai</a></li>
+                                                class="{{ request()->routeIs('hasil.pegawai') ? 'active' : ''}}">Hasil
+                                                Assesmen By Pegawai</a></li>
                                         <li><a href="{{route('hasil.job_family')}}"
-                                                class="{{ request()->routeIs('hasil.job_family') ? 'active' : ''}}">Hasil Assesmen By Job Family</a></li>
+                                                class="{{ request()->routeIs('hasil.job_family') ? 'active' : ''}}">Hasil
+                                                Assesmen By Job Family</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -233,8 +239,12 @@
 
 
             $('.table_hasil_admin').DataTable({
-                ordering: false,
-                paging: false,
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 20],
+                    [5, 10, 20]
+                ],
+                paging: true,
             });
             $('.tema_bakat_select2').select2({
                 placeholder: 'Select Data',

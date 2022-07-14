@@ -139,7 +139,7 @@ class JobFamilyController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new JobFamilyImport, public_path('/imports/' . $nama_file));
-        return back();
+        return back()->with('success', 'Berhasil menambahkan data');    
     }
 
     public function export()
@@ -157,22 +157,22 @@ class JobFamilyController extends Controller
     {
         Hasil::with('user')
             ->whereHas('user', function ($query) {
-            $query->where('instansi_id', Auth::user()->instansi_id);
-        })
-        ->where('job_family_id', $id)->delete();
+                $query->where('instansi_id', Auth::user()->instansi_id);
+            })
+            ->where('job_family_id', $id)->delete();
 
         BobotNilai::with('user', 'job_family')
             ->whereHas('user', function ($query) {
-            $query->where('instansi_id', Auth::user()->instansi_id);
-        })
-        ->whereHas('parameter', function ($query) use($id) {
-            $query->where('job_family_id', $id);
-        })->delete();
+                $query->where('instansi_id', Auth::user()->instansi_id);
+            })
+            ->whereHas('parameter', function ($query) use ($id) {
+                $query->where('job_family_id', $id);
+            })->delete();
         Parameter_Penilaian::with('job_family')
-        ->whereHas('job_family', function ($query) {
-            $query->where('instansi_id', Auth::user()->instansi_id);
-        })
-        ->where('job_family_id', $id)->delete();
+            ->whereHas('job_family', function ($query) {
+                $query->where('instansi_id', Auth::user()->instansi_id);
+            })
+            ->where('job_family_id', $id)->delete();
         JobFamily::destroy($id);
         return response()->json([
             'status' => 200

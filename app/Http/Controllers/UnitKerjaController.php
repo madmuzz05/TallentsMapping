@@ -161,7 +161,7 @@ class UnitKerjaController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new UnitKerjaImport, public_path('/imports/' . $nama_file));
-        return back();
+        return back()->with('success', 'Berhasil menambahkan data.');
     }
 
     public function export()

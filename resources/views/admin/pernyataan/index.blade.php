@@ -143,11 +143,18 @@
                 <form method="post" id="create_form">
                     <div class="row mr-5 ml-5">
                         <div class="col-lg-12 table-responsive-lg text-center">
+                            <div class="m-b-20 row">
+                                <label class="col-sm-4 col-form-label">Tema Bakat</label>
+                                <div class="col-sm-8">
+                                    <select class="tema_bakat_select2 col-sm-12 tema_bakat_create"
+                                                name="tema_bakat_create" id="tema_bakat_create" required></select>
+                                </div>
+                            </div>
+
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <td>Pernyataan</td>
-                                        <td>Tema Bakat</td>
                                         <td>Bobot Nilai</td>
                                         <td><button type="button" class="btn btn-sm btn-info" id="add">Add
                                                 Field</button></td>
@@ -158,9 +165,6 @@
                                         <td><textarea class="form-control pernyataan_create" id="pernyataan_create"
                                                 name="pernyataan_create[]" rows="3" name="pernyataan_create"
                                                 required></textarea></td>
-                                        <td><select class="tema_bakat_select2 col-sm-12 tema_bakat_create"
-                                                name="tema_bakat_create[]" id="tema_bakat_create" required></select>
-                                        </td>
                                         <td><input class="form-control digits nilai" type="text" name="nilai_create[]"
                                                 id="nilai_create" placeholder="Input nilai dalam bentuk angka"
                                                 required /></td>
@@ -314,8 +318,6 @@
             html +=
                 '<td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>'
             html +=
-                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat_create" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
-            html +=
                 '<td><input class="form-control digits nilai" type="text" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" required/></td>'
             html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
             html += '</tr>'
@@ -443,7 +445,11 @@
             }
             // console.log(tot);
             if (tot > 1) {
-                alert("Total bobot nilai tidak boleh dari 1");
+                swal({
+                    title: "Pesan",
+                    icon: 'info',
+                    text: "Total bobot nilai tidak boleh dari 1",
+                })
             } else {
                 // console.log('n');
                 $.ajax({
@@ -451,9 +457,6 @@
                     url: "{{ route('pernyataan.store') }}",
                     data: $(this).serialize(),
                     dataType: 'json',
-                    beforeSend: function () {
-                        $('#create-data').attr('disabled', 'disabled');
-                    },
                     cache: false,
                     success: function (res) {
                         if (res.status == 200) {
@@ -462,6 +465,11 @@
                             document.getElementById("create_form").reset();
                             // $("select").val(null);
                             $("#createModal").modal('hide');
+                            swal({
+                                title: "Pesan",
+                                icon: 'success',
+                                text: "Data berhasil ditambahkan",
+                            })
                         }
                     }
                 })
@@ -480,9 +488,11 @@
             }
             // console.log(tot);
             if (tot > 1) {
-                alert("Total bobot nilai tidak boleh lebih dari 1");
-            } else if (tot < 1) {
-                alert("Total bobot nilai tidak boleh kurang dari 1");
+                swal({
+                    title: "Pesan",
+                    icon: 'info',
+                    text: "Total bobot nilai tidak boleh lebih dari 1",
+                })
             } else {
                 // console.log('n');
                 $.ajax({
@@ -501,6 +511,11 @@
                             document.getElementById("edit_form").reset();
                             // $("select").val(null);
                             $("#editModal").modal('hide');
+                            swal({
+                                title: "Pesan",
+                                icon: 'success',
+                                text: "Data berhasil disimpan",
+                            })
                         }
                     }
                 })
@@ -524,6 +539,11 @@
                     if (res.status == 200) {
                         $("#deleteModal").modal('hide');
                         table.draw()
+                        swal({
+                                title: "Pesan",
+                                icon: 'success',
+                                text: "Data berhasil dihapus",
+                            })
                     }
                 }
             })

@@ -180,7 +180,13 @@
                 success: function (res) {
                     if (res.status == 200) {
                         $('#btn-submit').attr('disabled', false);
-                        location.reload()
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: 'Data berhasil disimpan',
+                        }).then(function () {
+                            window.location = "/parameter/index"
+                        });
                     }
                 }
             })

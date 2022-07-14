@@ -37,6 +37,7 @@ class SimulasiController extends Controller
             $his_jab = Simulasi::where('pernyataan_id', $d->id_pernyataan)
                 ->where('user_id', Auth::user()->id_user)->get();
             // $his_jab->nilai;
+            // dd($his_jab);
         }
         $question = Pernyataan::select([
             'pernyataan.*',
@@ -49,7 +50,7 @@ class SimulasiController extends Controller
         return view('user.asesmen.index', ([
             'data' => $data,
             'answer' => $his_jab,
-            'tanyaan' => ($question - 1),
+            'tanyaan' => ($question - 2),
             'total' => $total
         ]));
     }
@@ -292,7 +293,7 @@ class SimulasiController extends Controller
                 'created_at' => Carbon::now()
             ]
         );
-        if ($total == 15) {
+        if (!empty($request->sudah) && $total == $question) {
             User::where('id_user', Auth::user()->id_user)->update(
                 [
                     'assesmen' => 'Y'
@@ -316,7 +317,7 @@ class SimulasiController extends Controller
             return view('user.asesmen.data', ([
                 'data' => $data,
                 'answer' => $his_jab,
-                'tanyaan' => ($question - 1),
+                'tanyaan' => ($question - 2),
                 'total' => $total
             ]))->render();
         }
