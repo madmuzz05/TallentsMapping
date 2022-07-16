@@ -244,9 +244,9 @@ class SimulasiController extends Controller
                     array(
                         'user_id' => $u->id_user,
                         'job_family_id' => $job->id_job_family,
-                        'NCF' => round($NCF / $IC, 3),
-                        'NSF' => round($NSF / $IS, 3),
-                        'N' => round($N, 3)
+                        'NCF' => round($NCF / $IC, 2),
+                        'NSF' => round($NSF / $IS, 2),
+                        'N' => round($N, 2)
                     )
                 );
             }

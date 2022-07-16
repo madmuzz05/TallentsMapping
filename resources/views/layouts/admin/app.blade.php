@@ -135,8 +135,7 @@
                                                 class="{{ request()->routeIs('user.index') ? 'active' : ''}}">User</a>
                                         </li>
                                         <li><a href="{{route('unit_kerja.index')}}"
-                                                class="{{ request()->routeIs('unit_kerja.index') ? 'active' : ''}}">Unit
-                                                Kerja</a></li>
+                                                class="{{ request()->routeIs('unit_kerja.index') ? 'active' : ''}}">Departemen</a></li>
                                         <!-- <li><a href="{{route('jabatan.index')}}"
                                                 class="{{ request()->routeIs('jabatan.index') ? 'active' : ''}}">Jabatan</a>
                                         </li> -->
