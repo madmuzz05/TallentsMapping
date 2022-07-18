@@ -208,6 +208,7 @@
                 d.job_family = $('.job_family_select2').val();
                 d.departemen = $('.unit_kerja_select2').val();
                 return d;
+                console.log(d);
             },
         },
         columns: [{

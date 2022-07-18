@@ -71,22 +71,17 @@ class SimulasiController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('hak_akses', 'User')->where('assesmen', 'Y');
             })->get();
-        $tema = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'asc')->get();
+        $tema = TemaBakat::where('instansi_id', 1)->orderBy('nama_tema', 'asc')->get();
         $bobot_pernyataan = array();
         $nilai_pernyataan = 0;
         $iteration = 0;
         foreach ($tema as $t) {
+            // dd($t->id_tema_bakat);
             foreach ($hasil_simulasi as $hs) {
+                // dd($hs->pernyataan->tema_bakat_id);
+                $pernyataan = Pernyataan::where('instansi_id', Auth::user()->instansi_id)->where('tema_bakat_id', $t->id_tema_bakat)->get();
+                // dd($pernyataan);
                 if ($hs->pernyataan->tema_bakat_id == $t->id_tema_bakat) {
-                    $pernyataan = Pernyataan::select([
-                        'pernyataan.*',
-                        DB::raw('nama_tema as tema_bakat'),
-                        DB::raw('id_tema_bakat as id_tema')
-                    ])
-                        ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')
-                        ->where('pernyataan.instansi_id', Auth::user()->instansi_id)
-                        ->where('pernyataan.tema_bakat_id', $t->id_tema_bakat)->get();
-                    // dd($pernyataan);
                     foreach ($pernyataan as $p) {
                         if ($hs->pernyataan_id == $p->id_pernyataan) {
                             $iteration = $hs->nilai * $p->bobot_nilai;
@@ -135,7 +130,7 @@ class SimulasiController extends Controller
             ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id)->get();
 
         $akhir_bobot = $this->pembobotan_pernyataan();
-        // dd($hasil);
+        // dd($akhir_bobot);
         // $bobot_nilai = array();
         foreach ($job_familys as $j) {
             $parameter = Parameter_Penilaian::where('job_family_id', $j->id_job_family)->get();
@@ -143,38 +138,29 @@ class SimulasiController extends Controller
             foreach ($parameter as $p) {
                 foreach ($akhir_bobot as $hs) {
                     $selisih = 0;
+                    // dd($hs['tema_bakat_id']);
+                    // dd($p->tema_bakat_id);
                     if ($hs['tema_bakat_id'] == $p->tema_bakat_id) {
                         // dd($hs->pernyataan->tema_bakat_id);
-                        // dd($hs->nilai);
-                        $selisih = $hs['nilai'] - $p->nilai;
-                        switch ($selisih) {
-                            case '0':
-                                $bobot_nilai = 5;
-                                break;
-                            case '1':
-                                $bobot_nilai = 4.5;
-                                break;
-                            case '-1':
-                                $bobot_nilai = 4;
-                                break;
-                            case '2':
-                                $bobot_nilai = 3.5;
-                                break;
-                            case '-2':
-                                $bobot_nilai = 3;
-                                break;
-                            case '3':
-                                $bobot_nilai = 2.5;
-                                break;
-                            case '-3':
-                                $bobot_nilai = 2;
-                                break;
-                            case '4':
-                                $bobot_nilai = 1.5;
-                                break;
-                            case '-4':
-                                $bobot_nilai = 1;
-                                break;
+                        $selisih =  $p->nilai - $hs['nilai'];
+                        if ($selisih == '0') {
+                            $bobot_nilai = 5;
+                        } elseif ($selisih == '1') {
+                            $bobot_nilai = 4.5;
+                        } elseif ($selisih == '-1') {
+                            $bobot_nilai = 4;
+                        } elseif ($selisih == '2') {
+                            $bobot_nilai = 3.5;
+                        } elseif ($selisih == '-2') {
+                            $bobot_nilai = 3;
+                        } elseif ($selisih == '3') {
+                            $bobot_nilai = 2.5;
+                        } elseif ($selisih == '-3') {
+                            $bobot_nilai = 2;
+                        } elseif ($selisih == '4') {
+                            $bobot_nilai = 1.5;
+                        } elseif ($selisih == '-4') {
+                            $bobot_nilai = 1;
                         }
 
                         BobotNilai::updateOrCreate(
@@ -228,7 +214,7 @@ class SimulasiController extends Controller
                 foreach ($data_bobot as $db) {
                     // dd($db);
                     if ($db['user_id'] === $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Core Faktor") {
-                        $NCF = $NCF + $db['nilai'];
+                        $NCF += $db['nilai'];
                         $IC++;
                     }
                     if ($db['user_id'] == $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Secondary Faktor") {
@@ -238,7 +224,6 @@ class SimulasiController extends Controller
                     }
                 }
                 $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
-
                 array_push(
                     $perhitungan,
                     array(
@@ -250,6 +235,7 @@ class SimulasiController extends Controller
                     )
                 );
             }
+
             foreach ($perhitungan as $hasil_akhir) {
                 Hasil::updateOrCreate(
                     [
@@ -264,6 +250,7 @@ class SimulasiController extends Controller
                 );
             }
         }
+        // dd($perhitungan);
         return $perhitungan;
     }
 

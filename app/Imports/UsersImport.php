@@ -28,7 +28,7 @@ class UsersImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        $unit_kerja = $this->unit_kerjas->where('departemen', $row['unit_kerja'])->first();
+        $unit_kerja = $this->unit_kerjas->where('departemen', $row['unit_kerja'])->where('instansi_id', Auth::user()->instansi_id)->first();
         return new User([
             'no_pegawai' => $row['no_pegawai'],
             'nama' => $row['nama'],
