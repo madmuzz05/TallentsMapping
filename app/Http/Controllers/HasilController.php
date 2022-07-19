@@ -8,6 +8,7 @@ use App\Models\Parameter_Penilaian;
 use App\Models\Simulasi;
 use App\Models\User;
 use App\Http\Controllers\SimulasiController;
+use App\Models\BobotNilai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -156,6 +157,7 @@ class HasilController extends Controller
     public function destroy_pegawai($id)
     {
         Hasil::where('user_id', $id)->delete();
+        BobotNilai::where('user_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);
@@ -163,10 +165,15 @@ class HasilController extends Controller
     public function destroy_job_family($id)
     {
         Hasil::where('job_family_id', $id)->delete();
+        BobotNilai::with('user', 'parameter')
+            ->whereHas('parameter', function ($query) use ($id) {
+                $query->where('job_family_id', $id);
+            })->delete();
         JobFamily::where('id_job_family', $id)->update([
             'nilai_core_faktor' => '0',
             'nilai_sec_faktor' => '0',
         ]);
+        Parameter_Penilaian::where('job_family_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);

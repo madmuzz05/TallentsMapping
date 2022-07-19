@@ -37,7 +37,6 @@ class SimulasiController extends Controller
             $his_jab = Simulasi::where('pernyataan_id', $d->id_pernyataan)
                 ->where('user_id', Auth::user()->id_user)->get();
             // $his_jab->nilai;
-            // dd($his_jab);
         }
         $question = Pernyataan::select([
             'pernyataan.*',
@@ -71,17 +70,22 @@ class SimulasiController extends Controller
             ->whereHas('user', function ($query) {
                 $query->where('hak_akses', 'User')->where('assesmen', 'Y');
             })->get();
-        $tema = TemaBakat::where('instansi_id', 1)->orderBy('nama_tema', 'asc')->get();
+        $tema = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'asc')->get();
         $bobot_pernyataan = array();
         $nilai_pernyataan = 0;
         $iteration = 0;
         foreach ($tema as $t) {
-            // dd($t->id_tema_bakat);
             foreach ($hasil_simulasi as $hs) {
-                // dd($hs->pernyataan->tema_bakat_id);
-                $pernyataan = Pernyataan::where('instansi_id', Auth::user()->instansi_id)->where('tema_bakat_id', $t->id_tema_bakat)->get();
-                // dd($pernyataan);
                 if ($hs->pernyataan->tema_bakat_id == $t->id_tema_bakat) {
+                    $pernyataan = Pernyataan::select([
+                        'pernyataan.*',
+                        DB::raw('nama_tema as tema_bakat'),
+                        DB::raw('id_tema_bakat as id_tema')
+                    ])
+                        ->leftjoin('tema_bakat', 'tema_bakat.id_tema_bakat', '=', 'pernyataan.tema_bakat_id')
+                        ->where('pernyataan.instansi_id', Auth::user()->instansi_id)
+                        ->where('pernyataan.tema_bakat_id', $t->id_tema_bakat)->get();
+                    // dd($pernyataan);
                     foreach ($pernyataan as $p) {
                         if ($hs->pernyataan_id == $p->id_pernyataan) {
                             $iteration = $hs->nilai * $p->bobot_nilai;
@@ -130,37 +134,47 @@ class SimulasiController extends Controller
             ->where('nilai_sec_faktor', '!=', '0')->where('instansi_id', Auth::user()->instansi_id)->get();
 
         $akhir_bobot = $this->pembobotan_pernyataan();
-        // dd($akhir_bobot);
+        // dd($hasil);
         // $bobot_nilai = array();
         foreach ($job_familys as $j) {
             $parameter = Parameter_Penilaian::where('job_family_id', $j->id_job_family)->get();
-            $bobot_nilai = 0;
             foreach ($parameter as $p) {
+                $bobot_nilai = 0;
                 foreach ($akhir_bobot as $hs) {
                     $selisih = 0;
-                    // dd($hs['tema_bakat_id']);
-                    // dd($p->tema_bakat_id);
                     if ($hs['tema_bakat_id'] == $p->tema_bakat_id) {
                         // dd($hs->pernyataan->tema_bakat_id);
-                        $selisih =  $p->nilai - $hs['nilai'];
-                        if ($selisih == '0') {
-                            $bobot_nilai = 5;
-                        } elseif ($selisih == '1') {
-                            $bobot_nilai = 4.5;
-                        } elseif ($selisih == '-1') {
-                            $bobot_nilai = 4;
-                        } elseif ($selisih == '2') {
-                            $bobot_nilai = 3.5;
-                        } elseif ($selisih == '-2') {
-                            $bobot_nilai = 3;
-                        } elseif ($selisih == '3') {
-                            $bobot_nilai = 2.5;
-                        } elseif ($selisih == '-3') {
-                            $bobot_nilai = 2;
-                        } elseif ($selisih == '4') {
-                            $bobot_nilai = 1.5;
-                        } elseif ($selisih == '-4') {
-                            $bobot_nilai = 1;
+                        // dd($hs->nilai);
+                        $selisih = $hs['nilai'] - $p->nilai;
+
+                        switch ($selisih) {
+                            case '0':
+                                $bobot_nilai = 5;
+                                break;
+                            case '1':
+                                $bobot_nilai = 4.5;
+                                break;
+                            case '-1':
+                                $bobot_nilai = 4;
+                                break;
+                            case '2':
+                                $bobot_nilai = 3.5;
+                                break;
+                            case '-2':
+                                $bobot_nilai = 3;
+                                break;
+                            case '3':
+                                $bobot_nilai = 2.5;
+                                break;
+                            case '-3':
+                                $bobot_nilai = 2;
+                                break;
+                            case '4':
+                                $bobot_nilai = 1.5;
+                                break;
+                            case '-4':
+                                $bobot_nilai = 1;
+                                break;
                         }
 
                         BobotNilai::updateOrCreate(
@@ -180,8 +194,8 @@ class SimulasiController extends Controller
 
         $bobot = BobotNilai::with('user', 'parameter')
             ->whereHas('user', function ($query) {
-                $query->where('instansi_id', Auth::user()->instansi_id);
-            })
+                $query->where('instansi_id', Auth::user()->instansi_id)->where('assesmen', 'Y');
+            })->orderBy('user_id', 'asc')
             ->get();
         // dd($bobot);
         $data_bobot = array();
@@ -204,38 +218,42 @@ class SimulasiController extends Controller
         // dd($user);
         $core = array();
         $sec = array();
-        $NCF = 0;
-        $NSF = 0;
-        $IC = 0;
-        $IS = 0;
-        $N = 0;
         foreach ($job_familys as $job) {
+            $NCF = 0;
+            $NSF = 0;
+            $IC = 0;
+            $IS = 0;
+            $N = 0;
             foreach ($user as $u) {
-                foreach ($data_bobot as $db) {
-                    // dd($db);
-                    if ($db['user_id'] === $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Core Faktor") {
-                        $NCF += $db['nilai'];
-                        $IC++;
-                    }
-                    if ($db['user_id'] == $u->id_user && $db['job_family_id'] === $job->id_job_family && $db['faktor'] === "Secondary Faktor") {
-                        $NSF +=  $db['nilai'];
-                        $IS++;
-                        // dd($NSF);
+                $param = Parameter_Penilaian::where('job_family_id', $job->id_job_family)->get();
+                foreach ($param as $p) {
+                    // dd($p->id_parameter_penilaian);
+                    foreach ($data_bobot as $db) {
+                        // dd($db);
+                        if ($db['user_id'] == $u->id_user && $db['job_family_id'] == $job->id_job_family && $db['faktor'] == "Core Faktor" && $db['parameter_id'] == $p->id_parameter_penilaian) {
+                            $NCF = $NCF + $db['nilai'];
+                            $IC++;
+                        }
+                        if ($db['user_id'] == $u->id_user && $db['job_family_id'] == $job->id_job_family && $db['faktor'] == "Secondary Faktor" && $db['parameter_id'] == $p->id_parameter_penilaian) {
+                            $NSF +=  $db['nilai'];
+                            $IS++;
+                            // dd($NSF);
+                        }
                     }
                 }
                 $N = (($job->nilai_core_faktor / 100) * ($NCF / $IC)) + (($job->nilai_sec_faktor / 100) * ($NSF / $IS));
+
                 array_push(
                     $perhitungan,
                     array(
                         'user_id' => $u->id_user,
                         'job_family_id' => $job->id_job_family,
-                        'NCF' => round($NCF / $IC, 2),
-                        'NSF' => round($NSF / $IS, 2),
-                        'N' => round($N, 2)
+                        'NCF' => round($NCF / $IC, 3),
+                        'NSF' => round($NSF / $IS, 3),
+                        'N' => round($N, 3)
                     )
                 );
             }
-
             foreach ($perhitungan as $hasil_akhir) {
                 Hasil::updateOrCreate(
                     [
@@ -287,7 +305,6 @@ class SimulasiController extends Controller
                 ]
             );
         }
-
         $data = Pernyataan::select([
             'pernyataan.*',
             DB::raw('nama_tema as tema_bakat'),

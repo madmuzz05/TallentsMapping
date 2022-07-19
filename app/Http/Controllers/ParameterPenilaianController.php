@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JobFamily;
 use App\Models\Parameter_Penilaian;
 use App\Models\BobotNilai;
+use App\Models\Hasil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -173,19 +174,12 @@ class ParameterPenilaianController extends Controller
             'nilai_core_faktor' => '0',
             'nilai_sec_faktor' => '0',
         ]);
-        BobotNilai::with('user', 'job_family')
-            ->whereHas('user', function ($query) {
-            $query->where('instansi_id', Auth::user()->instansi_id);
-        })
-        ->whereHas('parameter', function ($query) use($id) {
-            $query->where('job_family_id', $id);
-        })->delete();
-
-        Parameter_Penilaian::with('job_family')
-        ->whereHas('job_family', function ($query) {
-            $query->where('instansi_id', Auth::user()->instansi_id);
-        })
-        ->where('job_family_id', $id)->delete();
+        BobotNilai::with('user', 'parameter')
+            ->whereHas('parameter', function ($query) use ($id) {
+                $query->where('job_family_id', $id);
+            })->delete();
+        Parameter_Penilaian::where('job_family_id', $id)->delete();
+        Hasil::where('job_family_id', $id)->delete();
         return response()->json([
             'status' => 200
         ]);

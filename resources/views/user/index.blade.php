@@ -147,6 +147,8 @@
                             <li>Jika anda telah siap, silahkan klik tombol START untuk memulai.
                             </li>
                         </ul>
+                        <b class="m-t-15">CATATAN PENTING : Untuk menjaga validitas assessment, jawaban “Sangat Kuat” maksimal berjumlah 22 pernyataan
+                        </b>
                     </div>
                 </div>
             </div>
