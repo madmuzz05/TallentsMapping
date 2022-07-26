@@ -8,6 +8,8 @@ use App\Models\TemaBakat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -46,7 +48,7 @@ class TemaBakatController extends Controller
     {
         $data = TemaBakat::where('instansi_id', Auth::user()->instansi_id)->orderBy('nama_tema', 'asc')->get();
         if (isset($request->q)) {
-            $data = TemaBakat::where('nama_tema', 'like', "%" . $request->q . "%")->get();
+            $data = TemaBakat::where('nama_tema', 'like', "%" . $request->q . "%")->where('instansi_id', Auth::user()->instansi_id)->get();
         }
         return $data;
     }
@@ -70,6 +72,16 @@ class TemaBakatController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'nama_tema' => 'required',
+            'deskripsi' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return Response::json(array(
+                'status' => 405,
+                'error' => $validator->errors()->all()
+            ));
+        }
         if ($request->ajax()) {
             TemaBakat::create([
                 'nama_tema' => request('nama_tema'),

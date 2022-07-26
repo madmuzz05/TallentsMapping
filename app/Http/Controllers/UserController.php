@@ -134,11 +134,12 @@ class UserController extends Controller
             'alamat' => 'required',
             'telepon' => 'required',
             'email' => 'required',
+            'password' => 'required|same:password_confirmation|min:6',
         ]);
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
-                'errors' => $validator->errors()->all()
+                'status' => 405,
+                'error' => $validator->errors()->all()
             ));
         }
         $data = $request->all();
@@ -236,7 +237,8 @@ class UserController extends Controller
                 ]);
 
             return response()->json([
-                'status' => 200
+                'status' => 200,
+                'success' => "Action Berhasil"
             ]);
         } elseif (empty($request->password)) {
             User::where('id_user', $request->id_user)
@@ -298,7 +300,8 @@ class UserController extends Controller
                 ]);
 
             return response()->json([
-                'status' => 200
+                'status' => 200,
+                'success' => "Action Berhasil"
             ]);
         } elseif (empty(request('password'))) {
             User::where('id_user', request('id_user'))

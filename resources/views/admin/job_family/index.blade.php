@@ -119,14 +119,14 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Kode</label>
                     <div class="col-sm-9">
-                        <input class="form-control kode" type="text" name="kode" id="kode" value="" required />
+                        <input class="form-control kode" type="text" name="kode" id="kode" value=""/>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Nama Job Family</label>
                     <div class="col-sm-9">
                         <input class="form-control job_family" type="text" name="job_family" id="job_family" value=""
-                            required />
+                            />
                     </div>
                 </div>
             </div>
@@ -239,12 +239,20 @@
             cache: false,
             success: function (res) {
                 if (res.status == 200) {
-                    $("#createModal").modal('hide');
-                    table.draw()
+                    document.getElementById("create_form").reset;
+                        // $("select").val(null);
+                        $("#createModal").modal('hide');
                     swal({
                         title: "Pesan",
                         icon: 'success',
-                        text: "Data berhasil ditambahkan",
+                        text: "Data berhasil disimpan",
+                    })
+                    table.draw()
+                } else {
+                    swal({
+                        title: "Pesan",
+                        icon: 'error',
+                        text: "Data gagal disimpan",
                     })
                 }
             }
@@ -296,10 +304,10 @@
                     $("#deleteModal").modal('hide');
                     table.draw()
                     swal({
-                                title: "Pesan",
-                                icon: 'success',
-                                text: "Data berhasil dihapus",
-                            })
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil dihapus",
+                    })
                 }
             }
         })

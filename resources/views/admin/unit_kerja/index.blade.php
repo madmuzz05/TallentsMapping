@@ -142,14 +142,12 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Job Family</label>
                     <div class="col-sm-9 mb-3">
-                        <select class="job_family_select2 col-sm-12 job_family" name="job_family" id="job_family"
-                            required>
+                        <select class="job_family_select2 col-sm-12 job_family" name="job_family" id="job_family">
                         </select>
                     </div>
                     <label class="col-sm-3 col-form-label">Departemen</label>
                     <div class="col-sm-9 mb-3">
-                        <input class="form-control departemen" type="text" name="departemen" id="departemen" value=""
-                            required />
+                        <input class="form-control departemen" type="text" name="departemen" id="departemen" value="" />
                     </div>
                 </div>
             </div>
@@ -287,11 +285,17 @@
                     $("#departemen").val('')
                     $("#createModal").modal('hide');
                     swal({
-                            title: "Pesan",
-                            icon: 'success',
-                            text: "Data berhasil ditambahkan",
-                        })
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil ditambahkan",
+                    })
                     table.draw()
+                } else {
+                    swal({
+                        title: "Pesan",
+                        icon: 'error',
+                        text: "gagal menambahkan data",
+                    })
                 }
             }
         })
@@ -312,10 +316,10 @@
                     $("#departemen").val('')
                     $("#editModal").modal('hide');
                     swal({
-                            title: "Pesan",
-                            icon: 'success',
-                            text: "Data berhasil disimpan",
-                        })
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil disimpan",
+                    })
                     table.draw()
                 }
             }
@@ -331,10 +335,10 @@
                 if (res.status == 200) {
                     $("#deleteModal").modal('hide');
                     swal({
-                            title: "Pesan",
-                            icon: 'success',
-                            text: "Data berhasil dihapus",
-                        })
+                        title: "Pesan",
+                        icon: 'success',
+                        text: "Data berhasil dihapus",
+                    })
                     table.draw()
                 }
             }

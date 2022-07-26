@@ -207,6 +207,11 @@
                     if (res.status == 200) {
                         $("#deleteModal").modal('hide');
                         table.draw()
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil dihapus",
+                        })
                     }
                 }
             })

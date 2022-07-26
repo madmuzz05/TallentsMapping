@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -76,17 +78,23 @@ class PernyataanController extends Controller
      */
     public function store(Request $request)
     {
-
         $pernyataan = $request->pernyataan_create;
         $nilai = $request->nilai_create;
         for ($count = 0; $count < count($pernyataan); $count++) {
-            $data = [
-                'tema_bakat_id' => $request->tema_bakat_create,
-                'pernyataan'  => $pernyataan[$count],
-                'bobot_nilai'  => $nilai[$count],
-                'instansi_id' => Auth::user()->instansi_id
-            ];
-            Pernyataan::create($data);
+            if ($pernyataan[$count] == null || $nilai[$count] == null || $request->tema_bakat_create == null) {
+                return response()->json([
+                    'status' => 405,
+                ]);
+                break;
+            } else {
+                $data = [
+                    'tema_bakat_id' => $request->tema_bakat_create,
+                    'pernyataan'  => $pernyataan[$count],
+                    'bobot_nilai'  => $nilai[$count],
+                    'instansi_id' => Auth::user()->instansi_id
+                ];
+                Pernyataan::updateOrCreate($data);
+            }
         }
         return response()->json([
             'status' => 200
@@ -132,13 +140,14 @@ class PernyataanController extends Controller
      */
     public function update(Request $request)
     {
-        $tema_bakat = $request->tema_bakat_edit;
+
+        $tema_bakat_id = $request->tema_bakat_id_edit;
         $pernyataan = $request->pernyataan_edit;
         $nilai = $request->nilai_edit;
         $id = $request->id_pernyataan_edit;
-        for ($count = 0; $count < count($tema_bakat); $count++) {
+        for ($count = 0; $count < count($pernyataan); $count++) {
             $data = [
-                'tema_bakat_id' => $tema_bakat[$count],
+                'tema_bakat_id' => $tema_bakat_id,
                 'pernyataan'  => $pernyataan[$count],
                 'bobot_nilai'  => $nilai[$count],
                 'instansi_id' => Auth::user()->instansi_id

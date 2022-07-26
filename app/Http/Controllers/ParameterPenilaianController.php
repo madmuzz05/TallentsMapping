@@ -9,6 +9,8 @@ use App\Models\Hasil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Mockery\Generator\Parameter;
 use Yajra\DataTables\Facades\DataTables;
@@ -65,24 +67,31 @@ class ParameterPenilaianController extends Controller
      */
     public function store(Request $request)
     {
-
-        JobFamily::where('id_job_family', $request->job_family_create)->where('instansi_id', Auth::user()->instansi_id)->update([
-            'nilai_core_faktor' => $request->core_faktor_create,
-            'nilai_sec_faktor' => $request->sec_faktor_create,
-        ]);
-
+        $nilai_core_faktor = $request->core_faktor_create;
+        $nilai_sec_faktor = $request->sec_faktor_create;
         $tema_bakat = $request->tema_bakat_create;
         $kategori_faktor = $request->kategori_faktor_create;
         $nilai = $request->nilai_create;
         $job_family = $request->job_family_create;
-        for ($count = 0; $count < count($tema_bakat); $count++) {
-            $data = [
-                'job_family_id' => $job_family,
-                'tema_bakat_id' => $tema_bakat[$count],
-                'kategori_faktor'  => $kategori_faktor[$count],
-                'nilai'  => $nilai[$count]
-            ];
-            Parameter_Penilaian::create($data);
+        for ($count = 0; $count < count($nilai); $count++) {
+            if (isset($nilai_core_faktor) && isset($nilai_sec_faktor) && isset($tema_bakat[$count]) && isset($kategori_faktor[$count]) && isset($nilai[$count]) && isset($job_family)) {
+                $data = [
+                    'job_family_id' => $job_family,
+                    'tema_bakat_id' => $tema_bakat[$count],
+                    'kategori_faktor'  => $kategori_faktor[$count],
+                    'nilai'  => $nilai[$count]
+                ];
+                Parameter_Penilaian::updateOrCreate($data);
+                JobFamily::where('id_job_family', $request->job_family_create)->where('instansi_id', Auth::user()->instansi_id)->update([
+                    'nilai_core_faktor' => $nilai_core_faktor,
+                    'nilai_sec_faktor' => $nilai_sec_faktor,
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 405,
+                ]);
+                break;
+            }
         }
 
         return response()->json([

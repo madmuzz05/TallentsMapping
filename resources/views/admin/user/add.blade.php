@@ -96,7 +96,7 @@
                                             <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                                             <label class="col-sm-8 col-form-label">Confirm Password</label>
                                             <div class="col-sm-12">
-                                                <input class="form-control" type="password" name="password_confirmation"
+                                                <input class="form-control" type="password" id="password_confirmation" name="password_confirmation"
                                                     placeholder="Confirm Password" />
                                             </div>
                                         </div>
@@ -132,7 +132,7 @@
             var d_telepon = document.getElementById('telepon').value;
             var d_email = document.getElementById('email').value;
             var d_password = document.getElementById('password').value;
-
+            var d_password_confirmation = document.getElementById('password_confirmation').value;
             $.ajax({
                 type: "POST",
                 url: "{{route('user.store')}}",
@@ -146,21 +146,24 @@
                     telepon: d_telepon,
                     email: d_email,
                     password: d_password,
+                    password_confirmation: d_password_confirmation,
                 },
                 success: function (res) {
-                    var err = ''
-                    const list = document.getElementById("body-error-msg")
-                    while (list.hasChildNodes()) {
-                        list.removeChild(list.firstChild);
-                    }
-                    $.each(res.errors, function (key, value) {
-                        document.getElementsByClassName("error-msg")[0].style
-                            .display = "block";
-                        err += '<li>' + value + '</li>'
-                    });
-                    $('.body-error-msg').append(err)
+                    console.log(res.error);
                     if (res.status == 200) {
-                        window.location = "/user/index"
+                        swal({
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Berhasil menambahkan data",
+                        }).then(function () {
+                            window.location = "/user/index"
+                        });
+                    } else {
+                        swal({
+                            title: "Pesan",
+                            icon: 'error',
+                            text: "gagal menambahkan data",
+                        })
                     }
                 }
             })

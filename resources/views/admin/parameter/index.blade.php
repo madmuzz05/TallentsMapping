@@ -91,7 +91,7 @@
                         <label class="col-sm-3 col-form-label">Job Family</label>
                         <div class="col-sm-9">
                             <select class="job_family_select2 col-sm-12 job_family" name="job_family_create"
-                                id="job_family_create" required>
+                                id="job_family_create">
                             </select>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                             <div class="input-group"><input class="form-control digits core_faktor" type="number"
                                     name="core_faktor_create" id="core_faktor_create"
                                     placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
-                                    min="0" max="100" required /><span class="input-group-text"><i
+                                    min="0" max="100"/><span class="input-group-text"><i
                                         data-feather="percent"></i></span></div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                             <div class="input-group"><input class="form-control digits sec_faktor" type="number"
                                     name="sec_faktor_create" id="sec_faktor_create"
                                     placeholder="Input nilai dalam bentuk angka" aria-label="Recipient's username"
-                                    min="0" max="100" required /><span class="input-group-text"><i
+                                    min="0" max="100"/><span class="input-group-text"><i
                                         data-feather="percent"></i></span></div>
                         </div>
                     </div>
@@ -130,17 +130,17 @@
                                 <tbody id="body">
                                     <tr>
                                         <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
-                                                name="tema_bakat_create[]" id="tema_bakat_create" required></select>
+                                                name="tema_bakat_create[]" id="tema_bakat_create"></select>
                                         </td>
                                         <td><select class="js-example-basic-single col-sm-12 kategori_faktor"
-                                                name="kategori_faktor_create[]" id="kategori_faktor_create" required>
+                                                name="kategori_faktor_create[]" id="kategori_faktor_create">
                                                 <option value=""></option>
                                                 <option value="Core Faktor">Core Faktor</option>
                                                 <option value="Secondary Faktor">Secondary Faktor</option>
                                             </select></td>
                                         <td><input class="form-control digits nilai" type="number" name="nilai_create[]"
                                                 id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1"
-                                                max="5" required /></td>
+                                                max="5"/></td>
                                         <td><button type="button" class="btn btn-sm btn-danger remove">Delete
                                                 Field</button>
                                         </td>
@@ -306,15 +306,15 @@
         function create_field() {
             html = '<tr>'
             html +=
-                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create[]" id="tema_bakat_create" required></select></td>'
+                '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_create[]" id="tema_bakat_create"></select></td>'
             html +=
-                '<td><select class="js-example-basic-single col-sm-12 kategori_faktor" name="kategori_faktor_create[]" id="kategori_faktor_create" required>'
+                '<td><select class="js-example-basic-single col-sm-12 kategori_faktor" name="kategori_faktor_create[]" id="kategori_faktor_create">'
             html += '<option value=""></option>'
             html += '<option value="Core Faktor">Core Faktor</option>'
             html += '<option value="Secondary Faktor">Secondary Faktor</option>'
             html += '</select></td>'
             html +=
-                '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5" required/></td>'
+                '<td><input class="form-control digits nilai" type="number" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" min="1" max="5"/></td>'
             html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
             html += '</tr>'
             $('#body').append(html);
@@ -381,12 +381,19 @@
                         table.draw()
                         document.getElementById("create_form").reset();
                         // $("select").val(null);
+                        $("#createModal").modal('hide');
                         swal({
                             title: "Pesan",
                             icon: 'success',
                             text: "Data berhasil ditambahkan",
                         })
-                        $("#createModal").modal('hide');
+                    } else {
+                        $('#create-data').removeAttr('disabled');
+                        swal({
+                            title: "Pesan",
+                            icon: 'error',
+                            text: "gagal menambahkan data",
+                        })
                     }
                 }
             })

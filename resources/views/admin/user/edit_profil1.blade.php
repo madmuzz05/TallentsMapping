@@ -137,13 +137,13 @@
                         swal({
                             title: "Pesan",
                             icon: 'success',
-                            text: res.success,
+                            text: "Berhasil Mengupdate data",
                         }).then(function () {
                             window.history.back();
                             location.reload();
                         });
                     } else if (res.status == 405) {
-                        swal("Pesan", res.errors, "error");
+                        swal("Pesan", "Gagal Mengupdate data", "error");
                         $('#create-data').removeAttr('disabled');
                     }
                 }

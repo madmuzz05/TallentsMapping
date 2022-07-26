@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Yajra\Datatables\Datatables;
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -64,7 +66,7 @@ class UnitKerjaController extends Controller
         $data = UnitKerja::where('instansi_id', Auth::user()->instansi_id)->get();
         // dd($data);
         if (isset($request->q)) {
-            $data = UnitKerja::where('departemen', 'like', "%" . $request->q . "%")->get();
+            $data = UnitKerja::where('departemen', 'like', "%" . $request->q . "%")->where('instansi_id', Auth::user()->instansi_id)->get();
         }
         return $data;
     }
@@ -87,6 +89,16 @@ class UnitKerjaController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'job_family_id' => 'required',
+            'departemen' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return Response::json(array(
+                'status' => 405,
+                'error' => $validator->errors()->all()
+            ));
+        }
         if ($request->ajax()) {
             UnitKerja::create([
                 'job_family_id' => request('job_family_id'),

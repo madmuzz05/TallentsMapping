@@ -58,8 +58,8 @@
                                         <select class="js-example-basic-single col-sm-12" id="hak_akses"
                                             name="hak_akses">
                                             <option value="{{$d->hak_akses}}">{{$d->hak_akses}}</option>
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
+                                            <option value="User">User</option>
+                                            <option value="Admin">Admin</option>
                                         </select>
                                     </div>
                                 </div>
@@ -171,6 +171,7 @@
                 })
             }
         })
+        // console.log($(".select2").length)
 
         $.ajax({
             type: "GET",

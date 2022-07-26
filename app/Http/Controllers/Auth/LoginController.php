@@ -71,13 +71,13 @@ class LoginController extends Controller
 
         if (auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))) {
             if (auth()->user()->hak_akses == 'Admin') {
-                return redirect()->route('admin.index');
+                return redirect()->route('admin.index')->with('success', 'Login Berhasil');
             } else {
-                return redirect()->route('index');
+                return redirect()->route('index')->with('success', 'Login Berhasil');
             }
         } else {
             return Redirect::to('/login')
-                ->with('error', 'Email-Address And Password Are Wrong.');
+                ->with('error', 'Masukkan Email dan Password dengan benar');
         }
     }
 }

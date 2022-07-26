@@ -144,10 +144,10 @@
                     <div class="row mr-5 ml-5">
                         <div class="col-lg-12 table-responsive-lg text-center">
                             <div class="m-b-20 row">
-                                <label class="col-sm-4 col-form-label">Tema Bakat</label>
+                                <label class="col-sm-3 col-form-label">Tema Bakat</label>
                                 <div class="col-sm-8">
                                     <select class="tema_bakat_select2 col-sm-12 tema_bakat_create"
-                                                name="tema_bakat_create" id="tema_bakat_create" required></select>
+                                        name="tema_bakat_create" id="tema_bakat_create" ></select>
                                 </div>
                             </div>
 
@@ -163,11 +163,11 @@
                                 <tbody id="body">
                                     <tr>
                                         <td><textarea class="form-control pernyataan_create" id="pernyataan_create"
-                                                name="pernyataan_create[]" rows="3" name="pernyataan_create"
-                                                required></textarea></td>
+                                                name="pernyataan_create[]" rows="3"
+                                                ></textarea></td>
                                         <td><input class="form-control digits nilai" type="text" name="nilai_create[]"
                                                 id="nilai_create" placeholder="Input nilai dalam bentuk angka"
-                                                required /></td>
+                                                /></td>
                                         <td><button type="button" class="btn btn-sm btn-danger remove">Delete
                                                 Field</button>
                                         </td>
@@ -199,11 +199,19 @@
                 <form method="post" id="edit_form">
                     <div class="row mr-5 ml-5">
                         <div class="col-lg-12 table-responsive-lg text-center">
+                            <div class="m-b-20 row">
+                                <label class="col-sm-3 col-form-label">Tema Bakat</label>
+                                <div class="col-sm-8">
+                                    <input type="hidden" class="form-control col-sm-12 tema_bakat_id_edit"
+                                        name="tema_bakat_id_edit" id="tema_bakat_id_edit" readonly></input>
+                                    <input type="text" class="form-control col-sm-12 tema_bakat_edit"
+                                        name="tema_bakat_edit" id="tema_bakat_edit" readonly></input>
+                                </div>
+                            </div>
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <td>Pernyataan</td>
-                                        <td>Tema Bakat</td>
                                         <td>Bobot Nilai</td>
                                     </tr>
                                 </thead>
@@ -316,9 +324,9 @@
         function create_field() {
             html = '<tr>'
             html +=
-                '<td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3" name="pernyataan_create" required></textarea></td>'
+                '<td><textarea class="form-control pernyataan_create" id="pernyataan_create" name="pernyataan_create[]" rows="3"></textarea></td>'
             html +=
-                '<td><input class="form-control digits nilai" type="text" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka" required/></td>'
+                '<td><input class="form-control digits nilai" type="text" name="nilai_create[]" id="nilai_create" placeholder="Input nilai dalam bentuk angka"/></td>'
             html += '<td><button type="button" class="btn btn-sm btn-danger remove">Delete Field</button></td>'
             html += '</tr>'
             $('#body').append(html);
@@ -363,7 +371,10 @@
         $(document).on("click", ".edit-btn", function () {
             var data = table.row($(this).closest('tr')).data();
             // console.log(data);
+            $('.tema_bakat_edit').val(data.tema_bakat)
+            $('.tema_bakat_id_edit').val(data.tema_bakat_id)
             id_modal_edit = data.id_pernyataan;
+
             load_ajax(data.tema_bakat_id)
         });
 
@@ -380,10 +391,6 @@
                         html_edit +=
                             '<td><textarea class="form-control pernyataan_edit" id="pernyataan_edit" name="pernyataan_edit[]" rows="3" name="pernyataan_edit" required>' +
                             item.pernyataan + '</textarea></td>'
-                        html_edit +=
-                            '<td><select class="tema_bakat_select2 col-sm-12 tema_bakat" name="tema_bakat_edit[]" id="tema_bakat_edit" required>'
-                        html_edit +=
-                            '</select></td>'
                         html_edit +=
                             '<td><input class="form-control digits nilai" type="text" name="nilai_edit[]" id="nilai_edit" value="' +
                             item.bobot_nilai +
@@ -459,16 +466,20 @@
                     dataType: 'json',
                     cache: false,
                     success: function (res) {
+                        console.log(res.status);
                         if (res.status == 200) {
-                            $('#create-data').attr('disabled', false);
-                            table.draw()
-                            document.getElementById("create_form").reset();
-                            // $("select").val(null);
                             $("#createModal").modal('hide');
                             swal({
                                 title: "Pesan",
                                 icon: 'success',
                                 text: "Data berhasil ditambahkan",
+                            })
+                            table.draw()
+                        } else {
+                            swal({
+                                title: "Pesan",
+                                icon: 'error',
+                                text: "gagal menambahkan data",
                             })
                         }
                     }
@@ -540,10 +551,10 @@
                         $("#deleteModal").modal('hide');
                         table.draw()
                         swal({
-                                title: "Pesan",
-                                icon: 'success',
-                                text: "Data berhasil dihapus",
-                            })
+                            title: "Pesan",
+                            icon: 'success',
+                            text: "Data berhasil dihapus",
+                        })
                     }
                 }
             })

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Exports\JobFamilyExport;
 use App\Imports\JobFamilyImport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -47,7 +49,7 @@ class JobFamilyController extends Controller
     {
         $data = JobFamily::where('instansi_id', Auth::user()->instansi_id)->get();
         if (isset($request->q)) {
-            $data = JobFamily::where('job_family', 'like', "%" . $request->q . "%")->get();
+            $data = JobFamily::where('job_family', 'like', "%" . $request->q . "%")->where('instansi_id', Auth::user()->instansi_id)->get();
         }
         return $data;
     }
@@ -70,6 +72,16 @@ class JobFamilyController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'kode' => 'required',
+            'job_family' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return Response::json(array(
+                'status' => 405,
+                'error' => $validator->errors()->all()
+            ));
+        }
         if ($request->ajax()) {
             JobFamily::create([
                 'kode' => request('kode'),
@@ -139,7 +151,7 @@ class JobFamilyController extends Controller
 
         $file->move('imports', $nama_file);
         Excel::import(new JobFamilyImport, public_path('/imports/' . $nama_file));
-        return back()->with('success', 'Berhasil menambahkan data');    
+        return back()->with('success', 'Berhasil menambahkan data');
     }
 
     public function export()
