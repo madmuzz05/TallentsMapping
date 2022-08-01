@@ -372,7 +372,7 @@ class SimulasiController extends Controller
         // dd($hasil);
         $unit = UnitKerja::whereIn('job_family_id', $id_job)->where('instansi_id', Auth::user()->instansi_id)->orderBy('departemen', 'ASC')->get();
         $sql1 = 'SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
-        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 5';
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? ORDER BY a.nilai DESC LIMIT 7';
         $kekuatan = DB::select($sql1, [Auth::user()->id_user]);
         $hasil_kuat = array();
         foreach ($kekuatan as $power) {
@@ -386,7 +386,7 @@ class SimulasiController extends Controller
         }
 
         $sql2 = 'SELECT a.user_id, a.pernyataan_id, c.nama_tema, a.nilai, c.deskripsi FROM simulasi a LEFT JOIN pernyataan b ON a.pernyataan_id = b.id_pernyataan LEFT JOIN tema_bakat c
-        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? and a.nilai > 0 ORDER BY a.nilai ASC LIMIT 5';
+        ON b.tema_bakat_id = c.id_tema_bakat WHERE a.user_id = ? and a.nilai > 0 ORDER BY a.nilai ASC LIMIT 7';
         $kelemahan = DB::select($sql2, [Auth::user()->id_user]);
         $hasil_lemah = array();
         foreach ($kelemahan as $lemah) {
