@@ -93,6 +93,7 @@
                             <select class="job_family_select2 col-sm-12 job_family" name="job_family_create"
                                 id="job_family_create">
                             </select>
+                            <a class="example-popover btn btn-primary" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
                         </div>
                     </div>
                     <div class="mb-3 row">
