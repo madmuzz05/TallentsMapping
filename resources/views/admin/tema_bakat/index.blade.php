@@ -120,14 +120,14 @@
                     <label class="col-sm-3 col-form-label">Nama Tema</label>
                     <div class="col-sm-9">
                         <input class="form-control nama_tema" type="text" name="nama_tema" id="nama_tema" value=""
-                             />
+                            required />
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Deskripsi</label>
                     <div class="col-sm-9">
                         <textarea class="form-control deskripsi" id="deskripsi_create" rows="3" name="deskripsi_create"
-                            value=""></textarea>
+                            value="" required></textarea>
                     </div>
                 </div>
             </div>

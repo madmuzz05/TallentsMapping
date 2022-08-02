@@ -6,7 +6,7 @@
     <div class="page-header">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Job Family <a class="example-popover btn btn-info btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></h3>
+                <h3>Job Family</h3>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">Master Data</li>
                     <li class="breadcrumb-item active">Job Family</li>
@@ -239,7 +239,6 @@
             cache: false,
             success: function (res) {
                 if (res.status == 200) {
-                    document.getElementById("create_form").reset;
                         // $("select").val(null);
                         $("#createModal").modal('hide');
                     swal({

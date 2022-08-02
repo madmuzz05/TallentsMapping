@@ -134,12 +134,12 @@ class UserController extends Controller
             'alamat' => 'required',
             'telepon' => 'required',
             'email' => 'required',
-            'password' => 'required|same:password_confirmation|min:6',
+	    'password' => 'required|same:password_confirmation|min:6',
         ]);
         if ($validator->fails()) {
             return Response::json(array(
                 'status' => 405,
-                'error' => $validator->errors()->all()
+		'error' => $validator->errors()->all()
             ));
         }
         $data = $request->all();

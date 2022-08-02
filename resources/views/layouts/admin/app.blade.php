@@ -213,10 +213,6 @@
     <script src="{{asset('assets/js/owlcarousel/owl.carousel.js')}}"></script>
     <script src="{{asset('assets/js/general-widget.js')}}"></script>
     <script src="{{asset('assets/js/height-equal.js')}}"></script>
-    <script src="{{asset('assets/js/counter/jquery.waypoints.min.j')}}"></script>
-    <script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
-    <script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
-    <script src="{{asset('assets/js/popover-custom.js')}}"></script>
     {{-- <script src="{{asset('assets/js/tooltip-init.js')}}"></script> --}}
     <script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
     <script src="{{asset('assets/js/select2/select2-custom.js')}}"></script>

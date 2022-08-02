@@ -88,16 +88,15 @@
             <div class="modal-body">
                 <form method="post" id="create_form">
                     <div class="mb-3 row">
-
-                        <label class="col-sm-3 col-form-label">Job Family <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa-solid fa-info"></i></a></label>
+                        <label class="col-sm-3 col-form-label">Job Family</label>
                         <div class="col-sm-9">
-                            <select class="job_family_select2 col-sm-7 job_family" name="job_family_create"
+                            <select class="job_family_select2 col-sm-12 job_family" name="job_family_create"
                                 id="job_family_create">
                             </select>
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label class="col-sm-3 col-form-label">Presentase Core Faktor <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></label>
+                        <label class="col-sm-3 col-form-label">Presentase Core Faktor</label>
                         <div class="col-sm-9">
                             <div class="input-group"><input class="form-control digits core_faktor" type="number"
                                     name="core_faktor_create" id="core_faktor_create"
@@ -107,7 +106,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label class="col-sm-3 col-form-label">Presentase Secondary Faktor <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></label>
+                        <label class="col-sm-3 col-form-label">Presentase Secondary Faktor</label>
                         <div class="col-sm-9">
                             <div class="input-group"><input class="form-control digits sec_faktor" type="number"
                                     name="sec_faktor_create" id="sec_faktor_create"
@@ -123,7 +122,7 @@
                                     <tr>
                                         <td>Tema Bakat</td>
                                         <td>Faktor Penilaian</td>
-                                        <td>Nilai GAP <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></td>
+                                        <td>Nilai GAP</td>
                                         <td><button type="button" class="btn btn-sm btn-info" id="add">Add
                                                 Field</button></td>
                                     </tr>
@@ -132,7 +131,6 @@
                                     <tr>
                                         <td><select class="tema_bakat_select2 col-sm-12 tema_bakat"
                                                 name="tema_bakat_create[]" id="tema_bakat_create"></select>
-                                                <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a>
                                         </td>
                                         <td><select class="js-example-basic-single col-sm-12 kategori_faktor"
                                                 name="kategori_faktor_create[]" id="kategori_faktor_create">
@@ -205,9 +203,9 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>Tema Bakat <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></td>
+                                        <td>Tema Bakat</td>
                                         <td>Faktor Penilaian</td>
-                                        <td>Nilai GAP <a class="example-popover btn btn-light btn-xs" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"><i class="fa fa-info"></i></a></td>
+                                        <td>Nilai GAP</td>
                                         <td><button type="button" class="btn btn-sm btn-info" id="add">Add
                                                 Field</button></td>
                                     </tr>

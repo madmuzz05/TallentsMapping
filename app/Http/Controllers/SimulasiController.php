@@ -298,7 +298,7 @@ class SimulasiController extends Controller
                 'created_at' => Carbon::now()
             ]
         );
-        if (!empty($request->sudah) && $total == $question) {
+        if (!empty($request->sudah)) {
             User::where('id_user', Auth::user()->id_user)->update(
                 [
                     'assesmen' => 'Y'

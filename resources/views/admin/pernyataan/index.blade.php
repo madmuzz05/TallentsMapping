@@ -475,6 +475,7 @@
                                 text: "Data berhasil ditambahkan",
                             })
                             table.draw()
+document.getElementById("create_form").reset();
                         } else {
                             swal({
                                 title: "Pesan",

@@ -171,7 +171,6 @@
                 })
             }
         })
-        // console.log($(".select2").length)
 
         $.ajax({
             type: "GET",
